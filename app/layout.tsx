@@ -78,7 +78,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-IN" className={`${inter.variable} ${sora.variable}`}>
-      <body className="min-h-screen antialiased">
+      <body className="min-h-screen antialiased" suppressHydrationWarning>
         <JsonLd />
         {children}
       </body>

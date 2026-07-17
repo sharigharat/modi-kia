@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import Image from "next/image";
 import { carModels, cityOptions, cityLabels, testDriveImage } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
@@ -62,10 +62,14 @@ export default function TestDrive() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
-  const minDate = new Date().toISOString().slice(0, 10);
+  const [minDate, setMinDate] = useState("");
+
+  useEffect(() => {
+    setMinDate(new Date().toISOString().slice(0, 10));
+  }, []);
 
   const availableTimeSlots = useMemo(() => {
-    if (!date || date !== minDate) return timeSlots;
+    if (!date || !minDate || date !== minDate) return timeSlots;
     const now = new Date();
     const currentHour = now.getHours() + now.getMinutes() / 60;
     return timeSlots.filter((s) => s.end > currentHour);

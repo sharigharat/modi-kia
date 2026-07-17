@@ -28,23 +28,9 @@ export default function LocateUs() {
   if (!selectedLocation) return null;
 
   return (
-    <section id="locate-us" className="scroll-mt-24 bg-white py-14 lg:py-20">
+    <section id="locate-us" className="scroll-mt-24 bg-white py-10 lg:py-14">
       <div className="container-px mx-auto max-w-[1400px]">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand">
-            Locate Us
-          </p>
-          <h2 className="mt-2 font-display text-2xl font-bold text-text sm:text-3xl">
-            Explore the Modi Kia Location
-          </h2>
-          <p className="mt-3 text-sm text-muted sm:text-base">
-            Browse our showroom and service department on the Kalyan-Bhiwandi
-            Road, preview the branch on the map, and open turn-by-turn
-            directions in Google Maps.
-          </p>
-        </Reveal>
-
-        <Reveal className="mt-10 flex justify-center gap-2">
+        <Reveal className="mt-0 flex justify-center gap-2">
           {tabs.map((tab) => (
             <button
               key={tab.type}
