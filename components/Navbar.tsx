@@ -118,6 +118,23 @@ export default function Navbar() {
               <li key={l.href} data-active={active} className="relative flex flex-col items-center">
                 <Link
                   href={l.href}
+                  onClick={(e) => {
+                    if (l.href === "/locate-service-centre") {
+                      if (pathname === "/locate-service-centre") {
+                        e.preventDefault();
+                        document.getElementById("booking-card")?.scrollIntoView({ behavior: "smooth" });
+                      } else {
+                        sessionStorage.setItem("autoScroll", "service");
+                      }
+                    } else if (l.href === "/contact-us") {
+                      if (pathname === "/contact-us") {
+                        e.preventDefault();
+                        document.getElementById("contact-form-card")?.scrollIntoView({ behavior: "smooth" });
+                      } else {
+                        sessionStorage.setItem("autoScroll", "contact");
+                      }
+                    }
+                  }}
                   aria-current={active ? "page" : undefined}
                   className={`relative block px-4 py-2 text-sm font-medium transition-colors hover:text-brand ${
                     active ? "text-text" : "text-muted"
@@ -183,7 +200,24 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  if (l.href === "/locate-service-centre") {
+                    if (pathname === "/locate-service-centre") {
+                      e.preventDefault();
+                      document.getElementById("booking-card")?.scrollIntoView({ behavior: "smooth" });
+                    } else {
+                      sessionStorage.setItem("autoScroll", "service");
+                    }
+                  } else if (l.href === "/contact-us") {
+                    if (pathname === "/contact-us") {
+                      e.preventDefault();
+                      document.getElementById("contact-form-card")?.scrollIntoView({ behavior: "smooth" });
+                    } else {
+                      sessionStorage.setItem("autoScroll", "contact");
+                    }
+                  }
+                  setOpen(false);
+                }}
                 aria-current={active ? "page" : undefined}
                 className={`relative px-4 py-3 text-base font-medium transition-colors hover:bg-bg-2 hover:text-brand ${
                   active ? "bg-brand/5 text-brand" : "text-text"

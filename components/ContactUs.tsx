@@ -29,7 +29,11 @@ export default function ContactUs() {
   };
 
   useEffect(() => {
-    if (typeof window === "undefined" || window.location.hash !== "#contact-form-card") return;
+    if (typeof window === "undefined" || sessionStorage.getItem("autoScroll") !== "contact") return;
+    
+    // Clear the flag so it doesn't scroll again on refresh
+    sessionStorage.removeItem("autoScroll");
+
     const scroll = () => {
       document.getElementById("contact-form-card")?.scrollIntoView({ behavior: "smooth" });
     };

@@ -94,7 +94,11 @@ export default function ServiceBooking() {
   };
 
   useEffect(() => {
-    if (typeof window === "undefined" || window.location.hash !== "#booking-card") return;
+    if (typeof window === "undefined" || sessionStorage.getItem("autoScroll") !== "service") return;
+    
+    // Clear the flag so it doesn't scroll again on refresh
+    sessionStorage.removeItem("autoScroll");
+
     // Fire multiple times to win the race against Next.js scroll restoration
     const scroll = () => {
       document.getElementById("booking-card")?.scrollIntoView({ behavior: "smooth" });

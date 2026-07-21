@@ -137,13 +137,13 @@ export const nav = {
   phone: company.phone,
   location: "Bhiwandi",
   links: [
-    { label: "Home", href: "/#home" },
+    { label: "Home", href: "/" },
     { label: "About Us", href: "/about" },
     { label: "Find a car", href: "/cars" },
-    { label: "Service", href: "/locate-service-centre#booking-card" },
+    { label: "Service", href: "/locate-service-centre" },
     { label: "Locate Us", href: "/locate-us" },
     { label: "Blogs", href: "/blogs" },
-    { label: "Contact Us", href: "/contact-us#contact-form-card" },
+    { label: "Contact Us", href: "/contact-us" },
   ],
 };
 
