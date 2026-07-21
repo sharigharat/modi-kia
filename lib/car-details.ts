@@ -535,9 +535,27 @@ export function getCarDetail(car: Car): CarDetail {
   });
 }
 
-export function getCarBrochure(_car: Car): undefined {
-  // Kia India does not expose a stable, per-model brochure PDF path the
-  // way Hyundai's site did — no brochure link is offered rather than
-  // guessing a URL that may not resolve.
-  return undefined;
+export function getCarBrochure(car: Car): string | undefined {
+  const base = "https://www.kia.com";
+  switch (car.slug) {
+    case "seltos":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/new-seltos/showroom/brochure/Kia_Seltos_Brochure_Desktop_2026.pdf`;
+    case "sonet":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/sonet/brochure/Sonet_Wild_Reborn_Brochure_2026_Desktop.pdf`;
+    case "syros":
+    case "syros-ev": // Fallback to Syros for EV if separate not published
+      return `${base}/content/dam/kia2/in/en/our-vehicles/syros/Kia_Syros_Brochure_2026_Desktop.pdf`;
+    case "carens":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/Brochures/Carens_Leaflet.pdf`;
+    case "carens-clavis":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/kia-clavis/broc/Kia_Carens_Clavis_Brochure_Desktop.pdf`;
+    case "carens-clavis-ev":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/kia-carens-clavis-ev/showroom/Kia_Carens_Clavis_EV_Brochure_Desktop.pdf`;
+    case "carnival":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/carnival/Kia_Carnival_Brochure_Desktop.pdf`;
+    case "ev9":
+      return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/ev9/Kia_EV9_Brochure_Desktop.pdf`;
+    default:
+      return undefined;
+  }
 }

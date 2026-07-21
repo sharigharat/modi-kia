@@ -248,74 +248,7 @@ export default function HomeSeoContent() {
         </div>
       </section>
 
-      {/* AEO definitional paragraph + popular models */}
-      <section className="bg-bg-2 py-14 lg:py-20">
-        <div className="container-px mx-auto max-w-[1100px]">
-          <Reveal>
-            <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl">
-              Frequently compared Kia models at Modi Kia
-            </h2>
-            <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted sm:text-base">
-              <p>
-                The{" "}
-                <strong className="text-text">Kia Seltos</strong>{" "}
-                is Kia&apos;s flagship SUV, prized for its 12.3&quot; HD touchscreen
-                cockpit, ADAS Level 2+ and a choice of turbo-petrol,
-                naturally aspirated petrol and diesel engines. The{" "}
-                <strong className="text-text">Kia Sonet</strong> brings an
-                SUV stance to the compact segment, while the{" "}
-                <strong className="text-text">Kia Syros</strong> adds a
-                Trinity Panoramic Display in a similarly compact footprint.
-              </p>
-              <p>
-                Growing families often choose the 6/7-seat{" "}
-                <strong className="text-text">Kia Carens</strong> or the
-                more premium <strong className="text-text">Kia Carens
-                Clavis</strong>, while buyers wanting first-class MPV luxury
-                gravitate to the <strong className="text-text">Kia
-                Carnival</strong>. For electric buyers, the{" "}
-                <strong className="text-text">Kia EV6</strong> and{" "}
-                <strong className="text-text">Kia EV9</strong> offer fast
-                charging and Vehicle-to-Load capability.
-              </p>
-            </div>
-          </Reveal>
 
-          <div className="mt-8 flex flex-wrap gap-2">
-            {cars
-              .filter((c) =>
-                ["Seltos", "Sonet", "Syros", "Carens", "Carens Clavis", "EV6", "EV9"].includes(
-                  c.name,
-                ),
-              )
-              .map((car) => (
-                <Link
-                  key={car.slug}
-                  href={`/cars/${car.slug}`}
-                  className="rounded-full border border-border bg-white px-4 py-2 text-sm font-medium text-text transition-colors hover:border-brand hover:text-brand"
-                >
-                  Kia {car.name}
-                </Link>
-              ))}
-          </div>
-
-          <Reveal>
-            <p className="mt-10 border-t border-border pt-8 text-sm leading-relaxed text-muted">
-              <strong className="text-text">Areas we serve:</strong>{" "}
-              {company.areasServed.join(", ")} and the surrounding region.
-              Visit our showroom and service department, or call{" "}
-              <a
-                href={`tel:${company.phone.replace(/\s/g, "")}`}
-                className="font-semibold text-brand underline underline-offset-4 hover:text-brand-light"
-              >
-                {company.phone}
-              </a>{" "}
-              to speak with our sales and service teams. Showroom hours are{" "}
-              {company.hours}.
-            </p>
-          </Reveal>
-        </div>
-      </section>
     </>
   );
 }

@@ -61,7 +61,7 @@ export default function LocateUsPage() {
       <FloatingActions />
       <main style={{ marginTop: "60px" }}>
         <section className="relative w-full overflow-hidden bg-bg-2 pt-14 pb-10 sm:pt-16 sm:pb-12">
-          <div className="container-px mx-auto max-w-[1400px] text-center">
+          <div className="container-px mx-auto max-w-[1400px]">
             <Reveal>
               <p className="text-sm font-semibold uppercase tracking-wider text-brand">
                 Locate Us
@@ -69,7 +69,7 @@ export default function LocateUsPage() {
               <h1 className="mt-2 font-display text-3xl font-bold text-text sm:text-4xl">
                 Find the Modi Kia Location
               </h1>
-              <p className="mt-3 mx-auto max-w-2xl text-sm text-muted sm:text-base">
+              <p className="mt-3 max-w-2xl text-sm text-muted sm:text-base">
                 Explore the Modi Kia showroom and service department, preview the
                 branch on the map, and get live navigation in Google Maps.
               </p>

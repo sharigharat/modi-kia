@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Image from "next/image";
-import { cars, cityOptions, cityLabels, locations, formatINR } from "@/lib/data";
+import { cars, cityOptions, cityLabels, locations, formatINR, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown, ChevronRight, X } from "./icons";
 import Reveal from "./Reveal";
+import { OtpGate, PhoneInput } from "./OtpGate";
+import { useGlobalOtp } from "./GlobalOtpProvider";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -17,17 +19,18 @@ const timeSlots = [
 
 const steps = ["Select Car", "When & Where", "Your Details"];
 
-export default function TestDriveWizard() {
+function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugProp?: string, onClose?: () => void } = {}) {
+  const { globalPhone } = useGlobalOtp();
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
 
-  const [carSlug, setCarSlug] = useState("");
+  const [carSlug, setCarSlug] = useState(initialCarSlugProp || "");
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
-  const [mobile, setMobile] = useState("");
+  const mobile = globalPhone;
   const [email, setEmail] = useState("");
   const [pincode, setPincode] = useState("");
   const [address, setAddress] = useState("");
@@ -120,7 +123,6 @@ export default function TestDriveWizard() {
     setDate("");
     setTime("");
     setName("");
-    setMobile("");
     setEmail("");
     setPincode("");
     setAddress("");
@@ -241,7 +243,8 @@ export default function TestDriveWizard() {
                   <div className="relative">
                     <input
                       type="date"
-                      min={minDate}
+                      required
+                      min={getTomorrowDateString()}
                       value={date}
                       onChange={(e) => {
                         setDate(e.target.value);
@@ -323,18 +326,7 @@ export default function TestDriveWizard() {
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
-                  <input
-                    type="tel"
-                    required
-                    pattern="[0-9]{10}"
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value)}
-                    placeholder="Mobile number"
-                    className={`${fieldBase} ${fieldErrors.mobile ? "border-red-400 focus:border-red-400" : ""}`}
-                  />
-                  {fieldErrors.mobile && (
-                    <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.mobile}</p>
-                  )}
+                  <PhoneInput name="mobile" />
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">
@@ -429,9 +421,12 @@ export default function TestDriveWizard() {
             className="relative w-full max-w-md rounded-lg bg-white p-8 text-center shadow-2xl sm:p-10"
           >
             <button
+              onClick={() => {
+                resetAll();
+                if (onClose) onClose();
+              }}
+              className="absolute right-4 top-4 rounded-full p-2 text-faint transition-colors hover:bg-bg-2 hover:text-text"
               aria-label="Close"
-              onClick={resetAll}
-              className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full text-muted transition-colors hover:bg-bg-2"
             >
               <X className="h-5 w-5" />
             </button>
@@ -457,5 +452,13 @@ export default function TestDriveWizard() {
         </div>
       )}
     </>
+  );
+}
+
+export default function TestDriveWizard(props: { initialCarSlugProp?: string, onClose?: () => void }) {
+  return (
+    <OtpGate>
+      <TestDriveWizardInner {...props} />
+    </OtpGate>
   );
 }

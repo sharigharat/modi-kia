@@ -17,16 +17,29 @@ const categories: ("All" | CarCategory)[] = [
 export default function FeaturedVehicles() {
   const [category, setCategory] = useState<"All" | CarCategory>("All");
   const [index, setIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const [stageWidth, setStageWidth] = useState(1000);
 
   const filtered =
-    category === "All" ? cars : cars.filter((c) => c.category === category);
+    category === "All"
+      ? cars
+      : category === "SUV"
+        ? [
+            ...cars.filter((c) => c.category === "SUV" && c.name === "Syros"),
+            ...cars.filter((c) => c.category === "SUV" && c.name !== "Syros"),
+          ]
+        : cars.filter((c) => c.category === category);
   const active = filtered[index] ?? filtered[0];
 
   const selectCategory = (nextCategory: "All" | CarCategory) => {
+    setIsTransitioning(true);
     setCategory(nextCategory);
     setIndex(0);
+    // Re-enable transitions after the instant swap is painted
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setIsTransitioning(false));
+    });
   };
 
   useEffect(() => {
@@ -50,12 +63,8 @@ export default function FeaturedVehicles() {
   // Step distance and scale/opacity falloff are proportional to the stage's
   // own measured width, so the "coverflow" spacing stays consistent across
   // breakpoints without a hardcoded pixel value.
-  const step = Math.min(stageWidth * 0.36, 380);
-  // The centre card renders larger than its neighbours, so a purely linear
-  // step makes the main-to-neighbour gap look tighter than the gaps further
-  // out. A small constant push on every non-zero offset widens just that
-  // first gap, without changing the spacing between the side cards.
-  const centreGapBoost = 28;
+  const step = Math.min(stageWidth * 0.38, 400);
+  const centreGapBoost = 30;
 
   return (
     <section
@@ -129,7 +138,7 @@ export default function FeaturedVehicles() {
                     setIndex(i);
                   }
                 }}
-                className="absolute left-1/2 top-1/2 flex h-full w-[70%] items-center justify-center transition-all duration-500 ease-out sm:w-[55%] lg:w-[46%]"
+                className={`absolute left-1/2 top-1/2 flex h-full w-[70%] items-center justify-center sm:w-[55%] lg:w-[46%] ${isTransitioning ? "" : "transition-all duration-500 ease-out"}`}
                 style={{
                   transform: `translate(-50%, -50%) translateX(${translateX}px) scale(${scale})`,
                   opacity,
@@ -182,12 +191,10 @@ export default function FeaturedVehicles() {
           </button>
         </div>
 
-        {/* Info row, keyed so it fades between models. relative z-30 lifts the
-            name link + spec grid above the overflowing carousel cards so the
-            car-name link is actually clickable. */}
+        {/* Info row */}
         <div
           key={active.name}
-          className="relative z-30 mx-auto mt-4 max-w-2xl text-center animate-[fade-up_.35s_ease-out both]"
+          className="relative z-30 mx-auto mt-4 max-w-2xl text-center animate-[fade-up_.35s_ease-out_both]"
         >
           <Link
             href={`/cars/${active.slug}`}

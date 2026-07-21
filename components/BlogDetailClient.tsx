@@ -21,16 +21,16 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
   return (
     <article>
       {/* Hero banner */}
-      <section className="relative h-[280px] w-full overflow-hidden bg-brand-deep sm:h-[380px] lg:h-[420px]">
+      <section className="relative h-[320px] w-full overflow-hidden bg-brand-deep sm:h-[380px] lg:h-[460px]">
         <Image
           src={blog.image}
           alt={blog.alt}
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover lg:object-[center_right]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/10 lg:bg-gradient-to-r lg:from-black lg:via-black/80 lg:to-transparent" />
         <div className="container-px absolute inset-x-0 bottom-0 mx-auto max-w-[1400px] pb-8 sm:pb-10">
           <Reveal>
             <Link

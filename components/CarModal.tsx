@@ -53,6 +53,7 @@ export default function CarModal({
             width={800}
             height={295}
             className="h-auto w-[85%] object-contain drop-shadow-xl"
+            style={car.slug === "ev9" ? { transform: "scaleX(-1)" } : undefined}
           />
         </div>
 

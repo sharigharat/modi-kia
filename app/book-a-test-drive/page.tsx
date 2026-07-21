@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
 import TestDriveWizard from "@/components/TestDriveWizard";
 import Reveal from "@/components/Reveal";
+import { Suspense } from "react";
 import { SITE_URL } from "@/lib/data";
 import { DEALER_ID } from "@/lib/schema";
 
@@ -85,7 +86,9 @@ export default function BookTestDrivePage() {
 
         <section className="bg-white py-10 lg:py-16">
           <div className="container-px mx-auto max-w-[1400px]">
-            <TestDriveWizard />
+            <Suspense fallback={<div className="h-96 w-full animate-pulse rounded bg-bg-2"></div>}>
+              <TestDriveWizard />
+            </Suspense>
           </div>
         </section>
       </main>

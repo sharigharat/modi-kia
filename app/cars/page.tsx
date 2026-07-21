@@ -72,7 +72,7 @@ export default function CarsPage() {
       <FloatingActions />
       <main style={{ marginTop: "60px" }}>
         <section className="bg-bg-2 py-10 lg:py-14">
-          <div className="container-px mx-auto max-w-[1400px] text-center">
+          <div className="container-px mx-auto max-w-[1400px]">
             <Reveal>
               <p className="text-xs font-semibold uppercase tracking-wider text-brand">
                 Our Cars
@@ -80,7 +80,7 @@ export default function CarsPage() {
               <h1 className="mt-2 font-display text-3xl font-bold text-text sm:text-4xl">
                 Compare New Kia Cars with Confidence
               </h1>
-              <p className="mt-3 mx-auto max-w-xl text-sm text-muted sm:text-base">
+              <p className="mt-3 max-w-xl text-sm text-muted sm:text-base">
                 From compact SUVs to Kia&apos;s flagship electric lineup, find
                 the Kia that fits your life, with pricing, specs and real
                 colours for every model.

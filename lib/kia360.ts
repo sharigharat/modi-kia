@@ -13,9 +13,8 @@
    different, incompletely-rendered trim) and confirmed live (HTTP 200).
    All 10 models use the same 72-frame exterior sequence, except EV9
    which is missing frame 60 on Kia's own CDN (a genuine gap, not a
+   which is missing frame 60 on Kia's own CDN (a genuine gap, not a
    mistake here) — frame 59 is reused in its place. */
-
-const KIA_360_BASE = "https://www.kia.com/content/dam/kia2/in/en/images/360vr";
 
 export type Kia360Config = {
   /** Path segment kia.com uses for this model under /images/360vr/ */
@@ -55,11 +54,11 @@ export function exteriorFrameUrl(slug: string, frame: number, colourCode?: strin
   if (n <= 0) n += EXTERIOR_FRAME_COUNT;
   if (slug === "ev9" && n === 60) n = 59; // missing on Kia's own CDN
   const padded = String(n).padStart(2, "0");
-  return `${KIA_360_BASE}/${cfg.model}/${cfg.hash}/exterior/${colourCode ?? cfg.exteriorColor}/${padded}-d.png`;
+  return `/360/exterior/${slug}/${colourCode ?? cfg.exteriorColor}/${padded}-d.png`;
 }
 
 export function interiorPanoUrl(slug: string): string | undefined {
   const cfg = kia360Config[slug];
   if (!cfg) return undefined;
-  return `${KIA_360_BASE}/${cfg.model}/${cfg.hash}/interior/${cfg.interiorTrim}/01-d.jpg`;
+  return `/360/interior/${slug}/01-d.jpg`;
 }

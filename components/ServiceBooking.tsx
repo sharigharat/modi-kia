@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
-import { carModels, serviceCentres } from "@/lib/data";
+import { carModels, serviceCentres, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
+import { OtpGate, PhoneInput } from "./OtpGate";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -65,18 +66,15 @@ export default function ServiceBooking() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [minDate, setMinDate] = useState("");
-
-  useEffect(() => {
-    setMinDate(new Date().toISOString().slice(0, 10));
-  }, []);
 
   const availableTimeSlots = useMemo(() => {
-    if (!date || !minDate || date !== minDate) return timeSlots;
+    if (!date) return timeSlots;
+    const isToday = date === new Date().toISOString().slice(0, 10);
+    if (!isToday) return timeSlots;
     const now = new Date();
     const currentHour = now.getHours() + now.getMinutes() / 60;
     return timeSlots.filter((s) => s.end > currentHour);
-  }, [date, minDate]);
+  }, [date]);
 
   const effectiveTime = availableTimeSlots.some((s) => s.label === time)
     ? time
@@ -95,6 +93,18 @@ export default function ServiceBooking() {
     setSubmitted(true);
   };
 
+  useEffect(() => {
+    if (typeof window === "undefined" || window.location.hash !== "#booking-card") return;
+    // Fire multiple times to win the race against Next.js scroll restoration
+    const scroll = () => {
+      document.getElementById("booking-card")?.scrollIntoView({ behavior: "smooth" });
+    };
+    const t1 = setTimeout(scroll, 100);
+    const t2 = setTimeout(scroll, 450);
+    const t3 = setTimeout(scroll, 900);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+
   return (
     <section id="book-service" className="scroll-mt-24 bg-white py-14 lg:py-20">
       <div className="container-px mx-auto max-w-[1400px]">
@@ -111,6 +121,7 @@ export default function ServiceBooking() {
           </p>
         </Reveal>
 
+        <div id="booking-card" className="scroll-mt-20">
         <Reveal delay={150} className="mx-auto max-w-3xl rounded-lg border border-border bg-bg-2 p-8 shadow-[0_4px_32px_0_rgba(0,44,95,0.08)] sm:p-10">
           {submitted ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
@@ -131,6 +142,7 @@ export default function ServiceBooking() {
               </button>
             </div>
           ) : (
+            <OtpGate>
             <form onSubmit={onSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <SelectField
                 label="Select Car Model"
@@ -156,13 +168,7 @@ export default function ServiceBooking() {
 
               <label className="block">
                 <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
-                <input
-                  type="tel"
-                  required
-                  pattern="[0-9]{10}"
-                  placeholder="Mobile number"
-                  className={fieldBase}
-                />
+                <PhoneInput name="mobile" />
               </label>
 
               <label className="block">
@@ -199,7 +205,7 @@ export default function ServiceBooking() {
                   <input
                     type="date"
                     required
-                    min={minDate}
+                    min={getTomorrowDateString()}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     suppressHydrationWarning
@@ -244,8 +250,10 @@ export default function ServiceBooking() {
                 .
               </p>
             </form>
+            </OtpGate>
           )}
         </Reveal>
+        </div>
       </div>
     </section>
   );

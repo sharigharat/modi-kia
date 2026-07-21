@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { carModels, cityOptions, cityLabels } from "@/lib/data";
+import { carModels, cityOptions, cityLabels, getTomorrowDateString } from "@/lib/data";
 import { Check, ChevronDown, Calendar, ArrowRight, ArrowLeft } from "./icons";
 
 const fieldBase =
@@ -133,7 +133,7 @@ export default function HeroForm() {
             <label className="block">
               <span className="sr-only">Preferred Date</span>
               <div className="relative">
-                <input type="date" required className={`${fieldBase} pr-8`} />
+                <input type="date" required min={getTomorrowDateString()} className={`${fieldBase} pr-8`} />
                 <Calendar className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
               </div>
             </label>

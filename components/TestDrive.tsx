@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import Image from "next/image";
-import { carModels, cityOptions, cityLabels, testDriveImage } from "@/lib/data";
+import { carModels, cityOptions, cityLabels, testDriveImage, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
+import { OtpGate, PhoneInput } from "./OtpGate";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -62,18 +63,13 @@ export default function TestDrive() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [minDate, setMinDate] = useState("");
-
-  useEffect(() => {
-    setMinDate(new Date().toISOString().slice(0, 10));
-  }, []);
 
   const availableTimeSlots = useMemo(() => {
-    if (!date || !minDate || date !== minDate) return timeSlots;
+    if (!date || date !== getTomorrowDateString()) return timeSlots;
     const now = new Date();
     const currentHour = now.getHours() + now.getMinutes() / 60;
     return timeSlots.filter((s) => s.end > currentHour);
-  }, [date, minDate]);
+  }, [date]);
 
   const effectiveTime = availableTimeSlots.some((s) => s.label === time)
     ? time
@@ -141,6 +137,7 @@ export default function TestDrive() {
                 </button>
               </div>
             ) : (
+              <OtpGate>
               <form onSubmit={onSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <SelectField
                   label="Select Car Model"
@@ -160,13 +157,7 @@ export default function TestDrive() {
 
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
-                  <input
-                    type="tel"
-                    required
-                    pattern="[0-9]{10}"
-                    placeholder="Mobile number"
-                    className={fieldBase}
-                  />
+                  <PhoneInput name="mobile" />
                 </label>
 
                 <label className="block">
@@ -213,7 +204,7 @@ export default function TestDrive() {
                     <input
                       type="date"
                       required
-                      min={minDate}
+                      min={getTomorrowDateString()}
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       suppressHydrationWarning
@@ -250,6 +241,7 @@ export default function TestDrive() {
                   .
                 </p>
               </form>
+              </OtpGate>
             )}
           </Reveal>
         </div>

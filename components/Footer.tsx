@@ -160,8 +160,8 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-3 pt-8 text-xs text-white/40 sm:flex-row">
           <p>© 2026 Modi Kia. All Rights Reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="transition-colors hover:text-white">Privacy Policy</a>
-            <a href="#" className="transition-colors hover:text-white">Terms &amp; Conditions</a>
+            <Link href="/privacy-policy" className="transition-colors hover:text-white">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="transition-colors hover:text-white">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>

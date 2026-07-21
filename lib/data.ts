@@ -23,6 +23,12 @@ const stock = (id: string, w = 800) =>
    price yet (see Syros EV) — shown as "Coming Soon" rather than "₹0". */
 export const formatINR = (n: number) => (n > 0 ? `₹${n.toLocaleString("en-IN")}` : "Coming Soon");
 
+export const getTomorrowDateString = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
+};
+
 /* Front-three-quarter (~45°) product cutouts on a clean white studio
    background, pulled from kia.com's own 360° exterior viewer for each
    model (one fixed frame per model, not the interactive spinner). Used
@@ -32,44 +38,42 @@ export const formatINR = (n: number) => (n > 0 ? `₹${n.toLocaleString("en-IN")
    frame numbering isn't consistent across models, since each model's
    360 rig starts its sequence at a different reference angle. */
 const modelShot = {
-  seltos: "/content/dam/kia2/in/en/images/360vr/new_seltos/1mw5k8g1ugg205/exterior/ebb/09-d.png",
-  sonet: "/content/dam/kia2/in/en/images/360vr/sonet/sxw5k2g1uhh078/exterior/gb2/09-d.png",
-  syros: "/content/dam/kia2/in/en/images/360vr/syros/8ww5k2g1upp121/exterior/ebb/09-d.png",
-  carens: "/content/dam/kia2/in/en/images/360vr/carens/tyw7d6617dd408/exterior/mpb/09-d.png",
-  // Uses the Carens Clavis's own canonical config (not a cross-referenced
-  // "frequently compared" variant) so the 360° interior render — which
-  // only exists under this specific hash — lines up with the exterior.
-  carensClavis: "/content/dam/kia2/in/en/images/360vr/clavis/tyw7k8g1utt202/exterior/isg/09-d.png",
-  carensClavisEv: "/content/dam/kia2/in/en/images/360vr/clavis_ev/xyw7zhz7ztt021/exterior/ism/09-d.png",
-  carnival: "/content/dam/kia2/in/en/images/360vr/carnival/8tb72hc5jgg000/exterior/gwp/09-d.png",
+  seltos: "/360/exterior/seltos/ebb/09-d.png",
+  sonet: "/360/exterior/sonet/gwp/09-d.png",
+  syros: "/360/exterior/syros/ebb/09-d.png",
+  carens: "/360/exterior/carens/mpb/09-d.png",
+  carensClavis: "/360/exterior/carens-clavis/isg/09-d.png",
+  carensClavisEv: "/360/exterior/carens-clavis-ev/ism/09-d.png",
+  carnival: "/360/exterior/carnival/gwp/09-d.png",
   // Frame 13/44 (not 04/48) deliberately: these are the real photographed
   // frames facing the opposite direction, so the "EV6/EV9 GT-line" number
-  // plate text on the bumper still reads correctly. A CSS mirror flips the
-  // whole photo including that baked-in text, which is unreadable backwards.
-  ev6: "/content/dam/kia2/in/en/images/360vr/ev6/asw5ycz7zkk876/exterior/swp/13-d.png",
-  ev9: "/content/dam/kia2/in/en/images/360vr/ev9/dow7ybz7zhh325/exterior/obg/44-d.png",
-  syrosEv: "/content/dam/kia2/in/en/images/360vr/syros_ev/8bw5zhz7zpp078/exterior/ism/09-d.png",
+  // plate text on the bumper still reads correctly.
+  ev6: "/360/exterior/ev6/swp/13-d.png",
+  ev9: "/360/exterior/ev9/obg/44-d.png",
+  syrosEv: "/360/exterior/syros-ev/ebb/09-d.png",
 };
 
-/* Cinematic, full-bleed lifestyle photography (one per model), pulled
-   from each model's own page on kia.com/in — the same photography Kia's
-   own homepage hero carousel uses. Kept separate from modelShot above:
-   the hero renders full-bleed with object-cover, so it needs a real
-   scene photo, not a white-background product cutout. */
+/* Cinematic, full-bleed lifestyle photography (one per model), originally
+   sourced from each model's own page on kia.com/in — the same photography
+   Kia's own homepage hero carousel uses. Kept separate from modelShot
+   above: the hero renders full-bleed with object-cover, so it needs a
+   real scene photo, not a white-background product cutout.
+   Downloaded locally into public/hero-images/ so the homepage hero no
+   longer hotlinks the manufacturer's CDN. */
 const heroShot = {
-  seltos: "/content/dam/kia2/in/en/our-vehicles/new-seltos/seltos_d_1.jpg",
-  sonet: "/content/dam/kia2/in/en/our-vehicles/showroom/sonet-pe/image/1920_10802.jpg",
-  syros: "/content/dam/kia2/in/en/our-vehicles/syros/new/banner_d.jpg",
-  carens: "/content/dam/kia2/in/en/our-vehicles/showroom/Carens/x-line/2024/Carens_Digital_d.jpg",
-  carensClavis: "/content/dam/kia2/in/en/our-vehicles/kia-clavis/clavis_d.jpg",
-  carensClavisEv: "/content/dam/kia2/in/en/our-vehicles/kia-carens-clavis-ev/showroom/s-2/Clavis_D_EV.jpg",
-  carnival: "/content/dam/kia2/in/en/our-vehicles/carnival/banner/hero-1-d.jpg",
+  seltos: "/hero-images/seltos.jpg",
+  sonet: "/hero-images/sonet.jpg",
+  syros: "/hero-images/syros.jpg",
+  carens: "/hero-images/carens.jpg",
+  carensClavis: "/hero-images/carens-clavis.jpg",
+  carensClavisEv: "/hero-images/carens-clavis-ev.jpg",
+  carnival: "/hero-images/carnival.jpg",
   // Swapped from the original ev6/ev9 banners: those carried baked-in
   // marketing stat callouts ("Ready in a Flash", "Multi-charging
   // Compatibility" etc). These "Explore the range" card photos are the
   // same official photography with no text burned into the image.
-  ev6: "/content/dam/kia2/in/en/images/home/h-1/ev/ev6.png",
-  ev9: "/content/dam/kia2/in/en/images/home/h-1/ev/ev9.png",
+  ev6: "/hero-images/ev6.jpg",
+  ev9: "/hero-images/ev9.jpg",
 };
 
 /* Local hero video clips, supplied directly and copied into
@@ -82,9 +86,9 @@ const heroVideo = {
   ev6: "/hero-videos/ev6.mp4",
 };
 
-/* Official kia.com cinematic hero banners, pulled from each model's own
-   page. Used for the homepage hero carousel. */
-const banner = (path: string) => official(path);
+/* Homepage hero carousel banners — now served from public/hero-images/
+   (see heroShot above) rather than hotlinked from kia.com. */
+const banner = (path: string) => path;
 
 /* ---- Canonical business identity (NAP), used everywhere + in schema ---- */
 export const SITE_URL =
@@ -136,10 +140,10 @@ export const nav = {
     { label: "Home", href: "/#home" },
     { label: "About Us", href: "/about" },
     { label: "Find a car", href: "/cars" },
-    { label: "Service", href: "/locate-service-centre" },
+    { label: "Service", href: "/locate-service-centre#booking-card" },
     { label: "Locate Us", href: "/locate-us" },
-    { label: "Contact Us", href: "/contact-us" },
     { label: "Blogs", href: "/blogs" },
+    { label: "Contact Us", href: "/contact-us#contact-form-card" },
   ],
 };
 
@@ -151,7 +155,7 @@ export const nav = {
    Kia's public dealer directory (CarDekho) where kia.com itself did not
    publish a network count. */
 export const aboutHeroImage = "/showrooms/locate-us.webp";
-export const aboutCultureImage = "https://bunny-wp-pullzone-cghvklkcns.b-cdn.net/wp-content/uploads/2026/05/GNP01423.JPG-1024x683.jpeg";
+export const aboutCultureImage = "/about/culture.jpg";
 
 export const groupInfo = {
   name: "Gautam Modi Group",
@@ -404,7 +408,7 @@ const slugify = (n: string) => n.toLowerCase().replace(/\s+/g, "-");
    out rather than shown with a swatch that doesn't actually change the
    photo. */
 const withColour = (baseImage: string, code: string) =>
-  baseImage.replace(/\/exterior\/[^/]+\//, `/exterior/${code}/`);
+  baseImage.replace(/\/exterior\/([^\/]+)\/([^\/]+)\//, `/exterior/$1/${code}/`);
 
 const kiaColours = (
   baseImage: string,
@@ -429,9 +433,9 @@ export const cars: Car[] = [
     fuel: "Petrol · Diesel",
     blurb: "Bolder, bigger, and unmistakably badass, Kia's flagship SUV for India.",
     cta: "Explore the Seltos",
-    image: official(modelShot.seltos),
+    image: modelShot.seltos,
     alt: "Kia Seltos SUV, official product shot",
-    colors: kiaColours(official(modelShot.seltos), [
+    colors: kiaColours(modelShot.seltos, [
       ["Frost Blue", "#4A6FA5", "ebb"],
       ["Ivory Silver Gloss", "#C7C9C7", "isg"],
       ["Imperial Blue", "#1B2A4A", "mpb"],
@@ -464,9 +468,9 @@ export const cars: Car[] = [
     fuel: "Petrol · Diesel",
     blurb: "The Wild. Reborn, Kia's compact SUV with big-SUV technology.",
     cta: "Explore the Sonet",
-    image: official(modelShot.sonet),
+    image: modelShot.sonet,
     alt: "Kia Sonet compact SUV, official product shot",
-    colors: kiaColours(official(modelShot.sonet), [
+    colors: kiaColours(modelShot.sonet, [
       ["Glacier White Pearl", "#F2F1EC", "gwp"],
       ["Gravity Grey", "#55585C", "kdg"],
       ["Aurora Black Pearl", "#14151A", "abp"],
@@ -496,9 +500,9 @@ export const cars: Car[] = [
     fuel: "Petrol · Diesel",
     blurb: "Something for Everyone, a genre-bending SUV built around space and tech.",
     cta: "Explore the Syros",
-    image: official(modelShot.syros),
+    image: modelShot.syros,
     alt: "Kia Syros SUV, official product shot",
-    colors: kiaColours(official(modelShot.syros), [
+    colors: kiaColours(modelShot.syros, [
       ["Frost Blue", "#4A6FA5", "ebb"],
       ["Ivory Silver Gloss", "#C7C9C7", "isg"],
       ["Ivory Silver Matte", "#C7C9C7", "ism"],
@@ -531,9 +535,9 @@ export const cars: Car[] = [
     fuel: "Petrol · Diesel",
     blurb: "From a different world, Kia's 6/7-seat family MPV.",
     cta: "Explore the Carens",
-    image: official(modelShot.carens),
+    image: modelShot.carens,
     alt: "Kia Carens MPV, official product shot",
-    colors: kiaColours(official(modelShot.carens), [
+    colors: kiaColours(modelShot.carens, [
       ["Imperial Blue", "#1B2A4A", "mpb"],
       ["Aurora Black Pearl", "#14151A", "abp"],
       ["Clear White", "#F4F4F2", "ud"],
@@ -560,9 +564,9 @@ export const cars: Car[] = [
     fuel: "Petrol · Diesel",
     blurb: "For epic journeys, the premium, new-generation Carens.",
     cta: "Explore the Carens Clavis",
-    image: official(modelShot.carensClavis),
+    image: modelShot.carensClavis,
     alt: "Kia Carens Clavis premium MPV, official product shot",
-    colors: kiaColours(official(modelShot.carensClavis), [
+    colors: kiaColours(modelShot.carensClavis, [
       ["Ivory Silver Gloss", "#C7C9C7", "isg"],
       ["Imperial Blue", "#1B2A4A", "mpb"],
       ["Pewter Olive", "#6E6B5E", "ewe"],
@@ -592,9 +596,9 @@ export const cars: Car[] = [
     fuel: "Electric",
     blurb: "It's an E.We, Kia's first electric MPV for Indian families.",
     cta: "Explore the Carens Clavis EV",
-    image: official(modelShot.carensClavisEv),
+    image: modelShot.carensClavisEv,
     alt: "Kia Carens Clavis EV electric MPV, official product shot",
-    colors: kiaColours(official(modelShot.carensClavisEv), [
+    colors: kiaColours(modelShot.carensClavisEv, [
       ["Ivory Silver Matte", "#C7C9C7", "ism"],
       ["Imperial Blue", "#1B2A4A", "mpb"],
       ["Pewter Olive", "#6E6B5E", "ewe"],
@@ -624,9 +628,9 @@ export const cars: Car[] = [
     fuel: "Diesel",
     blurb: "Your own luxury liner, Kia's flagship 7-seat luxury MPV.",
     cta: "Explore the Carnival",
-    image: official(modelShot.carnival),
+    image: modelShot.carnival,
     alt: "Kia Carnival Limousine luxury MPV, official product shot",
-    colors: kiaColours(official(modelShot.carnival), [
+    colors: kiaColours(modelShot.carnival, [
       ["Glacier White Pearl", "#F2F1EC", "gwp"],
       ["Fusion Black", "#101114", "fsb"],
     ]),
@@ -652,9 +656,9 @@ export const cars: Car[] = [
     fuel: "Electric",
     blurb: "The Electric Superstar, Kia's flagship electric SUV.",
     cta: "Explore the EV6",
-    image: official(modelShot.ev6),
+    image: modelShot.ev6,
     alt: "Kia EV6 electric SUV, official product shot",
-    colors: kiaColours(official(modelShot.ev6), [
+    colors: kiaColours(modelShot.ev6, [
       ["Snow White Pearl", "#F4F4F2", "swp"],
       ["Wolf Grey", "#6B6E70", "klm"],
       ["Aurora Black Pearl", "#14151A", "abp"],
@@ -682,9 +686,9 @@ export const cars: Car[] = [
     fuel: "Electric",
     blurb: "The world's most inspiring electric. Ever, Kia's 7-seat electric flagship.",
     cta: "Explore the EV9",
-    image: official(modelShot.ev9),
+    image: modelShot.ev9,
     alt: "Kia EV9 flagship electric SUV, official product shot",
-    colors: kiaColours(official(modelShot.ev9), [
+    colors: kiaColours(modelShot.ev9, [
       ["Ocean Blue", "#1F4E79", "obg"],
       ["Aurora Black Pearl", "#14151A", "abp"],
       ["Snow White Pearl", "#F4F4F2", "swp"],
@@ -716,9 +720,9 @@ export const cars: Car[] = [
     fuel: "Electric",
     blurb: "Superior beyond belief, Kia's newest electric SUV, now open for pre-booking.",
     cta: "Explore the Syros EV",
-    image: official(modelShot.syrosEv),
+    image: modelShot.syrosEv,
     alt: "Kia Syros EV electric SUV, official product shot",
-    colors: kiaColours(official(modelShot.syrosEv), [
+    colors: kiaColours(modelShot.syrosEv, [
       ["Frost Blue", "#6E93A8", "ebb"],
       ["Ivory Silver Gloss", "#C7C9C7", "isg"],
       ["Aurora Black Pearl", "#14151A", "abp"],
@@ -840,56 +844,56 @@ export const testimonials: Testimonial[] = [
     role: "Seltos owner",
     rating: 5,
     text: "The team walked me through every variant without any pressure. Delivery was on time and the car was spotless.",
-    avatar: stock("photo-1500648767791-00dcc994a43e", 200),
+    avatar: "/testimonials/avatar-1.jpg",
   },
   {
     name: "Sneha Iyer",
     role: "Sonet owner",
     rating: 5,
     text: "Booking to delivery was smooth and completely transparent. The finance desk got me a rate I did not expect.",
-    avatar: stock("photo-1494790108377-be9c29b29330", 200),
+    avatar: "/testimonials/avatar-2.jpg",
   },
   {
     name: "Amit Verma",
     role: "Carens owner",
     rating: 5,
     text: "Service here is genuinely a step above. They explained the work, shared photos and stuck to the estimate.",
-    avatar: stock("photo-1507003211169-0a1dd7228f2d", 200),
+    avatar: "/testimonials/avatar-3.jpg",
   },
   {
     name: "Priya Nair",
     role: "Syros owner",
     rating: 5,
     text: "As a first-time buyer I had endless questions. They were patient and helped me pick the right car for my budget.",
-    avatar: stock("photo-1438761681033-6461ffad8d80", 200),
+    avatar: "/testimonials/avatar-4.jpg",
   },
   {
     name: "Karan Malhotra",
     role: "Carens Clavis owner, Bhiwandi",
     rating: 5,
     text: "The Carens Clavis handover was flawless. Great attention to detail and no last-minute surprises on the on-road price.",
-    avatar: stock("photo-1506794778202-cad84cf45f1d", 200),
+    avatar: "/testimonials/avatar-5.jpg",
   },
   {
     name: "Deepa Rao",
     role: "Carnival owner, Bhiwandi",
     rating: 5,
     text: "Serviced my Carnival at the Bhiwandi centre. Quick, courteous, and the free pickup and drop saved me a whole day.",
-    avatar: stock("photo-1544005313-94ddf0286df2", 200),
+    avatar: "/testimonials/avatar-6.jpg",
   },
   {
     name: "Farhan Shaikh",
     role: "EV6 owner, Dombivli",
     rating: 5,
     text: "Booked from the Kalyan–Bhiwandi Road showroom. They were upfront about the waiting period and kept me updated the whole way.",
-    avatar: stock("photo-1633332755192-727a05c4013d", 200),
+    avatar: "/testimonials/avatar-7.jpg",
   },
   {
     name: "Anjali Desai",
     role: "Seltos owner, Bhiwandi",
     rating: 5,
     text: "Loved how patient they were with a first-time buyer. The finance options were explained clearly, no jargon.",
-    avatar: stock("photo-1580489944761-15a19d654956", 200),
+    avatar: "/testimonials/avatar-8.jpg",
   },
 ];
 
@@ -948,7 +952,7 @@ export const blogs: Blog[] = [
     date: "24 Jun 2026",
     category: "Models",
     title: "Seltos vs Syros: which Kia SUV suits your budget?",
-    image: official(modelShot.seltos),
+    image: "/showrooms/seltos-blog.jpg",
     alt: "Kia Seltos exterior styling",
     excerpt:
       "Two of Kia's most popular SUVs, separated by size, price and tech. We compare variants, features and real-world value to help you pick the right one.",
@@ -959,7 +963,7 @@ export const blogs: Blog[] = [
     date: "18 Jun 2026",
     category: "Ownership",
     title: "Why the Carens Clavis is the family road-trip MPV to beat",
-    image: official(modelShot.carensClavis),
+    image: "/showrooms/carens-clavis-blog.jpg",
     alt: "Kia Carens Clavis on a family road trip",
     excerpt:
       "ADAS Level 2, a panoramic sunroof and genuine 7-seat flexibility make the Carens Clavis our pick for comfortable, stress-free family journeys.",
@@ -970,7 +974,7 @@ export const blogs: Blog[] = [
     date: "09 Jun 2026",
     category: "Service",
     title: "5 Monsoon Car-Care Tips Every Kia Owner Should Know",
-    image: official(modelShot.sonet),
+    image: "/showrooms/monsoon-blog.jpg",
     alt: "Kia Sonet SUV in the monsoon, car-care tips",
     excerpt:
       "From tyre tread to wiper blades and underbody checks, a quick monsoon prep checklist to keep your Kia safe and reliable through the rains.",
@@ -981,7 +985,7 @@ export const blogs: Blog[] = [
     date: "02 Jun 2026",
     category: "Electric",
     title: "EV6 or EV9: choosing your first Kia electric SUV",
-    image: official(modelShot.ev6),
+    image: "/showrooms/ev-mobility-blog.jpg",
     alt: "Kia EV6 electric SUV parked outdoors",
     excerpt:
       "Kia's two flagship electrics serve very different buyers. We break down range, charging, seating and price to help you decide where to start.",
@@ -992,7 +996,7 @@ export const blogs: Blog[] = [
     date: "26 May 2026",
     category: "Ownership",
     title: "Petrol, diesel or turbo: which Seltos engine is right for you?",
-    image: official(modelShot.seltos),
+    image: "/showrooms/seltos-blog.jpg",
     alt: "Kia Seltos engine options compared",
     excerpt:
       "The Seltos offers three distinct powertrains. Here's how to match your daily driving, highway runs and fuel budget to the right engine.",
@@ -1003,7 +1007,7 @@ export const blogs: Blog[] = [
     date: "14 May 2026",
     category: "Service",
     title: "How often should you really service your Kia?",
-    image: official(modelShot.carens),
+    image: "/showrooms/service-blog.jpg",
     alt: "Kia Carens scheduled maintenance",
     excerpt:
       "Kia's service schedule explained in plain terms, what happens at each interval, what to watch for, and how to avoid unnecessary bills.",
@@ -1014,7 +1018,7 @@ export const blogs: Blog[] = [
     date: "03 May 2026",
     category: "Electric",
     title: "Home charging your Kia EV: what you need to know",
-    image: official(modelShot.carensClavisEv),
+    image: "/showrooms/home-charging-blog.png",
     alt: "Kia electric vehicle charging at home",
     excerpt:
       "A practical guide to home wall-box chargers, socket charging, installation and running costs for Kia EV owners in apartments and independent houses.",
@@ -1024,8 +1028,8 @@ export const blogs: Blog[] = [
     slug: "the-carnival-limousine-is-a-luxury-mpv-right-for-your-family",
     date: "21 Apr 2026",
     category: "Models",
-    title: "The Carnival Limousine: is a luxury MPV right for your family?",
-    image: official(modelShot.carnival),
+    title: "Kia Carnival Limousine: Redefining luxury travel in Bhiwandi",
+    image: "/showrooms/carnival-blog.jpg",
     alt: "Kia Carnival Limousine luxury MPV",
     excerpt:
       "First-class rear seats, 33 ADAS features and a whisper-quiet cabin. We look at who the Carnival Limousine is really built for.",
@@ -1090,9 +1094,7 @@ export const popularCars = popularNames
   .map((n) => cars.find((c) => c.name === n))
   .filter((c): c is Car => Boolean(c));
 
-export const testDriveImage = official(
-  "/content/dam/kia2/in/en/our-vehicles/syros/new/Int_screen_d.jpg",
-);
+export const testDriveImage = "/showrooms/home-test-drive.jpg";
 export const serviceHeroImage = "/showrooms/kia-service-hero.webp";
 export const carModels = cars.map((c) => c.name);
 export const cityOptions = ["Bhiwandi", "Dombivli"];

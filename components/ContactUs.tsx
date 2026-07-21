@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { company, locations } from "@/lib/data";
 import { Check, Clock, Mail, MapPin, Phone, WhatsApp } from "./icons";
 import Reveal from "./Reveal";
+import { OtpGate, PhoneInput } from "./OtpGate";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -27,20 +28,21 @@ export default function ContactUs() {
     setSubmitted(true);
   };
 
+  useEffect(() => {
+    if (typeof window === "undefined" || window.location.hash !== "#contact-form-card") return;
+    const scroll = () => {
+      document.getElementById("contact-form-card")?.scrollIntoView({ behavior: "smooth" });
+    };
+    const t1 = setTimeout(scroll, 100);
+    const t2 = setTimeout(scroll, 450);
+    const t3 = setTimeout(scroll, 900);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+
   return (
     <section id="contact" className="scroll-mt-24 bg-white py-14 lg:py-20">
       <div className="container-px mx-auto max-w-[1180px]">
-        <Reveal className="mx-auto mb-10 max-w-xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand">
-            Contact Us
-          </p>
-          <h2 className="mt-2 font-display text-2xl font-bold text-text sm:text-3xl">
-            Get in Touch
-          </h2>
-          <p className="mt-3 text-sm text-muted">
-            Reach our team by call, WhatsApp, email, or send a message here.
-          </p>
-        </Reveal>
+        {/* The "Get in Touch" heading was removed from here because it's already in the hero section above it */}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <Reveal variant="slide-right" className="rounded-lg border border-border bg-bg-2 p-6 sm:p-8">
@@ -125,6 +127,7 @@ export default function ContactUs() {
             </ul>
           </Reveal>
 
+          <div id="contact-form-card" className="scroll-mt-20">
           <Reveal
             delay={120}
             variant="slide-left"
@@ -152,21 +155,16 @@ export default function ContactUs() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={onSubmit} className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-1.5 block text-xs font-semibold text-muted">Your Name</span>
-                  <input type="text" required placeholder="Your name" className={fieldBase} />
-                </label>
-                <label className="block">
-                  <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
-                  <input
-                    type="tel"
-                    required
-                    pattern="[0-9]{10}"
-                    placeholder="Mobile number"
-                    className={fieldBase}
-                  />
-                </label>
+              <OtpGate>
+                <form onSubmit={onSubmit} className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold text-muted">Your Name</span>
+                    <input type="text" required placeholder="Your name" className={fieldBase} />
+                  </label>
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
+                    <PhoneInput name="mobile" />
+                  </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">
                     Your Email <span className="font-normal text-faint">(optional)</span>
@@ -201,8 +199,10 @@ export default function ContactUs() {
                   Send Message
                 </button>
               </form>
+              </OtpGate>
             )}
           </Reveal>
+          </div>
         </div>
       </div>
     </section>

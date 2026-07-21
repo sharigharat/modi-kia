@@ -73,6 +73,18 @@
   box-sizing: border-box;
 }
 
+button, 
+a, 
+input[type="submit"], 
+input[type="button"], 
+input[type="checkbox"], 
+input[type="radio"], 
+label, 
+[role="button"], 
+select {
+  cursor: pointer;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -217,11 +229,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .reveal {
   opacity: 0;
   transition:
-    opacity 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    filter 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform, filter;
-  filter: blur(4px);
+  filter: blur(2px);
 }
 .reveal.is-visible {
   opacity: 1;
@@ -237,10 +249,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   transform: none;
 }
 .reveal-slide-left {
-  transform: translateX(40px);
+  transform: translateX(20px);
 }
 .reveal-slide-right {
-  transform: translateX(-40px);
+  transform: translateX(-20px);
 }
 .reveal-scale-up {
   transform: scale(0.97) translateY(14px);
