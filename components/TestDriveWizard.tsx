@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Image from "next/image";
-import { cars, cityOptions, cityLabels, locations, formatINR, getTomorrowDateString } from "@/lib/data";
+import { cars, cityOptions, cityLabels, locations, formatINR, getTomorrowDateString, type Car } from "@/lib/data";
 import { Calendar, Check, ChevronDown, ChevronRight, X } from "./icons";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
@@ -18,6 +18,36 @@ const timeSlots = [
 ];
 
 const steps = ["Select Car", "When & Where", "Your Details"];
+
+function CarCard({
+  car,
+  selected,
+  onSelect,
+}: {
+  car: Car;
+  selected: boolean;
+  onSelect: (slug: string) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(car.slug)}
+      className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 text-center transition-all ${
+        selected ? "border-brand bg-brand/5" : "border-border hover:border-muted"
+      }`}
+    >
+      <Image
+        src={car.image}
+        alt={car.alt}
+        width={140}
+        height={60}
+        className="h-10 w-full object-contain"
+      />
+      <span className="text-xs font-semibold text-text">{car.name}</span>
+      <span className="text-[11px] text-faint">{formatINR(car.priceINR)}</span>
+    </button>
+  );
+}
 
 function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugProp?: string, onClose?: () => void } = {}) {
   const { globalPhone } = useGlobalOtp();
@@ -42,6 +72,18 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
   }, []);
 
   const selectedCar = cars.find((c) => c.slug === carSlug);
+
+  // When opened from an individual car page, split step 1 into the
+  // pre-selected car (from the page the user came from) and the rest of
+  // the lineup, rather than one flat grid. The general "Book a Test
+  // Drive" entry points (navbar, standalone page) get no initial slug,
+  // so they keep the single unsplit grid exactly as before.
+  const preselectedCar = initialCarSlugProp
+    ? cars.find((c) => c.slug === initialCarSlugProp)
+    : undefined;
+  const otherCars = preselectedCar
+    ? cars.filter((c) => c.slug !== preselectedCar.slug).slice(0, 12)
+    : cars.slice(0, 12);
   const showroomsInCity = locations.filter(
     (l) => l.type === "Showroom" && (city ? l.city === city : true),
   );
@@ -101,6 +143,12 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
     }
   };
   const goBack = () => {
+    // On step 1 of the individual-car-page flow there's no earlier step to
+    // return to — send the user back to the car page they arrived from.
+    if (step === 1 && preselectedCar) {
+      onClose?.();
+      return;
+    }
     setAttempted(false);
     setStep((s) => Math.max(1, s - 1));
   };
@@ -135,6 +183,42 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
       document.body.style.overflow = "";
     };
   }, [submitted]);
+
+  // On step 1 of the individual-car-page flow, Back can always go back to
+  // the car page (see goBack above), so it's never disabled there.
+  const backDisabled = step === 1 && !preselectedCar;
+
+  const navButtons = (
+    <div className="mt-8 flex items-center justify-between gap-3">
+      <button
+        type="button"
+        onClick={goBack}
+        disabled={backDisabled}
+        className="rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-2 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Back
+      </button>
+      {step < 3 ? (
+        <button
+          type="button"
+          onClick={goNext}
+          className={`group inline-flex items-center gap-2 rounded bg-brand px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light ${
+            !canProceed() ? "opacity-50" : ""
+          }`}
+        >
+          Next Step
+          <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </button>
+      ) : (
+        <button
+          type="submit"
+          className="rounded bg-brand px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light"
+        >
+          Confirm Booking
+        </button>
+      )}
+    </div>
+  );
 
   return (
     <>
@@ -181,33 +265,32 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
         <form onSubmit={onSubmit} className="mt-8">
           {step === 1 && (
             <Reveal variant="fade-in">
-              <h3 className="font-display text-lg font-bold text-text">Select Your Car</h3>
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {cars.slice(0, 12).map((car) => (
-                  <button
-                    type="button"
-                    key={car.slug}
-                    onClick={() => setCarSlug(car.slug)}
-                    className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 text-center transition-all ${
-                      carSlug === car.slug
-                        ? "border-brand bg-brand/5"
-                        : "border-border hover:border-muted"
-                    }`}
-                  >
-                    <Image
-                      src={car.image}
-                      alt={car.alt}
-                      width={140}
-                      height={60}
-                      className="h-10 w-full object-contain"
-                    />
-                    <span className="text-xs font-semibold text-text">{car.name}</span>
-                    <span className="text-[11px] text-faint">
-                      {formatINR(car.priceINR)}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              {preselectedCar ? (
+                <>
+                  <h3 className="font-display text-lg font-bold text-text">Car Selected</h3>
+                  <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    <CarCard car={preselectedCar} selected={carSlug === preselectedCar.slug} onSelect={setCarSlug} />
+                  </div>
+
+                  {navButtons}
+
+                  <h3 className="mt-8 font-display text-lg font-bold text-text">More Options</h3>
+                  <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {otherCars.map((car) => (
+                      <CarCard key={car.slug} car={car} selected={carSlug === car.slug} onSelect={setCarSlug} />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h3 className="font-display text-lg font-bold text-text">Select Your Car</h3>
+                  <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {otherCars.map((car) => (
+                      <CarCard key={car.slug} car={car} selected={carSlug === car.slug} onSelect={setCarSlug} />
+                    ))}
+                  </div>
+                </>
+              )}
               {stepMessage && (
                 <p className="mt-3 text-sm font-medium text-red-600">{stepMessage}</p>
               )}
@@ -375,36 +458,10 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
             </Reveal>
           )}
 
-          {/* Nav buttons */}
-          <div className="mt-8 flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={goBack}
-              disabled={step === 1}
-              className="rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-2 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Back
-            </button>
-            {step < 3 ? (
-              <button
-                type="button"
-                onClick={goNext}
-                className={`group inline-flex items-center gap-2 rounded bg-brand px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light ${
-                  !canProceed() ? "opacity-50" : ""
-                }`}
-              >
-                Next Step
-                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="rounded bg-brand px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light"
-              >
-                Confirm Booking
-              </button>
-            )}
-          </div>
+          {/* Nav buttons — on step 1 of the individual-car-page flow these
+              are rendered inline between "Car Selected" and "More Options"
+              instead (see above), so skip the duplicate here. */}
+          {!(step === 1 && preselectedCar) && navButtons}
         </form>
       </div>
 

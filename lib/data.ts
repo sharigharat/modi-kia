@@ -1089,7 +1089,7 @@ export const locations: Location[] = [
 
 /* Curated subset for the footer's "Popular Cars" column, so it doesn't
    list every model. */
-const popularNames = ["Seltos", "Sonet", "Syros", "Carens", "Carnival", "EV6"];
+const popularNames = ["Seltos", "Sonet", "Syros", "Carens", "Carnival", "EV6", "EV9", "Syros EV"];
 export const popularCars = popularNames
   .map((n) => cars.find((c) => c.name === n))
   .filter((c): c is Car => Boolean(c));

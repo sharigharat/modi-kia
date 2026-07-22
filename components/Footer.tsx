@@ -26,10 +26,6 @@ const quickLinks = [
 
 const serviceLinks = [
   { label: "Book a Service", href: "/locate-service-centre#book-service" },
-  { label: "Service Packages", href: "/locate-service-centre" },
-  { label: "Genuine Parts", href: "/locate-service-centre" },
-  { label: "Roadside Assistance", href: "/locate-service-centre" },
-  { label: "Extended Warranty", href: "/locate-service-centre" },
 ];
 
 const socials = [

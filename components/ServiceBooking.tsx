@@ -18,6 +18,7 @@ const timeSlots = [
 ];
 
 const serviceCentreOptions = serviceCentres.map((s) => `${s.name} ,  ${s.city}`);
+const carModelOptions = [...carModels, "Other"];
 
 const serviceTypes = ["Free Service", "Paid Service", "Running Repair"];
 
@@ -66,6 +67,8 @@ export default function ServiceBooking() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [carModel, setCarModel] = useState("");
+  const [otherModel, setOtherModel] = useState("");
 
   const availableTimeSlots = useMemo(() => {
     if (!date) return timeSlots;
@@ -92,6 +95,10 @@ export default function ServiceBooking() {
     setEmailError("");
     setSubmitted(true);
   };
+
+  useEffect(() => {
+    if (carModel !== "Other") setOtherModel("");
+  }, [carModel]);
 
   useEffect(() => {
     if (typeof window === "undefined" || sessionStorage.getItem("autoScroll") !== "service") return;
@@ -151,13 +158,31 @@ export default function ServiceBooking() {
               <SelectField
                 label="Select Car Model"
                 placeholder="Select Car Model"
-                options={carModels}
+                options={carModelOptions}
+                value={carModel}
+                onChange={setCarModel}
               />
               <SelectField
                 label="Select Service Centre"
                 placeholder="Select Service Centre"
                 options={serviceCentreOptions}
               />
+
+              {carModel === "Other" && (
+                <label className="col-span-full block">
+                  <span className="mb-1.5 block text-xs font-semibold text-muted">
+                    Your Car Model
+                  </span>
+                  <input
+                    type="text"
+                    required
+                    value={otherModel}
+                    onChange={(e) => setOtherModel(e.target.value)}
+                    placeholder="e.g. Kia Sportage"
+                    className={fieldBase}
+                  />
+                </label>
+              )}
 
               <SelectField
                 label="Type of Service"

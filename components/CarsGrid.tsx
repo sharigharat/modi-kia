@@ -26,8 +26,14 @@ function CarsGridInner() {
       : "All";
 
   const [category, setCategory] = useState<"All" | CarCategory>(startCategory);
+  // Within a category, cars keep the same relative order as in "All" (e.g.
+  // SUV is just the first three entries), so switching tabs could look like
+  // nothing happened beyond a few cards disappearing. Reversing the order
+  // for any non-"All" tab makes the reshuffle visually obvious.
   const filtered =
-    category === "All" ? cars : cars.filter((c) => c.category === category);
+    category === "All"
+      ? cars
+      : cars.filter((c) => c.category === category).reverse();
 
   return (
     <section className="bg-white py-10 lg:py-14">
