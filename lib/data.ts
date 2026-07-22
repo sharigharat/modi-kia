@@ -45,11 +45,11 @@ const modelShot = {
   carensClavis: "/360/exterior/carens-clavis/isg/09-d.png",
   carensClavisEv: "/360/exterior/carens-clavis-ev/ism/09-d.png",
   carnival: "/360/exterior/carnival/gwp/09-d.png",
-  // Frame 13/44 (not 04/48) deliberately: these are the real photographed
+  // Frame 13/09 (not 04/48) deliberately: these are the real photographed
   // frames facing the opposite direction, so the "EV6/EV9 GT-line" number
   // plate text on the bumper still reads correctly.
   ev6: "/360/exterior/ev6/swp/13-d.png",
-  ev9: "/360/exterior/ev9/obg/44-d.png",
+  ev9: "/360/exterior/ev9/obg/09-d.png",
   syrosEv: "/360/exterior/syros-ev/ebb/09-d.png",
 };
 
@@ -125,11 +125,10 @@ export const company = {
     servicesDone: "5,000+",
   },
   social: {
-    facebook: "https://www.facebook.com/",
-    instagram: "https://www.instagram.com/",
-    twitter: "https://twitter.com/",
-    youtube: "https://www.youtube.com/",
-    linkedin: "https://www.linkedin.com/",
+    facebook: "https://www.facebook.com/61589645254672",
+    instagram: "https://www.instagram.com/_modikia_/",
+    youtube: "https://www.youtube.com/@ModiKIA",
+    linkedin: "https://www.linkedin.com/company/modi-kia/",
   },
 };
 
@@ -1096,7 +1095,7 @@ export const popularCars = popularNames
 
 export const testDriveImage = "/showrooms/home-test-drive.jpg";
 export const serviceHeroImage = "/showrooms/kia-service-hero.webp";
-export const carModels = cars.map((c) => c.name);
+export const carModels = cars.map((c) => c.name).filter((name) => name !== "Syros EV");
 export const cityOptions = ["Bhiwandi", "Dombivli"];
 /* Friendlier display labels for cityOptions in location dropdowns, while
    the underlying value stays the plain city name used for matching

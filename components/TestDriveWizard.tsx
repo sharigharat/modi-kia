@@ -44,14 +44,13 @@ function CarCard({
         className="h-10 w-full object-contain"
       />
       <span className="text-xs font-semibold text-text">{car.name}</span>
-      <span className="text-[11px] text-faint">{formatINR(car.priceINR)}</span>
     </button>
   );
 }
 
 function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugProp?: string, onClose?: () => void } = {}) {
   const { globalPhone } = useGlobalOtp();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(initialCarSlugProp ? 2 : 1);
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
 
@@ -78,12 +77,13 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
   // the lineup, rather than one flat grid. The general "Book a Test
   // Drive" entry points (navbar, standalone page) get no initial slug,
   // so they keep the single unsplit grid exactly as before.
+  const availableCars = cars.filter(c => c.slug !== "syros-ev");
   const preselectedCar = initialCarSlugProp
-    ? cars.find((c) => c.slug === initialCarSlugProp)
+    ? availableCars.find((c) => c.slug === initialCarSlugProp)
     : undefined;
   const otherCars = preselectedCar
-    ? cars.filter((c) => c.slug !== preselectedCar.slug).slice(0, 12)
-    : cars.slice(0, 12);
+    ? availableCars.filter((c) => c.slug !== preselectedCar.slug).slice(0, 12)
+    : availableCars.slice(0, 12);
   const showroomsInCity = locations.filter(
     (l) => l.type === "Showroom" && (city ? l.city === city : true),
   );
@@ -143,6 +143,12 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
     }
   };
   const goBack = () => {
+    // If we started on step 2 due to a preselected car, clicking back
+    // on step 2 should close the modal rather than going to step 1.
+    if (preselectedCar && step === 2) {
+      onClose?.();
+      return;
+    }
     // On step 1 of the individual-car-page flow there's no earlier step to
     // return to — send the user back to the car page they arrived from.
     if (step === 1 && preselectedCar) {
@@ -165,8 +171,8 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
   const resetAll = () => {
     setSubmitted(false);
     setAttempted(false);
-    setStep(1);
-    setCarSlug("");
+    setStep(initialCarSlugProp ? 2 : 1);
+    setCarSlug(initialCarSlugProp || "");
     setCity("");
     setDate("");
     setTime("");
@@ -224,13 +230,13 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
     <>
       <div className="mx-auto max-w-3xl rounded-lg border border-border bg-white p-6 shadow-[0_4px_32px_0_rgba(0,44,95,0.08)] sm:p-10">
         {/* Step indicator */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           {steps.map((label, i) => {
             const n = i + 1;
             const state = n === step ? "active" : n < step ? "done" : "todo";
             return (
               <div key={label} className="flex flex-1 items-center last:flex-none">
-                <div className="flex flex-col items-center gap-1.5">
+                <div className="relative flex w-8 flex-col items-center shrink-0">
                   <span
                     className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold transition-colors ${
                       state === "done"
@@ -243,7 +249,7 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
                     {state === "done" ? <Check className="h-4 w-4" /> : n}
                   </span>
                   <span
-                    className={`hidden text-center text-[10px] font-medium sm:block ${
+                    className={`absolute top-full mt-2 hidden whitespace-nowrap text-center text-[10px] font-medium sm:block ${
                       state === "todo" ? "text-faint" : "text-text"
                     }`}
                   >
@@ -252,7 +258,7 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
                 </div>
                 {n < steps.length && (
                   <span
-                    className={`mx-1.5 h-0.5 flex-1 rounded transition-colors ${
+                    className={`mx-3 h-0.5 flex-1 rounded transition-colors ${
                       state === "done" ? "bg-brand" : "bg-border"
                     }`}
                   />
