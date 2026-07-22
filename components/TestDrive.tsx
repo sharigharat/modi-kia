@@ -137,7 +137,7 @@ export default function TestDrive() {
                 </button>
               </div>
             ) : (
-              <OtpGate>
+              <OtpGate formSource="test_drive_section">
               <form onSubmit={onSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <SelectField
                   label="Select Car Model"

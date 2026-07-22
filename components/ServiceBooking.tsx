@@ -5,6 +5,7 @@ import { carModels, serviceCentres, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
+import { useGlobalOtp } from "./GlobalOtpProvider";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -22,14 +23,16 @@ const carModelOptions = [...carModels, "Other"];
 
 const serviceTypes = ["Free Service", "Paid Service", "Running Repair"];
 
-function SelectField({
+export function SelectField({
   label,
+  name,
   options,
   placeholder,
   value,
   onChange,
 }: {
   label: string;
+  name?: string;
   options: string[];
   placeholder: string;
   value?: string;
@@ -41,6 +44,7 @@ function SelectField({
       <span className="mb-1.5 block text-xs font-semibold text-muted">{label}</span>
       <div className="relative">
         <select
+          name={name}
           {...(controlled
             ? { value, onChange: (e: ChangeEvent<HTMLSelectElement>) => onChange?.(e.target.value) }
             : { defaultValue: "" })}
@@ -63,7 +67,10 @@ function SelectField({
 }
 
 export default function ServiceBooking() {
+  const { globalPhone } = useGlobalOtp();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -83,17 +90,56 @@ export default function ServiceBooking() {
     ? time
     : "";
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const emailInput = form.querySelector<HTMLInputElement>('input[type="email"]');
-    const emailValue = emailInput?.value.trim();
+    const formData = new FormData(form);
+    const emailValue = (formData.get("email") as string)?.trim() || "";
+    
     if (emailValue && !emailRegex.test(emailValue)) {
       setEmailError("Enter a valid email address (e.g. you@example.com).");
       return;
     }
+    
     setEmailError("");
-    setSubmitted(true);
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        formType: "service",
+        carModel: carModel === "Other" ? otherModel : carModel,
+        serviceCentre: formData.get("serviceCentre") as string,
+        typeOfService: formData.get("typeOfService") as string,
+        name: formData.get("name") as string,
+        mobile: globalPhone,
+        email: emailValue,
+        registrationNumber: formData.get("registrationNumber") as string,
+        preferredDate: date,
+        preferredTime: effectiveTime,
+        pickupDrop: formData.get("pickupDrop") === "on",
+        pageSource: window.location.pathname,
+      };
+
+      const res = await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+      
+      setSubmitted(true);
+      form.reset();
+      setCarModel("");
+      setOtherModel("");
+      setDate("");
+      setTime("");
+    } catch (err) {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -101,9 +147,9 @@ export default function ServiceBooking() {
   }, [carModel]);
 
   useEffect(() => {
-    if (typeof window === "undefined" || sessionStorage.getItem("autoScroll") !== "service") return;
+    if (typeof window === "undefined") return;
     
-    // Clear the flag so it doesn't scroll again on refresh
+    // Clear the flag in case it was set
     sessionStorage.removeItem("autoScroll");
 
     // Fire multiple times to win the race against Next.js scroll restoration
@@ -117,23 +163,20 @@ export default function ServiceBooking() {
   }, []);
 
   return (
-    <section id="book-service" className="scroll-mt-24 bg-white py-14 lg:py-20">
+    <section id="book-service" className="scroll-mt-24 relative z-10 -mt-10 sm:-mt-16 lg:-mt-20 pb-14 lg:pb-20">
       <div className="container-px mx-auto max-w-[1400px]">
-        <Reveal className="mx-auto mb-10 max-w-xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand">
-            Service Booking
-          </p>
-          <h2 className="mt-2 font-display text-2xl font-bold text-text sm:text-3xl">
-            Book a Service Appointment
-          </h2>
-          <p className="mt-3 text-sm text-muted">
-            Choose your nearest service centre and a slot that works for you.
-            Our team will confirm your booking shortly.
-          </p>
-        </Reveal>
-
         <div id="booking-card" className="scroll-mt-20">
-        <Reveal delay={150} className="mx-auto max-w-3xl rounded-lg border border-border bg-bg-2 p-8 shadow-[0_4px_32px_0_rgba(0,44,95,0.08)] sm:p-10">
+        <Reveal delay={150} className="mx-auto max-w-4xl rounded-xl border border-border bg-white p-8 shadow-[0_12px_48px_-12px_rgba(0,0,0,0.15)] sm:p-10">
+          <OtpGate formSource="service">
+          <div className="mb-8 border-b border-border pb-6 text-left">
+            <h2 className="font-display text-2xl font-bold text-text sm:text-3xl">
+              Book a Service Appointment
+            </h2>
+            <p className="mt-2 text-sm text-muted">
+              Choose your nearest service centre and a slot that works for you.
+              Our team will confirm your booking shortly.
+            </p>
+          </div>
           {submitted ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <span className="grid h-16 w-16 place-items-center rounded-full bg-brand/10 text-brand">
@@ -153,10 +196,10 @@ export default function ServiceBooking() {
               </button>
             </div>
           ) : (
-            <OtpGate>
             <form onSubmit={onSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <SelectField
                 label="Select Car Model"
+                name="carModel"
                 placeholder="Select Car Model"
                 options={carModelOptions}
                 value={carModel}
@@ -164,6 +207,7 @@ export default function ServiceBooking() {
               />
               <SelectField
                 label="Select Service Centre"
+                name="serviceCentre"
                 placeholder="Select Service Centre"
                 options={serviceCentreOptions}
               />
@@ -175,6 +219,7 @@ export default function ServiceBooking() {
                   </span>
                   <input
                     type="text"
+                    name="otherModel"
                     required
                     value={otherModel}
                     onChange={(e) => setOtherModel(e.target.value)}
@@ -186,13 +231,14 @@ export default function ServiceBooking() {
 
               <SelectField
                 label="Type of Service"
+                name="typeOfService"
                 placeholder="Select Type of Service"
                 options={serviceTypes}
               />
 
               <label className="block">
                 <span className="mb-1.5 block text-xs font-semibold text-muted">Your Name</span>
-                <input type="text" required placeholder="Your name" className={fieldBase} />
+                <input type="text" name="name" required placeholder="Your name" className={fieldBase} />
               </label>
 
               <label className="block">
@@ -206,6 +252,7 @@ export default function ServiceBooking() {
                 </span>
                 <input
                   type="email"
+                  name="email"
                   placeholder="you@example.com"
                   onChange={() => setEmailError("")}
                   className={`${fieldBase} ${emailError ? "border-red-400 focus:border-red-400" : ""}`}
@@ -222,6 +269,7 @@ export default function ServiceBooking() {
                 </span>
                 <input
                   type="text"
+                  name="registrationNumber"
                   maxLength={12}
                   placeholder="e.g. MH04AB1234"
                   className={fieldBase}
@@ -246,6 +294,7 @@ export default function ServiceBooking() {
 
               <SelectField
                 label="Preferred Time"
+                name="preferredTime"
                 placeholder={
                   date && availableTimeSlots.length === 0
                     ? "No slots left today"
@@ -259,16 +308,23 @@ export default function ServiceBooking() {
               <label className="col-span-full flex items-center gap-2.5 rounded border border-border bg-white px-4 py-3">
                 <input
                   type="checkbox"
+                  name="pickupDrop"
                   className="h-4 w-4 shrink-0 rounded border-border text-brand accent-brand focus:ring-2 focus:ring-brand/10"
                 />
                 <span className="text-sm text-text">Pick-up &amp; Drop required</span>
               </label>
 
+              {submitError && (
+                <div className="col-span-full mt-2 rounded bg-red-50 p-3 text-sm font-medium text-red-600 border border-red-100">
+                  {submitError}
+                </div>
+              )}
               <button
                 type="submit"
-                className="col-span-full mt-2 rounded bg-brand py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light"
+                disabled={isSubmitting}
+                className="col-span-full mt-2 flex items-center justify-center gap-2 rounded bg-brand py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:opacity-50"
               >
-                Book My Service
+                {isSubmitting ? "Booking..." : "Book My Service"}
               </button>
               <p className="col-span-full text-center text-xs text-faint">
                 By submitting, you agree to be contacted by Modi Kia about
@@ -279,8 +335,8 @@ export default function ServiceBooking() {
                 .
               </p>
             </form>
-            </OtpGate>
           )}
+          </OtpGate>
         </Reveal>
         </div>
       </div>

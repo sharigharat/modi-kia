@@ -29,11 +29,10 @@ const serviceLinks = [
 ];
 
 const socials = [
-  { Icon: Facebook, label: "Facebook" },
-  { Icon: Instagram, label: "Instagram" },
-  { Icon: Twitter, label: "Twitter" },
-  { Icon: YouTube, label: "YouTube" },
-  { Icon: LinkedIn, label: "LinkedIn" },
+  { Icon: Facebook, label: "Facebook", href: company.social.facebook },
+  { Icon: Instagram, label: "Instagram", href: company.social.instagram },
+  { Icon: YouTube, label: "YouTube", href: company.social.youtube },
+  { Icon: LinkedIn, label: "LinkedIn", href: company.social.linkedin },
 ];
 
 export default function Footer() {
@@ -50,10 +49,12 @@ export default function Footer() {
               sales, servicing and genuine Kia parts in Bhiwandi & Dombivli.
             </p>
             <div className="mt-6 flex gap-2.5">
-              {socials.map(({ Icon, label }) => (
+              {socials.map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={`Follow Modi Kia on ${label}`}
                   className="grid h-9 w-9 place-items-center rounded border border-white/15 text-white/60 transition-all hover:border-white/40 hover:text-white"
                 >

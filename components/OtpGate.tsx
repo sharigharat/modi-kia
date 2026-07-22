@@ -1,17 +1,109 @@
 "use client";
 
 import { createContext, useContext, useState, useRef, useEffect, type ReactNode, type FormEvent } from "react";
-import { Check, ChevronRight } from "./icons";
+import Image from "next/image";
+import { Check, ChevronRight, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
 import { useGlobalOtp } from "./GlobalOtpProvider";
+import { countryCodes } from "@/lib/countries";
+import { submitLead } from "@/lib/submitLead";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
 
-export function OtpGate({ children, className, autoFocus = true }: { children: ReactNode, className?: string, autoFocus?: boolean }) {
+export function CountrySelect({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+  const getFullName = (iso: string) => {
+    try {
+      return regionNames.of(iso) || iso;
+    } catch {
+      return iso;
+    }
+  };
+
+  const selected = countryCodes.find(c => c.code === value) || countryCodes[0];
+
+  const filteredCodes = countryCodes
+    .filter((c) => {
+      const fullName = getFullName(c.name).toLowerCase();
+      return fullName.includes(search.toLowerCase()) || c.code.includes(search);
+    })
+    .sort((a, b) => getFullName(a.name).localeCompare(getFullName(b.name)));
+
+  return (
+    <div className="relative shrink-0" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex h-full items-center gap-1.5 rounded-l border-r border-border bg-bg-2 px-3 py-3 text-sm font-semibold text-text outline-none transition-colors hover:bg-bg-3 focus:bg-bg-3 min-w-[85px] max-w-[100px]"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/flags/${selected.name.toLowerCase()}.png`} alt={selected.name} className="w-5 h-[15px] object-cover rounded-[2px]" />
+        {selected.code}
+        <ChevronDown className="ml-0.5 h-3 w-3 text-muted" />
+      </button>
+      {isOpen && (
+        <div className="absolute left-0 top-full z-50 mt-1 max-h-72 w-64 overflow-hidden rounded-md border border-border bg-white shadow-lg flex flex-col">
+          <div className="p-2 border-b border-border bg-bg-2/50">
+            <input
+              type="text"
+              placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full rounded border border-border px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand/20"
+              autoFocus
+            />
+          </div>
+          <div className="overflow-y-auto p-1">
+            {filteredCodes.map((c) => (
+              <button
+                key={`${c.code}-${c.name}`}
+                type="button"
+                onClick={() => {
+                  onChange(c.code);
+                  setIsOpen(false);
+                  setSearch("");
+                }}
+                className={`flex w-full items-center gap-3 px-3 py-2 text-left text-sm rounded-sm transition-colors hover:bg-bg-2 ${
+                  value === c.code ? "bg-brand/5 font-semibold text-text" : "text-text"
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/flags/${c.name.toLowerCase()}.png`} alt={c.name} className="w-5 h-[15px] object-cover rounded-[2px] shadow-sm" />
+                <span className="flex-1 truncate">{getFullName(c.name)}</span>
+                <span className="text-muted text-xs">{c.code}</span>
+              </button>
+            ))}
+            {filteredCodes.length === 0 && (
+              <div className="px-3 py-4 text-center text-sm text-muted">No countries found</div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function OtpGate({ children, className, autoFocus = true, formSource = "unknown" }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string }) {
   const { globalPhone, setGlobalPhone } = useGlobalOtp();
+  const initialCode = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[0] : "+91";
+  const initialNumber = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[1] : (globalPhone || "");
+
   const [step, setStep] = useState<"phone" | "otp" | "verified">(globalPhone ? "verified" : "phone");
-  const [phone, setPhone] = useState(globalPhone || "");
+  const [countryCode, setCountryCode] = useState(initialCode);
+  const [phone, setPhone] = useState(initialNumber);
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +111,14 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
   useEffect(() => {
     if (globalPhone) {
       setStep("verified");
-      setPhone(globalPhone);
+      const parts = globalPhone.split(" ");
+      if (parts.length > 1) {
+        setCountryCode(parts[0]);
+        setPhone(parts[1]);
+      } else {
+        setCountryCode("+91");
+        setPhone(globalPhone);
+      }
     } else {
       setStep("phone");
     }
@@ -37,9 +136,16 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
 
   const handlePhoneSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!/^[6-9]\d{9}$/.test(phone)) {
-      setError("Please enter a valid 10-digit mobile number starting with 6-9.");
-      return;
+    if (countryCode === "+91") {
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        setError("Please enter a valid 10-digit mobile number starting with 6-9.");
+        return;
+      }
+    } else {
+      if (phone.length < 6 || phone.length > 15) {
+        setError("Please enter a valid mobile number.");
+        return;
+      }
     }
     setError("");
     setStep("otp");
@@ -52,7 +158,19 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
       return;
     }
     setError("");
-    setGlobalPhone(phone);
+    
+    const verifiedPhone = `${countryCode} ${phone}`;
+    setGlobalPhone(verifiedPhone);
+
+    // Fire-and-forget phone capture to Apps Script
+    try {
+      submitLead("phone_capture", {
+        phone_number: verifiedPhone,
+        form_source: formSource,
+      });
+    } catch (err) {
+      console.error("Phone capture error:", err);
+    }
   };
 
   return (
@@ -71,9 +189,20 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
 
         {/* Overlay Modal */}
         {step !== "verified" && (
-          <div className="absolute left-0 right-0 top-8 z-[50] flex justify-center p-4 sm:top-12">
-            <Reveal variant="fade-up" className="w-full max-w-sm rounded-xl border border-border bg-white p-6 shadow-2xl sm:p-8">
-              {step === "phone" ? (
+          <div className="absolute left-0 right-0 top-1/2 z-[50] flex -translate-y-1/2 justify-center p-4">
+            <Reveal variant="fade-up" className="flex w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-white shadow-2xl">
+              <div className="relative hidden w-5/12 md:block">
+                <Image
+                  src="/showrooms/otp-showroom-v3.png"
+                  alt="Modi Kia Showroom"
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover scale-110 origin-bottom"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent from-75% to-white" />
+              </div>
+              <div className="relative w-full bg-white p-6 sm:p-8 md:w-7/12">
+                {step === "phone" ? (
                 <>
                   <h3 className="font-display text-lg font-bold text-text">Verify your Mobile Number</h3>
                   <p className="mt-1.5 text-xs text-muted">
@@ -82,37 +211,51 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
                   <form onSubmit={handlePhoneSubmit} className="mt-5 space-y-4">
                     <label className="block">
                       <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
-                      <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted">
-                          +91
-                        </span>
+                      <div className="flex w-full rounded border border-border bg-white transition-colors focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
+                        <CountrySelect
+                          value={countryCode}
+                          onChange={(val) => {
+                            setCountryCode(val);
+                            setError("");
+                          }}
+                        />
                         <input
                           type="tel"
                           required
-                          maxLength={10}
-                          pattern="^[6-9]\d{9}$"
-                          placeholder="10-digit mobile number"
+                          maxLength={countryCode === "+91" ? 10 : 15}
+                          pattern={countryCode === "+91" ? "^[6-9]\\d{9}$" : "^\\d{6,15}$"}
+                          placeholder={countryCode === "+91" ? "10-digit mobile number" : "Mobile number"}
                           value={phone}
                           onChange={(e) => {
                             const val = e.target.value.replace(/\D/g, "");
                             setPhone(val);
-                            if (val.length > 0 && !/^[6-9]/.test(val)) {
-                              setError("Invalid mobile number.");
-                            } else if (val.length === 10 && !/^[6-9]\d{9}$/.test(val)) {
-                              setError("Invalid mobile number.");
+                            if (countryCode === "+91") {
+                              if (val.length > 0 && !/^[6-9]/.test(val)) {
+                                setError("Invalid mobile number.");
+                              } else if (val.length === 10 && !/^[6-9]\d{9}$/.test(val)) {
+                                setError("Invalid mobile number.");
+                              } else {
+                                setError("");
+                              }
                             } else {
                               setError("");
                             }
                           }}
-                          className={`${fieldBase} pl-12`}
+                          className="w-full rounded-r bg-transparent px-4 py-3 text-sm text-text outline-none placeholder:text-faint"
                           ref={step === "phone" ? inputRef : null}
                         />
                       </div>
                       {error && <p className="mt-1.5 text-xs font-medium text-red-600">{error}</p>}
                     </label>
+                    <label className="flex items-start gap-2.5 cursor-pointer">
+                      <input type="checkbox" required className="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-brand cursor-pointer" />
+                      <span className="text-[11px] leading-relaxed text-muted">
+                        I agree to Modi Kia's <a href="/terms-and-conditions" target="_blank" className="text-brand font-medium hover:underline">T&C</a> and <a href="/privacy-policy" target="_blank" className="text-brand font-medium hover:underline">Privacy Policy</a>. This consent overrides any DNC/NDNC registrations.
+                      </span>
+                    </label>
                     <button
                       type="submit"
-                      disabled={!/^[6-9]\d{9}$/.test(phone)}
+                      disabled={countryCode === "+91" ? !/^[6-9]\d{9}$/.test(phone) : phone.length < 6}
                       className="group flex w-full items-center justify-center gap-2 rounded bg-brand py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:opacity-50"
                     >
                       Send OTP
@@ -124,7 +267,7 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
                 <>
                   <h3 className="font-display text-lg font-bold text-text">Enter OTP</h3>
                   <p className="mt-1.5 text-xs text-muted">
-                    We've sent a code to <strong>+91 {phone}</strong>.{" "}
+                    We've sent a code to <strong>{countryCode} {phone}</strong>.{" "}
                     <button type="button" onClick={() => setStep("phone")} className="text-brand hover:underline">
                       Change
                     </button>
@@ -158,6 +301,7 @@ export function OtpGate({ children, className, autoFocus = true }: { children: R
                   </form>
                 </>
               )}
+              </div>
             </Reveal>
           </div>
         )}

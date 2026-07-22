@@ -19,7 +19,7 @@ const timeSlots = [
 
 const steps = ["Select Car", "When & Where", "Your Details"];
 
-function CarCard({
+export function CarCard({
   car,
   selected,
   onSelect,
@@ -48,11 +48,13 @@ function CarCard({
   );
 }
 
-function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugProp?: string, onClose?: () => void } = {}) {
+export function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugProp?: string, onClose?: () => void } = {}) {
   const { globalPhone } = useGlobalOtp();
   const [step, setStep] = useState(initialCarSlugProp ? 2 : 1);
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const [carSlug, setCarSlug] = useState(initialCarSlugProp || "");
   const [city, setCity] = useState("");
@@ -159,13 +161,44 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
     setStep((s) => Math.max(1, s - 1));
   };
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!canProceed()) {
       setAttempted(true);
       return;
     }
-    setSubmitted(true);
+
+    setSubmitError("");
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        formType: "testdrive",
+        carModel: selectedCar?.name || carSlug,
+        location: city,
+        name: name,
+        mobile: mobile,
+        email: email,
+        pincode: pincode,
+        address: address,
+        preferredDate: date,
+        preferredTime: time,
+        pageSource: window.location.pathname,
+      };
+
+      const res = await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+      
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetAll = () => {
@@ -216,12 +249,20 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
           <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       ) : (
-        <button
-          type="submit"
-          className="rounded bg-brand px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light"
-        >
-          Confirm Booking
-        </button>
+        <div className="flex flex-col items-end gap-2">
+          {submitError && (
+            <div className="rounded bg-red-50 p-2 text-sm font-medium text-red-600 border border-red-100">
+              {submitError}
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded bg-brand px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:opacity-50 flex items-center gap-2"
+          >
+            {isSubmitting ? "Booking..." : "Confirm Booking"}
+          </button>
+        </div>
       )}
     </div>
   );
@@ -519,8 +560,12 @@ function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugP
 }
 
 export default function TestDriveWizard(props: { initialCarSlugProp?: string, onClose?: () => void }) {
+  const formSource = props.initialCarSlugProp 
+    ? `test_drive_${props.initialCarSlugProp}` 
+    : (props.onClose ? "test_drive_pop_up" : "test_drive_page");
+
   return (
-    <OtpGate>
+    <OtpGate formSource={formSource}>
       <TestDriveWizardInner {...props} />
     </OtpGate>
   );

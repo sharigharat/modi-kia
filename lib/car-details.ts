@@ -543,8 +543,9 @@ export function getCarBrochure(car: Car): string | undefined {
     case "sonet":
       return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/sonet/brochure/Sonet_Wild_Reborn_Brochure_2026_Desktop.pdf`;
     case "syros":
-    case "syros-ev": // Fallback to Syros for EV if separate not published
       return `${base}/content/dam/kia2/in/en/our-vehicles/syros/Kia_Syros_Brochure_2026_Desktop.pdf`;
+    case "syros-ev":
+      return `/brochures/Kia_Syros_EV_Brochure_2026.pdf`;
     case "carens":
       return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/Brochures/Carens_Leaflet.pdf`;
     case "carens-clavis":

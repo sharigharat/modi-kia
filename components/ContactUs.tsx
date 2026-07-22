@@ -5,6 +5,7 @@ import { company, locations } from "@/lib/data";
 import { Check, Clock, Mail, MapPin, Phone, WhatsApp } from "./icons";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
+import { useGlobalOtp } from "./GlobalOtpProvider";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -12,24 +13,65 @@ const fieldBase =
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactUs() {
+  const { globalPhone } = useGlobalOtp();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [message, setMessage] = useState("");
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const emailInput = form.querySelector<HTMLInputElement>('input[type="email"]');
-    const emailValue = emailInput?.value.trim();
+    const formData = new FormData(form);
+    
+    const emailValue = (formData.get("email") as string)?.trim() || "";
     if (emailValue && !emailRegex.test(emailValue)) {
       setEmailError("Enter a valid email address (e.g. you@example.com).");
       return;
     }
+    
     setEmailError("");
-    setSubmitted(true);
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        formType: "contact",
+        name: formData.get("name") as string,
+        mobile: globalPhone,
+        email: emailValue,
+        subject: formData.get("subject") as string,
+        message: message,
+        pageSource: window.location.pathname,
+      };
+
+      const res = await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+      
+      setSubmitted(true);
+      form.reset();
+      setMessage("");
+    } catch (err) {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
-    if (typeof window === "undefined" || sessionStorage.getItem("autoScroll") !== "contact") return;
+    if (typeof window === "undefined") return;
+    
+    const params = new URLSearchParams(window.location.search);
+    const msg = params.get("message");
+    if (msg) setMessage(msg);
+
+    if (sessionStorage.getItem("autoScroll") !== "contact") return;
     
     // Clear the flag so it doesn't scroll again on refresh
     sessionStorage.removeItem("autoScroll");
@@ -159,11 +201,11 @@ export default function ContactUs() {
                 </button>
               </div>
             ) : (
-              <OtpGate>
+              <OtpGate formSource="contact">
                 <form onSubmit={onSubmit} className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <label className="block">
                     <span className="mb-1.5 block text-xs font-semibold text-muted">Your Name</span>
-                    <input type="text" required placeholder="Your name" className={fieldBase} />
+                    <input type="text" name="name" required placeholder="Your name" className={fieldBase} />
                   </label>
                   <label className="block">
                     <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
@@ -175,6 +217,7 @@ export default function ContactUs() {
                   </span>
                   <input
                     type="email"
+                    name="email"
                     placeholder="you@example.com"
                     onChange={() => setEmailError("")}
                     className={`${fieldBase} ${emailError ? "border-red-400 focus:border-red-400" : ""}`}
@@ -185,22 +228,30 @@ export default function ContactUs() {
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Subject</span>
-                  <input type="text" required placeholder="How can we help?" className={fieldBase} />
+                  <input type="text" name="subject" required placeholder="How can we help?" className={fieldBase} />
                 </label>
                 <label className="col-span-full block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Your Message</span>
                   <textarea
                     required
                     rows={5}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     placeholder="Tell us more..."
                     className={`${fieldBase} resize-none`}
                   />
                 </label>
+                {submitError && (
+                  <div className="col-span-full mt-2 rounded bg-red-50 p-3 text-sm font-medium text-red-600 border border-red-100">
+                    {submitError}
+                  </div>
+                )}
                 <button
                   type="submit"
-                  className="col-span-full mt-1 rounded bg-brand py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light"
+                  disabled={isSubmitting}
+                  className="col-span-full mt-1 flex items-center justify-center gap-2 rounded bg-brand py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:opacity-50"
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
               </OtpGate>

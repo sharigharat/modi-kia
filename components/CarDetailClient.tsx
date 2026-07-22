@@ -208,7 +208,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
 
               <div className="mt-5 flex items-baseline gap-2 border-t border-border pt-5">
                 <span className="font-display text-3xl font-bold text-brand">{formatINR(car.priceINR)}</span>
-                <span className="text-xs text-faint">*Ex-showroom price</span>
+                {car.priceINR > 0 && <span className="text-xs text-faint">*Ex-showroom price</span>}
               </div>
 
               <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-border pt-5 sm:grid-cols-3">
@@ -247,9 +247,15 @@ export default function CarDetailClient({ car }: { car: Car }) {
 
               {/* CTAs — brochure up near the hero */}
               <div ref={ctaRef} className="mt-6 flex flex-col sm:flex-row sm:flex-wrap 2xl:flex-nowrap gap-3">
-                <button onClick={() => setShowTestDrive(true)} className="group w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-2 rounded bg-brand px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light">
-                  Book a Test Drive <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </button>
+                {car.slug === "syros-ev" ? (
+                  <Link href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV" className="group w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-2 rounded bg-brand px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light">
+                    Enquire Now <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                ) : (
+                  <button onClick={() => setShowTestDrive(true)} className="group w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-2 rounded bg-brand px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light">
+                    Book a Test Drive <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                )}
                 <Link href="/contact-us" className="w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-2 rounded border border-brand px-4 py-3.5 text-sm font-semibold text-brand transition-all hover:bg-brand hover:text-white">
                   Get a Variant Quote
                 </Link>
@@ -271,21 +277,27 @@ export default function CarDetailClient({ car }: { car: Car }) {
       </section>
 
       <nav aria-label="Car detail sections" className="sticky top-[60px] z-20 border-y border-border bg-white/95 backdrop-blur">
-        <div className="container-px mx-auto flex max-w-[1400px] items-center justify-between py-2">
-          <div className="flex gap-1 overflow-x-auto">
-            {navigation.map(([id, label]) => <a key={id} href={`#${id}`} className="shrink-0 rounded px-3 py-2 text-xs font-semibold text-muted transition-colors hover:bg-bg-2 hover:text-brand">{label}</a>)}
+        <div className="container-px mx-auto flex max-w-[1400px] items-center justify-between py-3">
+          <div className="flex gap-2 overflow-x-auto">
+            {navigation.map(([id, label]) => <a key={id} href={`#${id}`} className="shrink-0 rounded px-4 py-2 text-sm font-semibold text-muted transition-colors hover:bg-bg-2 hover:text-brand">{label}</a>)}
           </div>
           
-          <div className={`hidden flex-wrap items-center gap-2 transition-opacity duration-300 md:flex ${showStickyCtas ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-            <button onClick={() => setShowTestDrive(true)} className="rounded bg-brand px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-light">
-              Book a Test Drive
-            </button>
-            <Link href="/contact-us" onClick={(e) => sessionStorage.setItem("autoScroll", "contact")} className="rounded border border-brand px-4 py-2 text-xs font-semibold text-brand transition-colors hover:bg-brand hover:text-white">
+          <div className={`hidden flex-wrap items-center gap-3 transition-opacity duration-300 xl:flex ${showStickyCtas ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+            {car.slug === "syros-ev" ? (
+              <Link href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV" className="rounded bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light">
+                Enquire Now
+              </Link>
+            ) : (
+              <button onClick={() => setShowTestDrive(true)} className="rounded bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light">
+                Book a Test Drive
+              </button>
+            )}
+            <Link href="/contact-us" onClick={(e) => sessionStorage.setItem("autoScroll", "contact")} className="rounded border border-brand px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-white">
               Get a Variant Quote
             </Link>
             {brochureUrl && (
-              <a href={brochureUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 rounded border border-border bg-bg-2 px-4 py-2 text-xs font-semibold text-text transition-colors hover:border-brand hover:text-brand">
-                <Download className="h-3.5 w-3.5" />
+              <a href={brochureUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded border border-border bg-bg-2 px-4 py-2 text-sm font-semibold text-text transition-colors hover:border-brand hover:text-brand">
+                <Download className="h-4 w-4" />
                 Download Brochure
               </a>
             )}
@@ -300,7 +312,11 @@ export default function CarDetailClient({ car }: { car: Car }) {
             <h2 className="mt-2 font-display text-2xl font-bold text-text sm:text-3xl">Is the {displayName} right for you?</h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted sm:text-base">{detail.overview}</p>
             <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
-              Priced from <span className="font-semibold text-text">{formatINR(car.priceINR)}*</span> (ex-showroom), the {displayName} seats {car.seating}, offers {car.bootSpace.toLowerCase()} of luggage space and is available with {engines.length} engine option{engines.length > 1 ? "s" : ""} and {transmissions.length} transmission choice{transmissions.length > 1 ? "s" : ""}. Visit Modi Kia for a test drive and a transparent, variant-wise quotation.
+              {car.priceINR > 0 ? (
+                <>Priced from <span className="font-semibold text-text">{formatINR(car.priceINR)}*</span> (ex-showroom), the {displayName} seats {car.seating}</>
+              ) : (
+                <>The highly anticipated {displayName} seats {car.seating}</>
+              )}, offers {car.bootSpace.toLowerCase()} of luggage space and is available with {engines.length} engine option{engines.length > 1 ? "s" : ""} and {transmissions.length} transmission choice{transmissions.length > 1 ? "s" : ""}. Visit Modi Kia for a test drive and a transparent, variant-wise quotation.
             </p>
             <div className="mt-5 rounded-lg border border-border bg-white p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted">Best suited to</p>
@@ -396,7 +412,13 @@ export default function CarDetailClient({ car }: { car: Car }) {
       <section id="variants" className="scroll-mt-28 bg-white py-12 lg:py-16">
         <div className="container-px mx-auto grid max-w-[1400px] gap-5 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="rounded-lg border border-border bg-bg-2 p-6 sm:p-8"><p className="text-xs font-semibold uppercase tracking-wider text-brand">Variants and colours</p><h2 className="mt-2 font-display text-2xl font-bold text-text">Choose the right specification, not just the right price.</h2><ul className="mt-5 space-y-3">{detail.variants.map((variant) => <li key={variant} className="flex gap-2 text-sm leading-relaxed text-text"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />{variant}</li>)}</ul><p className="mt-6 text-xs leading-relaxed text-muted">Available colours: {car.colors.map((item) => item.name).join(", ")}. Paint availability is subject to the selected variant and current stock.</p></div>
-          <aside className="rounded-lg bg-brand p-6 text-white sm:p-8"><p className="text-xs font-semibold uppercase tracking-wider text-white/60">Ownership confidence</p><h2 className="mt-2 font-display text-2xl font-bold">Warranty and next steps</h2><p className="mt-4 text-sm leading-relaxed text-white/75">{detail.warranty}</p><div className="mt-5 flex flex-col items-start gap-3"><a href={detail.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex text-sm font-semibold text-white underline underline-offset-4 hover:text-white/80">View Kia&apos;s current model information</a>{brochureUrl && <a href={brochureUrl} target="_blank" rel="noreferrer" className="inline-flex text-sm font-semibold text-white underline underline-offset-4 hover:text-white/80">Download official brochure (PDF)</a>}</div><div className="mt-7 space-y-3"><button onClick={() => setShowTestDrive(true)} className="w-full group flex items-center justify-center gap-2 rounded bg-white px-5 py-3 text-sm font-semibold text-brand transition-colors hover:bg-white/90">Book a Test Drive <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></button><Link href="/locate-service-centre" onClick={(e) => sessionStorage.setItem("autoScroll", "service")} className="flex items-center justify-center rounded border border-white/35 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Already own one? Book service</Link></div></aside>
+          <aside className="rounded-lg bg-brand p-6 text-white sm:p-8"><p className="text-xs font-semibold uppercase tracking-wider text-white/60">Ownership confidence</p><h2 className="mt-2 font-display text-2xl font-bold">Warranty and next steps</h2><p className="mt-4 text-sm leading-relaxed text-white/75">{detail.warranty}</p><div className="mt-5 flex flex-col items-start gap-3"><a href={detail.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex text-sm font-semibold text-white underline underline-offset-4 hover:text-white/80">View Kia&apos;s current model information</a>{brochureUrl && <a href={brochureUrl} target="_blank" rel="noreferrer" className="inline-flex text-sm font-semibold text-white underline underline-offset-4 hover:text-white/80">Download official brochure (PDF)</a>}</div><div className="mt-7 space-y-3">
+            {car.slug === "syros-ev" ? (
+              <Link href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV" className="w-full group flex items-center justify-center gap-2 rounded bg-white px-5 py-3 text-sm font-semibold text-brand transition-colors hover:bg-white/90">Enquire Now <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></Link>
+            ) : (
+              <button onClick={() => setShowTestDrive(true)} className="w-full group flex items-center justify-center gap-2 rounded bg-white px-5 py-3 text-sm font-semibold text-brand transition-colors hover:bg-white/90">Book a Test Drive <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></button>
+            )}
+            <Link href="/locate-service-centre" onClick={(e) => sessionStorage.setItem("autoScroll", "service")} className="flex items-center justify-center rounded border border-white/35 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Already own one? Book service</Link></div></aside>
         </div>
       </section>
 
@@ -441,7 +463,9 @@ function CarFaq({
   const faqs = [
     {
       q: `What is the price of the ${displayName} in Bhiwandi and Dombivli?`,
-      a: `The ${displayName} starts at ${formatINR(car.priceINR)}* (ex-showroom). On-road pricing depends on the chosen variant, colour, insurance, accessories and RTO charges, request a quotation from Modi Kia for an exact, all-inclusive figure for Bhiwandi and Dombivli.`,
+      a: car.priceINR > 0 
+        ? `The ${displayName} starts at ${formatINR(car.priceINR)}* (ex-showroom). On-road pricing depends on the chosen variant, colour, insurance, accessories and RTO charges, request a quotation from Modi Kia for an exact, all-inclusive figure for Bhiwandi and Dombivli.`
+        : `Pricing for the upcoming ${displayName} has not yet been announced by Kia India. Stay tuned or enquire with Modi Kia to get notified as soon as bookings and exact pricing become available for Bhiwandi and Dombivli.`,
     },
     {
       q: `How many variants does the ${displayName} offer?`,

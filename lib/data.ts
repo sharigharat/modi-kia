@@ -65,7 +65,7 @@ const heroShot = {
   sonet: "/hero-images/sonet.jpg",
   syros: "/hero-images/syros.jpg",
   carens: "/hero-images/carens.jpg",
-  carensClavis: "/hero-images/carens-clavis.jpg",
+  carensClavis: "/hero-images/carens-clavis-v1.avif",
   carensClavisEv: "/hero-images/carens-clavis-ev.jpg",
   carnival: "/hero-images/carnival.jpg",
   // Swapped from the original ev6/ev9 banners: those carried baked-in
@@ -73,7 +73,7 @@ const heroShot = {
   // Compatibility" etc). These "Explore the range" card photos are the
   // same official photography with no text burned into the image.
   ev6: "/hero-images/ev6.jpg",
-  ev9: "/hero-images/ev9.jpg",
+  ev9: "/hero-images/EV9.avif",
 };
 
 /* Local hero video clips, supplied directly and copied into

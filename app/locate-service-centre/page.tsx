@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
 import ServiceBooking from "@/components/ServiceBooking";
+import ServiceBenefits from "@/components/ServiceBenefits";
 import ServiceCentres from "@/components/ServiceCentres";
 import Reveal from "@/components/Reveal";
 import { serviceHeroImage, serviceCentres, SITE_URL } from "@/lib/data";
@@ -91,7 +92,7 @@ export default function LocateServiceCentrePage() {
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/40" />
-          <div className="container-px absolute inset-x-0 bottom-10 mx-auto max-w-[1400px]">
+          <div className="container-px absolute inset-x-0 bottom-20 sm:bottom-28 mx-auto max-w-[1400px]">
             <Reveal>
               <p className="text-sm font-semibold uppercase tracking-wider text-white/70">
                 Service
@@ -109,6 +110,7 @@ export default function LocateServiceCentrePage() {
         </section>
 
         <ServiceBooking />
+        <ServiceBenefits />
         <ServiceCentres />
       </main>
       <Footer />
