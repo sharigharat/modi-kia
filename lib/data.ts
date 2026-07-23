@@ -1044,6 +1044,7 @@ export type Location = {
   phone: string;
   image: string;
   mapsUrl: string;
+  embedQuery: string;
 };
 
 /* Real Modi Kia outlets (source: gautammodigroup.com/business — the
@@ -1062,7 +1063,8 @@ export const locations: Location[] = [
     phone: "88790 20761",
     image: "/locations/kia-pimpalghar-showroom-v2.webp",
     mapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Kalyan%20-%20Bhiwandi%20Rd%2C%20Near%20Mahanagar%20CNG%20Station%2C%20Sapna%20Industrial%20Estate%2C%20Pimpalghar%2C%20Bhiwandi%2C%20Maharashtra%20421302&travelmode=driving",
+      "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
+    embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
   {
     name: "Kia Car Showroom Dombivli",
@@ -1073,6 +1075,7 @@ export const locations: Location[] = [
     image: "/locations/kia-dombivli-showroom-v2.webp",
     mapsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=B-1%2C%20Parvati%20Heights%2C%20Shop%20No%2002%2C%20Ground%20Floor%2C%20Kalyan-Shilphata%20Rd%2C%20Padle%2C%20Dombivli%2C%20Thane%2C%20Maharashtra%20421204&travelmode=driving",
+    embedQuery: "Modi Kia, Dombivli",
   },
   {
     name: "Kia Service Centre Pimpalghar",
@@ -1082,7 +1085,8 @@ export const locations: Location[] = [
     phone: "88790 20761",
     image: "/locations/kia-pimpalghar-service-v2.webp",
     mapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Kalyan%20-%20Bhiwandi%20Rd%2C%20Near%20Mahanagar%20CNG%20Station%2C%20Sapna%20Industrial%20Estate%2C%20Pimpalghar%2C%20Bhiwandi%2C%20Maharashtra%20421302&travelmode=driving",
+      "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
+    embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
 ];
 

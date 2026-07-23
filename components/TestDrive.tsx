@@ -25,12 +25,14 @@ function SelectField({
   placeholder,
   value,
   onChange,
+  name,
 }: {
   label: string;
   options: string[];
   placeholder: string;
   value?: string;
   onChange?: (v: string) => void;
+  name?: string;
 }) {
   const controlled = value !== undefined;
   return (
@@ -38,6 +40,7 @@ function SelectField({
       <span className="mb-1.5 block text-xs font-semibold text-muted">{label}</span>
       <div className="relative">
         <select
+          name={name}
           {...(controlled
             ? { value, onChange: (e: ChangeEvent<HTMLSelectElement>) => onChange?.(e.target.value) }
             : { defaultValue: "" })}
@@ -65,6 +68,9 @@ export default function TestDrive() {
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   const availableTimeSlots = useMemo(() => {
     if (!date || date !== getTomorrowDateString()) return timeSlots;
     const now = new Date();
@@ -76,7 +82,7 @@ export default function TestDrive() {
     ? time
     : "";
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const emailInput = form.querySelector<HTMLInputElement>('input[type="email"]');
@@ -86,7 +92,44 @@ export default function TestDrive() {
       return;
     }
     setEmailError("");
-    setSubmitted(true);
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(form);
+      const SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "";
+      
+      const payload = {
+        formType: "testdrive",
+        carModel: formData.get("carModel"),
+        location: formData.get("location"),
+        name: formData.get("name"),
+        mobile: formData.get("mobile"),
+        email: emailValue,
+        pincode: formData.get("pincode"),
+        address: formData.get("address"),
+        preferredDate: date,
+        preferredTime: effectiveTime,
+        pageSource: window.location.pathname,
+      };
+
+      const res = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+      
+      setSubmitted(true);
+      form.reset();
+      setDate("");
+      setTime("");
+    } catch (err) {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -138,22 +181,24 @@ export default function TestDrive() {
                 </button>
               </div>
             ) : (
-              <OtpGate formSource="test_drive_section">
+              <OtpGate formSource="testdrive-home">
               <form onSubmit={onSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <SelectField
                   label="Select Car Model"
+                  name="carModel"
                   placeholder="Select Car Model"
                   options={carModels}
                 />
                 <SelectField
                   label="Select Location"
+                  name="location"
                   placeholder="Select Location"
                   options={cityOptions.map((c) => cityLabels[c] ?? c)}
                 />
 
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Your Name</span>
-                  <input type="text" required placeholder="Your name" className={fieldBase} />
+                  <input name="name" type="text" required placeholder="Your name" className={fieldBase} />
                 </label>
 
                 <label className="block">
@@ -166,6 +211,7 @@ export default function TestDrive() {
                     Email <span className="font-normal text-faint">(optional)</span>
                   </span>
                   <input
+                    name="email"
                     type="email"
                     placeholder="you@example.com"
                     onChange={() => setEmailError("")}
@@ -179,6 +225,7 @@ export default function TestDrive() {
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Pincode</span>
                   <input
+                    name="pincode"
                     type="text"
                     required
                     inputMode="numeric"
@@ -193,6 +240,7 @@ export default function TestDrive() {
                     Address <span className="font-normal text-faint">(optional)</span>
                   </span>
                   <input
+                    name="address"
                     type="text"
                     placeholder="House no., street, area"
                     className={fieldBase}
@@ -203,6 +251,7 @@ export default function TestDrive() {
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Preferred Date</span>
                   <div className="relative">
                     <input
+                      name="preferredDate"
                       type="date"
                       required
                       min={getTomorrowDateString()}
@@ -217,6 +266,7 @@ export default function TestDrive() {
 
                 <SelectField
                   label="Preferred Time"
+                  name="preferredTime"
                   placeholder={
                     date && availableTimeSlots.length === 0
                       ? "No slots left today"
@@ -227,11 +277,18 @@ export default function TestDrive() {
                   onChange={setTime}
                 />
 
+                {submitError && (
+                  <p className="col-span-full text-center text-sm font-medium text-red-600">
+                    {submitError}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="col-span-full mt-2 rounded bg-brand py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light"
+                  disabled={isSubmitting}
+                  className="col-span-full mt-2 rounded bg-brand py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Book My Test Drive
+                  {isSubmitting ? "Submitting..." : "Book My Test Drive"}
                 </button>
                 <p className="col-span-full text-center text-xs text-faint">
                   By submitting, you agree to be contacted by Modi Kia about

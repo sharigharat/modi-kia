@@ -48,7 +48,7 @@ export function CarCard({
   );
 }
 
-export function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialCarSlugProp?: string, onClose?: () => void } = {}) {
+export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }: { initialCarSlugProp?: string, onClose?: () => void, formSource?: string } = {}) {
   const { globalPhone } = useGlobalOtp();
   const [step, setStep] = useState(initialCarSlugProp ? 2 : 1);
   const [submitted, setSubmitted] = useState(false);
@@ -98,7 +98,7 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialC
   }, [date, minDate]);
 
   const isValidEmail = /^\S+@\S+\.\S+$/.test(email);
-  const isValidMobile = /^[0-9]{10}$/.test(mobile);
+  const isValidMobile = Boolean(mobile && mobile.length > 5);
   const isValidPincode = /^[0-9]{6}$/.test(pincode);
 
   const canProceed = () => {
@@ -561,12 +561,12 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose }: { initialC
 
 export default function TestDriveWizard(props: { initialCarSlugProp?: string, onClose?: () => void }) {
   const formSource = props.initialCarSlugProp 
-    ? `test_drive_${props.initialCarSlugProp}` 
-    : (props.onClose ? "test_drive_pop_up" : "test_drive_page");
+    ? `testdrive-${props.initialCarSlugProp}` 
+    : (props.onClose ? "testdrive-popup" : "testdrive-home");
 
   return (
     <OtpGate formSource={formSource}>
-      <TestDriveWizardInner {...props} />
+      <TestDriveWizardInner {...props} formSource={formSource} />
     </OtpGate>
   );
 }

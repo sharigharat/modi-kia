@@ -186,9 +186,9 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
 
     // Fire-and-forget phone capture to Apps Script
     try {
-      submitLead("phone_capture", {
-        phone_number: verifiedPhone,
-        form_source: formSource,
+      submitLead("numbercapture", {
+        mobile: verifiedPhone,
+        sourceForm: formSource,
       });
     } catch (err) {
       console.error("Phone capture error:", err);
@@ -211,9 +211,9 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
 
         {/* Overlay Modal */}
         {step !== "verified" && (
-          <div className="absolute left-0 right-0 top-1/2 z-[50] flex -translate-y-1/2 justify-center p-4">
-            <Reveal variant="fade-up" className="flex w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-white shadow-2xl">
-              <div className="relative hidden w-5/12 md:block">
+          <div className="absolute inset-x-0 top-10 z-[50] flex justify-center p-4 sm:top-20">
+            <Reveal variant="fade-up" className="flex w-full max-w-2xl rounded-xl border border-border bg-white shadow-2xl">
+              <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
                 <Image
                   src="/showrooms/otp-showroom-v3.png"
                   alt="Modi Kia Showroom"
@@ -223,7 +223,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent from-75% to-white" />
               </div>
-              <div className="relative w-full bg-white p-6 sm:p-8 md:w-7/12">
+              <div className="relative w-full rounded-xl bg-white p-6 sm:p-8 md:w-7/12 md:rounded-l-none">
                 {step === "phone" ? (
                 <>
                   <h3 className="font-display text-lg font-bold text-text">Verify your Mobile Number</h3>

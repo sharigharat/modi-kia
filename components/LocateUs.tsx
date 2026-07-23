@@ -10,8 +10,8 @@ const tabs: { label: string; type: Location["type"] }[] = [
   { label: "Service Centres", type: "Service Centre" },
 ];
 
-const mapEmbedSrc = (address: string) =>
-  `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+const mapEmbedSrc = (query: string) =>
+  `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed&z=13`;
 
 export default function LocateUs() {
   const [activeType, setActiveType] = useState<Location["type"]>("Showroom");
@@ -127,7 +127,7 @@ export default function LocateUs() {
             <div className="relative h-[320px] border-b border-border bg-bg-2 sm:h-[420px]">
               <iframe
                 key={selectedLocation.name}
-                src={mapEmbedSrc(selectedLocation.address)}
+                src={mapEmbedSrc(selectedLocation.embedQuery)}
                 title={`Map for ${selectedLocation.name}`}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

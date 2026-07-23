@@ -6,8 +6,8 @@ export async function submitLead(formType: string, payload: Record<string, any>)
     const finalPayload = {
       formType,
       ...payload,
-      pageSource: payload.form_source || payload.pageSource || (typeof window !== 'undefined' ? window.location.pathname : ''),
-      mobile: payload.phone_number || payload.mobile,
+      pageSource: payload.pageSource || payload.sourceForm || payload.form_source || (typeof window !== 'undefined' ? window.location.pathname : ''),
+      mobile: payload.mobile || payload.phone_number,
     };
 
     // Use text/plain to avoid Google Apps Script CORS preflight issues
