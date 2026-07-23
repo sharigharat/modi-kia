@@ -51,46 +51,51 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "WhatsApp API not configured" }, { status: 500 });
     }
 
-    // Strip out +, spaces, or other non-digit chars for WhatsApp recipient
-    const cleanPhone = phone_number.replace(/\D/g, "");
+    try {
+      const whatsappPayload = {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to: phone_number.replace("+", ""),
+        type: "template",
+        template: {
+          name: "registration",
+          language: { code: "en" },
+          components: [
+            {
+              type: "body",
+              parameters: [{ type: "text", text: otpCode }]
+            },
+            {
+              type: "button",
+              sub_type: "url",
+              index: "0",
+              parameters: [{ type: "text", text: otpCode }]
+            }
+          ]
+        },
+        biz_opaque_callback_data: "{{BizOpaqueCallbackData}}"
+      };
 
-    const whatsappPayload = {
-      messaging_product: "whatsapp",
-      recipient_type: "individual",
-      to: cleanPhone,
-      type: "template",
-      template: {
-        name: "registration",
-        language: { code: "en" },
-        components: [
-          {
-            type: "body",
-            parameters: [{ type: "text", text: otpCode }],
-          },
-          {
-            type: "button",
-            parameters: [{ type: "text", text: otpCode }],
-            sub_type: "url",
-            index: "0",
-          },
-        ],
-      },
-      biz_opaque_callback_data: "{{BizOpaqueCallbackData}}",
-    };
+      const waRes = await fetch(whatsappUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": whatsappKey,
+        },
+        body: JSON.stringify(whatsappPayload),
+      });
 
-    const whatsappRes = await fetch(whatsappUrl, {
-      method: "POST",
-      headers: {
-        "X-API-KEY": whatsappKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(whatsappPayload),
-    });
-
-    if (!whatsappRes.ok) {
-      const waError = await whatsappRes.text();
-      console.error("WhatsApp API Error:", waError);
-      return NextResponse.json({ success: false, error: "Failed to send WhatsApp message" }, { status: 500 });
+      if (!waRes.ok) {
+        const errText = await waRes.text();
+        console.error("WhatsApp API failed:", waRes.status, errText);
+        // Delete the OTP row since we couldn't send it
+        await supabaseAdmin.from("otp_verifications").delete().eq("id", otpRow.id);
+        return NextResponse.json({ success: false, error: `WhatsApp API failed with status ${waRes.status}: ${errText || "Forbidden/Unauthorized"}` }, { status: 500 });
+      }
+    } catch (waErr: any) {
+      console.error("WhatsApp fetch error:", waErr);
+      await supabaseAdmin.from("otp_verifications").delete().eq("id", otpRow.id);
+      return NextResponse.json({ success: false, error: `WhatsApp fetch error: ${waErr.message}` }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, otp_id: otpRow.id });
