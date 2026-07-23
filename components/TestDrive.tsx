@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "
 import Image from "next/image";
 import { carModels, cityOptions, cityLabels, testDriveImage, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
 
@@ -235,9 +236,9 @@ export default function TestDrive() {
                 <p className="col-span-full text-center text-xs text-faint">
                   By submitting, you agree to be contacted by Modi Kia about
                   your test drive request. See our{" "}
-                  <a href="#" className="font-medium text-brand hover:underline">
+                  <Link href="/privacy-policy" className="font-medium text-brand hover:underline">
                     Privacy Policy
-                  </a>
+                  </Link>
                   .
                 </p>
               </form>

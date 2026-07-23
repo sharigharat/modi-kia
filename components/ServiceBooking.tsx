@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { carModels, serviceCentres, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
 import { useGlobalOtp } from "./GlobalOtpProvider";
@@ -329,9 +330,9 @@ export default function ServiceBooking() {
               <p className="col-span-full text-center text-xs text-faint">
                 By submitting, you agree to be contacted by Modi Kia about
                 your service request. See our{" "}
-                <a href="#" className="font-medium text-brand hover:underline">
+                <Link href="/privacy-policy" className="font-medium text-brand hover:underline">
                   Privacy Policy
-                </a>
+                </Link>
                 .
               </p>
             </form>

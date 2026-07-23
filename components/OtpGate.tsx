@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useRef, useEffect, type ReactNode, type FormEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Check, ChevronRight, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
 import { useGlobalOtp } from "./GlobalOtpProvider";
@@ -107,6 +108,27 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Hydrate unverified phone number from sessionStorage (for when users click T&C and navigate back)
+  useEffect(() => {
+    if (globalPhone) return;
+    const stored = sessionStorage.getItem("otp_draft_phone");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed.p && !phone) setPhone(parsed.p);
+        if (parsed.c && countryCode === "+91") setCountryCode(parsed.c);
+        if (parsed.s && step === "phone") setStep(parsed.s);
+      } catch (e) {}
+    }
+  }, [globalPhone]); // run once, basically
+
+  // Persist unverified phone number to sessionStorage
+  useEffect(() => {
+    if (!globalPhone && (phone || countryCode !== "+91" || step !== "phone")) {
+      sessionStorage.setItem("otp_draft_phone", JSON.stringify({ p: phone, c: countryCode, s: step }));
+    }
+  }, [phone, countryCode, step, globalPhone]);
 
   useEffect(() => {
     if (globalPhone) {
@@ -250,7 +272,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                     <label className="flex items-start gap-2.5 cursor-pointer">
                       <input type="checkbox" required className="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-brand cursor-pointer" />
                       <span className="text-[11px] leading-relaxed text-muted">
-                        I agree to Modi Kia's <a href="/terms-and-conditions" target="_blank" className="text-brand font-medium hover:underline">T&C</a> and <a href="/privacy-policy" target="_blank" className="text-brand font-medium hover:underline">Privacy Policy</a>. This consent overrides any DNC/NDNC registrations.
+                        I agree to Modi Kia's <Link href="/terms-and-conditions" className="text-brand font-medium hover:underline">T&C</Link> and <Link href="/privacy-policy" className="text-brand font-medium hover:underline">Privacy Policy</Link>. This consent overrides any DNC/NDNC registrations.
                       </span>
                     </label>
                     <button
