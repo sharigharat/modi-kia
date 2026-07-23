@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
   try {
@@ -12,6 +12,7 @@ export async function POST(req: Request) {
     // Generate a fresh 4-digit numeric OTP
     const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
 
+    const supabaseAdmin = getSupabaseAdmin();
     // 1. Invalidate any previous unverified OTP rows for that phone_number
     await supabaseAdmin
       .from("otp_verifications")
@@ -23,6 +24,8 @@ export async function POST(req: Request) {
     // expires_at = now + 5 minutes
     const expiresAt = new Date(Date.now() + 5 * 60000).toISOString();
     
+    console.log("Checking env vars:", process.env.SUPABASE_URL ? "Exists" : "Missing");
+
     const { data: otpRow, error: insertError } = await supabaseAdmin
       .from("otp_verifications")
       .insert({
@@ -35,8 +38,8 @@ export async function POST(req: Request) {
       .single();
 
     if (insertError || !otpRow) {
-      console.error("Supabase insert error:", insertError);
-      return NextResponse.json({ success: false, error: "Failed to create OTP record" }, { status: 500 });
+      console.error("Supabase insert error:", insertError, "URL used:", process.env.SUPABASE_URL);
+      return NextResponse.json({ success: false, error: `Database Error: ${insertError?.message || 'Failed to create OTP record'}` }, { status: 500 });
     }
 
     // 3. Send the OTP to the person via WhatsApp

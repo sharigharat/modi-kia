@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
   try {
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         registration_number: fields.registrationNumber || null,
         preferred_date: fields.preferredDate || null,
         preferred_time: fields.preferredTime || null,
-        pickup_drop_required: fields.pickupDrop === "Yes",
+        pickup_drop_required: fields.pickupDrop === "Yes" || fields.pickupDrop === true,
         page_source: pageSource || null,
         otp_verification_id: otp_verification_id || null,
       };
@@ -62,6 +62,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Invalid form type" }, { status: 400 });
     }
 
+    const supabaseAdmin = getSupabaseAdmin();
     const { error } = await supabaseAdmin.from(tableName).insert(dataToInsert);
 
     if (error) {

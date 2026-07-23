@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
   try {
@@ -9,6 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Missing phone or code" }, { status: 400 });
     }
 
+    const supabaseAdmin = getSupabaseAdmin();
     // 1. Look up the most recent unverified otp_verifications row
     const { data: otpRow, error: fetchError } = await supabaseAdmin
       .from("otp_verifications")
