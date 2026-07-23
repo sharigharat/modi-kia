@@ -13,7 +13,7 @@ const fieldBase =
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactUs() {
-  const { globalPhone } = useGlobalOtp();
+  const { globalPhone, globalOtpId } = useGlobalOtp();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -44,11 +44,12 @@ export default function ContactUs() {
         subject: formData.get("subject") as string,
         message: message,
         pageSource: window.location.pathname,
+        otp_verification_id: globalOtpId,
       };
 
-      const res = await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "", {
+      const res = await fetch("/api/submit-lead", {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 

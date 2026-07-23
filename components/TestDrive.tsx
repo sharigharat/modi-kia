@@ -7,6 +7,7 @@ import { Calendar, Check, ChevronDown } from "./icons";
 import Link from "next/link";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
+import { useGlobalOtp } from "./GlobalOtpProvider";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -63,6 +64,7 @@ function SelectField({
 }
 
 export default function TestDrive() {
+  const { globalOtpId } = useGlobalOtp();
   const [submitted, setSubmitted] = useState(false);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -97,7 +99,6 @@ export default function TestDrive() {
 
     try {
       const formData = new FormData(form);
-      const SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "";
       
       const payload = {
         formType: "testdrive",
@@ -111,11 +112,12 @@ export default function TestDrive() {
         preferredDate: date,
         preferredTime: effectiveTime,
         pageSource: window.location.pathname,
+        otp_verification_id: globalOtpId,
       };
 
-      const res = await fetch(SCRIPT_URL, {
+      const res = await fetch("/api/submit-lead", {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 

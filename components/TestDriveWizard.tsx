@@ -49,7 +49,7 @@ export function CarCard({
 }
 
 export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }: { initialCarSlugProp?: string, onClose?: () => void, formSource?: string } = {}) {
-  const { globalPhone } = useGlobalOtp();
+  const { globalPhone, globalOtpId } = useGlobalOtp();
   const [step, setStep] = useState(initialCarSlugProp ? 2 : 1);
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
@@ -183,11 +183,12 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
         preferredDate: date,
         preferredTime: time,
         pageSource: window.location.pathname,
+        otp_verification_id: globalOtpId,
       };
 
-      const res = await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "", {
+      const res = await fetch("/api/submit-lead", {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -565,7 +566,7 @@ export default function TestDriveWizard(props: { initialCarSlugProp?: string, on
     : (props.onClose ? "testdrive-popup" : "testdrive-home");
 
   return (
-    <OtpGate formSource={formSource}>
+    <OtpGate formSource={formSource} alignTop={true}>
       <TestDriveWizardInner {...props} formSource={formSource} />
     </OtpGate>
   );

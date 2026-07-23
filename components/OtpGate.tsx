@@ -7,8 +7,6 @@ import { Check, ChevronRight, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
 import { useGlobalOtp } from "./GlobalOtpProvider";
 import { countryCodes } from "@/lib/countries";
-import { submitLead } from "@/lib/submitLead";
-
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
 
@@ -97,7 +95,7 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
   );
 }
 
-export function OtpGate({ children, className, autoFocus = true, formSource = "unknown" }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string }) {
+export function OtpGate({ children, className, autoFocus = true, formSource = "unknown", alignTop = false }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, alignTop?: boolean }) {
   const { globalPhone, setGlobalPhone } = useGlobalOtp();
   const initialCode = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[0] : "+91";
   const initialNumber = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[1] : (globalPhone || "");
@@ -156,7 +154,9 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
     }
   }, [autoFocus, step]);
 
-  const handlePhoneSubmit = (e: FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePhoneSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (countryCode === "+91") {
       if (!/^[6-9]\d{9}$/.test(phone)) {
@@ -170,28 +170,58 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
       }
     }
     setError("");
-    setStep("otp");
+    setIsLoading(true);
+
+    try {
+      const formattedPhone = `${countryCode}${phone}`;
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone_number: formattedPhone, form_source: formSource }),
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.error || "Failed to send OTP");
+        return;
+      }
+      setStep("otp");
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleOtpSubmit = (e: FormEvent) => {
+  const handleOtpSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (otp.length < 4) {
-      setError("Please enter a valid OTP.");
+    if (otp.length !== 4) {
+      setError("Please enter a valid 4-digit OTP.");
       return;
     }
     setError("");
+    setIsLoading(true);
     
-    const verifiedPhone = `${countryCode} ${phone}`;
-    setGlobalPhone(verifiedPhone);
-
-    // Fire-and-forget phone capture to Apps Script
     try {
-      submitLead("numbercapture", {
-        mobile: verifiedPhone,
-        sourceForm: formSource,
+      const formattedPhone = `${countryCode}${phone}`;
+      const res = await fetch("/api/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone_number: formattedPhone, otp_code: otp, form_source: formSource }),
       });
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.error || "Invalid OTP");
+        return;
+      }
+
+      const verifiedPhone = `${countryCode} ${phone}`;
+      setGlobalPhone(verifiedPhone, data.otp_verification_id);
     } catch (err) {
-      console.error("Phone capture error:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -211,7 +241,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
 
         {/* Overlay Modal */}
         {step !== "verified" && (
-          <div className="absolute inset-x-0 top-10 z-[50] flex justify-center p-4 sm:top-20">
+          <div className={`absolute inset-x-0 z-[50] flex justify-center p-4 ${alignTop ? "top-10 sm:top-20" : "top-1/2 -translate-y-1/2"}`}>
             <Reveal variant="fade-up" className="flex w-full max-w-2xl rounded-xl border border-border bg-white shadow-2xl">
               <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
                 <Image
@@ -277,11 +307,11 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                     </label>
                     <button
                       type="submit"
-                      disabled={countryCode === "+91" ? !/^[6-9]\d{9}$/.test(phone) : phone.length < 6}
+                      disabled={isLoading || (countryCode === "+91" ? !/^[6-9]\d{9}$/.test(phone) : phone.length < 6)}
                       className="group flex w-full items-center justify-center gap-2 rounded bg-brand py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:opacity-50"
                     >
-                      Send OTP
-                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                      {isLoading ? "Sending..." : "Send OTP"}
+                      {!isLoading && <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
                     </button>
                   </form>
                 </>
@@ -300,8 +330,8 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                       <input
                         type="text"
                         required
-                        maxLength={6}
-                        placeholder="Enter 4- or 6-digit OTP"
+                        maxLength={4}
+                        placeholder="Enter 4-digit OTP"
                         value={otp}
                         onChange={(e) => {
                           setOtp(e.target.value.replace(/\D/g, ""));
@@ -314,11 +344,11 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                     </label>
                     <button
                       type="submit"
-                      disabled={otp.length < 4}
+                      disabled={isLoading || otp.length !== 4}
                       className="flex w-full items-center justify-center gap-2 rounded bg-brand py-3 text-sm font-semibold text-white transition-all hover:bg-brand-light disabled:opacity-50"
                     >
-                      Verify & Proceed
-                      <Check className="h-4 w-4" />
+                      {isLoading ? "Verifying..." : "Verify & Proceed"}
+                      {!isLoading && <Check className="h-4 w-4" />}
                     </button>
                   </form>
                 </>

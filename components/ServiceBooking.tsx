@@ -68,7 +68,7 @@ export function SelectField({
 }
 
 export default function ServiceBooking() {
-  const { globalPhone } = useGlobalOtp();
+  const { globalPhone, globalOtpId } = useGlobalOtp();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -111,7 +111,7 @@ export default function ServiceBooking() {
         formType: "service",
         carModel: carModel === "Other" ? otherModel : carModel,
         serviceCentre: formData.get("serviceCentre") as string,
-        typeOfService: formData.get("typeOfService") as string,
+        serviceType: formData.get("typeOfService") as string,
         name: formData.get("name") as string,
         mobile: globalPhone,
         email: emailValue,
@@ -120,11 +120,12 @@ export default function ServiceBooking() {
         preferredTime: effectiveTime,
         pickupDrop: formData.get("pickupDrop") === "on",
         pageSource: window.location.pathname,
+        otp_verification_id: globalOtpId,
       };
 
-      const res = await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || "", {
+      const res = await fetch("/api/submit-lead", {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -167,7 +168,7 @@ export default function ServiceBooking() {
     <section id="book-service" className="scroll-mt-24 relative z-10 -mt-10 sm:-mt-16 lg:-mt-20 pb-14 lg:pb-20">
       <div className="container-px mx-auto max-w-[1400px]">
         <div id="booking-card" className="scroll-mt-20">
-        <Reveal delay={150} className="mx-auto max-w-4xl rounded-xl border border-border bg-white p-8 shadow-[0_12px_48px_-12px_rgba(0,0,0,0.15)] sm:p-10">
+        <Reveal delay={150} className="mx-auto max-w-4xl rounded-xl border border-border bg-white p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] sm:p-10">
           <OtpGate formSource="service">
           <div className="mb-8 border-b border-border pb-6 text-left">
             <h2 className="font-display text-2xl font-bold text-text sm:text-3xl">

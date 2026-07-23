@@ -49,7 +49,7 @@ const modelShot = {
   // frames facing the opposite direction, so the "EV6/EV9 GT-line" number
   // plate text on the bumper still reads correctly.
   ev6: "/360/exterior/ev6/swp/13-d.png",
-  ev9: "/360/exterior/ev9/obg/09-d.png",
+  ev9: "/360/exterior/ev9/obg/63-d.png",
   syrosEv: "/360/exterior/syros-ev/ebb/09-d.png",
 };
 
