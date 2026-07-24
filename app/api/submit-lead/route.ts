@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { postToGoogleSheets } from "@/lib/googleSheets";
 
 export async function POST(req: Request) {
   try {
@@ -13,9 +14,13 @@ export async function POST(req: Request) {
 
     let tableName = "";
     let dataToInsert: any = {};
+    // Payload for the Google Apps Script sync — field names here must match
+    // what Code.gs reads (see SHEET_NAMES / the formType branches in doPost).
+    let sheetPayload: Record<string, unknown> | null = null;
 
     if (formType === "service") {
       tableName = "service_appointments";
+      const pickupDrop = fields.pickupDrop === "Yes" || fields.pickupDrop === true;
       dataToInsert = {
         car_model: fields.carModel || null,
         service_centre: fields.serviceCentre || null,
@@ -26,7 +31,7 @@ export async function POST(req: Request) {
         registration_number: fields.registrationNumber || null,
         preferred_date: fields.preferredDate || null,
         preferred_time: fields.preferredTime || null,
-        pickup_drop_required: fields.pickupDrop === "Yes" || fields.pickupDrop === true,
+        pickup_drop_required: pickupDrop,
         page_source: pageSource || null,
         otp_verification_id: otp_verification_id || null,
         utm_id: fields.utm_id || null,
@@ -35,6 +40,26 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || null,
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
+      };
+      sheetPayload = {
+        formType: "service",
+        carModel: fields.carModel || "",
+        serviceCentre: fields.serviceCentre || "",
+        typeOfService: fields.serviceType || "",
+        name: fields.name || "",
+        mobile: fields.mobile,
+        email: fields.email || "",
+        registrationNumber: fields.registrationNumber || "",
+        preferredDate: fields.preferredDate || "",
+        preferredTime: fields.preferredTime || "",
+        pickupDrop,
+        pageSource: pageSource || "",
+        utm_id: fields.utm_id || "",
+        utm_source: fields.utm_source || "",
+        utm_medium: fields.utm_medium || "",
+        utm_campaign: fields.utm_campaign || "",
+        utm_term: fields.utm_term || "",
+        utm_content: fields.utm_content || "",
       };
     } else if (formType === "contact") {
       tableName = "contact_us";
@@ -52,6 +77,21 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || null,
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
+      };
+      sheetPayload = {
+        formType: "contact",
+        name: fields.name || "",
+        mobile: fields.mobile,
+        email: fields.email || "",
+        subject: fields.subject || "",
+        message: fields.message || "",
+        pageSource: pageSource || "",
+        utm_id: fields.utm_id || "",
+        utm_source: fields.utm_source || "",
+        utm_medium: fields.utm_medium || "",
+        utm_campaign: fields.utm_campaign || "",
+        utm_term: fields.utm_term || "",
+        utm_content: fields.utm_content || "",
       };
     } else if (formType === "testdrive" || formType === "test_drive") {
       tableName = "test_drive";
@@ -74,6 +114,25 @@ export async function POST(req: Request) {
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
       };
+      sheetPayload = {
+        formType: "testdrive",
+        carModel: fields.carModel || "",
+        location: fields.location || "",
+        name: fields.name || "",
+        mobile: fields.mobile,
+        email: fields.email || "",
+        pincode: fields.pincode || "",
+        address: fields.address || "",
+        preferredDate: fields.preferredDate || "",
+        preferredTime: fields.preferredTime || "",
+        pageSource: pageSource || "",
+        utm_id: fields.utm_id || "",
+        utm_source: fields.utm_source || "",
+        utm_medium: fields.utm_medium || "",
+        utm_campaign: fields.utm_campaign || "",
+        utm_term: fields.utm_term || "",
+        utm_content: fields.utm_content || "",
+      };
     } else if (formType === "numbercapture") {
       // Numbers only capture is handled by the verify-otp route, so just return success
       return NextResponse.json({ success: true });
@@ -87,6 +146,10 @@ export async function POST(req: Request) {
     if (error) {
       console.error(`Error inserting into ${tableName}:`, error);
       return NextResponse.json({ success: false, error: "Database error" }, { status: 500 });
+    }
+
+    if (sheetPayload) {
+      await postToGoogleSheets(sheetPayload);
     }
 
     return NextResponse.json({ success: true });

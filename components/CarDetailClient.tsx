@@ -489,6 +489,9 @@ function CarFaq({
     },
   ];
 
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
+
   return (
     <section className="bg-bg-2 py-12 lg:py-16">
       <div className="container-px mx-auto max-w-[1000px]">
@@ -497,15 +500,34 @@ function CarFaq({
           Frequently asked questions about the {displayName}
         </h2>
         <div className="mt-7 space-y-3">
-          {faqs.map((item) => (
-            <details key={item.q} className="group rounded-lg border border-border bg-white p-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-text">
-                {item.q}
-                <ChevronDown className="h-5 w-5 shrink-0 text-muted transition-transform group-open:rotate-180" />
-              </summary>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{item.a}</p>
-            </details>
-          ))}
+          {faqs.map((item, i) => {
+            const isOpen = openIndex === i;
+            return (
+              <div key={item.q} className="rounded-lg border border-border bg-white p-5">
+                <button
+                  type="button"
+                  onClick={() => toggle(i)}
+                  className="flex w-full cursor-pointer items-center justify-between gap-4 text-left text-sm font-semibold text-text"
+                >
+                  {item.q}
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-muted transition-transform duration-300 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="mt-3 text-sm leading-relaxed text-muted">{item.a}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

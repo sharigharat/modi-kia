@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { postToGoogleSheets } from "@/lib/googleSheets";
 
 export async function POST(req: Request) {
   try {
@@ -75,6 +76,18 @@ export async function POST(req: Request) {
       console.error("Failed to insert numbers_only row:", insertError);
       // We don't fail the request here, but log it
     }
+
+    await postToGoogleSheets({
+      formType: "phone_capture",
+      phone_number,
+      form_source: form_source || "",
+      utm_id: fields.utm_id || "",
+      utm_source: fields.utm_source || "",
+      utm_medium: fields.utm_medium || "",
+      utm_campaign: fields.utm_campaign || "",
+      utm_term: fields.utm_term || "",
+      utm_content: fields.utm_content || "",
+    });
 
     return NextResponse.json({ success: true, otp_verification_id: otpRow.id });
   } catch (error) {

@@ -32,7 +32,7 @@ export default function Offers() {
                 variant="slide-right"
                 className="h-full"
               >
-                <div className="group h-full flex items-center gap-5 rounded-lg border border-white/15 bg-white/10 p-6 backdrop-blur will-change-transform transition-[transform,box-shadow,border-color,background-color] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.13] hover:shadow-[0_6px_20px_0_rgba(0,0,0,0.15)]">
+                <div className="group h-full flex items-center gap-5 rounded-lg border border-white/15 bg-white/10 p-6 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.13] hover:shadow-[0_8px_28px_0_rgba(0,0,0,0.15)]">
                   <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-white/15 text-white transition-colors duration-300 group-hover:bg-white/25">
                     <Icon className="h-6 w-6" />
                   </span>

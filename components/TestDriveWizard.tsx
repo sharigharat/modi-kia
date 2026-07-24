@@ -274,7 +274,17 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
 
   return (
     <>
-      <div className="mx-auto max-w-3xl rounded-lg border border-border bg-white p-6 shadow-[0_4px_32px_0_rgba(0,44,95,0.08)] sm:p-10">
+      <div className="relative mx-auto max-w-3xl rounded-lg border border-border bg-white p-6 shadow-[0_4px_32px_0_rgba(0,44,95,0.08)] sm:p-10">
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-4 top-4 rounded-full p-2 text-faint transition-colors hover:bg-bg-2 hover:text-text"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
         {/* Step indicator */}
         <div className="flex items-center justify-between mb-4">
           {steps.map((label, i) => {
@@ -338,7 +348,16 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
                   <h3 className="font-display text-lg font-bold text-text">Select Your Car</h3>
                   <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {otherCars.map((car) => (
-                      <CarCard key={car.slug} car={car} selected={carSlug === car.slug} onSelect={setCarSlug} />
+                      <CarCard
+                        key={car.slug}
+                        car={car}
+                        selected={carSlug === car.slug}
+                        onSelect={(slug) => {
+                          setCarSlug(slug);
+                          setAttempted(false);
+                          setStep(2);
+                        }}
+                      />
                     ))}
                   </div>
                 </>
@@ -512,8 +531,10 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
 
           {/* Nav buttons — on step 1 of the individual-car-page flow these
               are rendered inline between "Car Selected" and "More Options"
-              instead (see above), so skip the duplicate here. */}
-          {!(step === 1 && preselectedCar) && navButtons}
+              instead (see above), so skip the duplicate here. On step 1 of
+              the general flow, selecting a car auto-advances to step 2, so
+              there's no Next Step button to show either. */}
+          {step !== 1 && navButtons}
         </form>
       </div>
 
@@ -570,7 +591,7 @@ export default function TestDriveWizard(props: { initialCarSlugProp?: string, on
     : (props.onClose ? "testdrive-popup" : "testdrive-home");
 
   return (
-    <OtpGate formSource={formSource} alignTop={true}>
+    <OtpGate formSource={formSource} alignTop={true} showImage onClose={props.onClose}>
       <TestDriveWizardInner {...props} formSource={formSource} />
     </OtpGate>
   );

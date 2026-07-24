@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useRef, useEffect, type ReactNode, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, ChevronRight, ChevronDown } from "./icons";
+import { Check, ChevronRight, ChevronDown, X } from "./icons";
 import Reveal from "./Reveal";
 import { useGlobalOtp } from "./GlobalOtpProvider";
 import { countryCodes } from "@/lib/countries";
@@ -96,7 +96,7 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
   );
 }
 
-export function OtpGate({ children, className, autoFocus = true, formSource = "unknown", alignTop = false }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, alignTop?: boolean }) {
+export function OtpGate({ children, className, autoFocus = true, formSource = "unknown", alignTop = false, showImage = false, onClose }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, alignTop?: boolean, showImage?: boolean, onClose?: () => void }) {
   const { globalPhone, setGlobalPhone } = useGlobalOtp();
   const initialCode = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[0] : "+91";
   const initialNumber = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[1] : (globalPhone || "");
@@ -244,16 +244,28 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
         {step !== "verified" && (
           <div className={`absolute inset-x-0 z-[50] flex justify-center p-4 ${alignTop ? "top-10 sm:top-20" : "top-1/2 -translate-y-1/2"}`}>
             <Reveal variant="fade-up" className="flex w-full max-w-2xl rounded-xl border border-border bg-white shadow-2xl">
-              <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
-                <Image
-                  src="/showrooms/otp-showroom-v3.png"
-                  alt="Modi Kia Showroom"
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover scale-110 origin-bottom"
-                />
-              </div>
-              <div className="relative w-full rounded-xl bg-white p-6 sm:p-8 md:w-7/12 md:rounded-l-none">
+              {showImage && (
+                <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
+                  <Image
+                    src="/showrooms/otp-showroom-v3.png"
+                    alt="Modi Kia Showroom"
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover scale-110 origin-bottom"
+                  />
+                </div>
+              )}
+              <div className={`relative w-full rounded-xl bg-white p-6 sm:p-8 ${showImage ? "md:w-7/12 md:rounded-l-none" : ""}`}>
+                {onClose && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="absolute right-4 top-4 rounded-full p-2 text-faint transition-colors hover:bg-bg-2 hover:text-text"
+                    aria-label="Close"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
                 {step === "phone" ? (
                 <>
                   <h3 className="font-display text-lg font-bold text-text">Verify your Mobile Number</h3>
