@@ -251,7 +251,6 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover scale-110 origin-bottom"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent from-75% to-white" />
               </div>
               <div className="relative w-full rounded-xl bg-white p-6 sm:p-8 md:w-7/12 md:rounded-l-none">
                 {step === "phone" ? (

@@ -65,7 +65,7 @@ const heroShot = {
   sonet: "/hero-images/sonet.jpg",
   syros: "/hero-images/syros.jpg",
   carens: "/hero-images/carens.jpg",
-  carensClavis: "/hero-images/carens-clavis-v1.avif",
+  carensClavis: "/hero-images/carens-clavis-v1-2.avif",
   carensClavisEv: "/hero-images/carens-clavis-ev.jpg",
   carnival: "/hero-images/carnival.jpg",
   // Swapped from the original ev6/ev9 banners: those carried baked-in
@@ -249,6 +249,16 @@ export type Slide = {
   image: string;
   alt: string;
   video?: string;
+  // Tailwind object-position override for the shorter mobile hero crop
+  // (see Hero.tsx), only where the default centred crop cuts through the
+  // car instead of framing it fully. Reset back to centre at md+, where
+  // the hero is tall enough that the default crop already shows the
+  // whole car.
+  mobileObjectPositionClass?: string;
+  // Slides that don't work in the mobile hero at all (car still gets
+  // cropped awkwardly even with an object-position nudge) are skipped
+  // below md, and only appear in the carousel on larger screens.
+  hiddenOnMobile?: boolean;
 };
 
 export const heroSlides: Slide[] = [
@@ -292,6 +302,10 @@ export const heroSlides: Slide[] = [
     price: "11.02",
     image: banner(heroShot.carens),
     alt: "Kia Carens MPV, official showroom image",
+    // Confirmed on real phones that this crop doesn't work at any safe
+    // object-position — skip it in the mobile carousel, keep it for
+    // tablet/desktop where the taller hero shows the whole car.
+    hiddenOnMobile: true,
   },
   {
     model: "Kia CARENS CLAVIS",
@@ -302,6 +316,9 @@ export const heroSlides: Slide[] = [
     price: "11.27",
     image: banner(heroShot.carensClavis),
     alt: "Kia Carens Clavis premium MPV, official product image",
+    // Same as Carens above — doesn't crop well on phones, kept for
+    // tablet/desktop only.
+    hiddenOnMobile: true,
   },
   {
     model: "Kia CARENS CLAVIS EV",
@@ -345,6 +362,8 @@ export const heroSlides: Slide[] = [
     price: "129.91",
     image: banner(heroShot.ev9),
     alt: "Kia EV9 flagship electric SUV, official showroom image",
+    // Doesn't crop well on phones — kept for tablet/desktop only.
+    hiddenOnMobile: true,
   },
 ];
 
