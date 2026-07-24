@@ -7,6 +7,7 @@ import { Check, ChevronRight, ChevronDown } from "./icons";
 import Reveal from "./Reveal";
 import { useGlobalOtp } from "./GlobalOtpProvider";
 import { countryCodes } from "@/lib/countries";
+import { getStoredUtmParams } from "@/lib/utm";
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
 
@@ -207,7 +208,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
       const res = await fetch("/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone_number: formattedPhone, otp_code: otp, form_source: formSource }),
+        body: JSON.stringify({ phone_number: formattedPhone, otp_code: otp, form_source: formSource, ...getStoredUtmParams() }),
       });
       const data = await res.json();
 

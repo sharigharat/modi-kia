@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE_URL } from "@/lib/data";
 import JsonLd from "@/components/JsonLd";
 import { GlobalOtpProvider } from "@/components/GlobalOtpProvider";
+import UtmTracker from "@/components/UtmTracker";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -87,6 +88,7 @@ export default function RootLayout({
     <html lang="en-IN" className={`${inter.variable} ${sora.variable}`}>
       <body className="min-h-screen w-full overflow-x-hidden flex flex-col antialiased" suppressHydrationWarning>
         <JsonLd />
+        <UtmTracker />
         <GlobalOtpProvider>
           {children}
         </GlobalOtpProvider>

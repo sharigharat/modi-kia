@@ -3,7 +3,7 @@ import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
   try {
-    const { phone_number, otp_code, form_source } = await req.json();
+    const { phone_number, otp_code, form_source, ...fields } = await req.json();
 
     if (!phone_number || !otp_code) {
       return NextResponse.json({ success: false, error: "Missing phone or code" }, { status: 400 });
@@ -62,7 +62,13 @@ export async function POST(req: Request) {
       .insert({
         phone_number,
         form_source: form_source || null,
-        otp_verification_id: otpRow.id
+        otp_verification_id: otpRow.id,
+        utm_id: fields.utm_id || null,
+        utm_source: fields.utm_source || null,
+        utm_medium: fields.utm_medium || null,
+        utm_campaign: fields.utm_campaign || null,
+        utm_term: fields.utm_term || null,
+        utm_content: fields.utm_content || null,
       });
 
     if (insertError) {

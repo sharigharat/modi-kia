@@ -7,6 +7,7 @@ import Link from "next/link";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
 import { useGlobalOtp } from "./GlobalOtpProvider";
+import { getStoredUtmParams } from "@/lib/utm";
 
 const fieldBase =
   "w-full rounded border border-border bg-white px-4 py-3 text-sm text-text outline-none transition-colors placeholder:text-faint focus:border-brand focus:ring-2 focus:ring-brand/10";
@@ -121,6 +122,7 @@ export default function ServiceBooking() {
         pickupDrop: formData.get("pickupDrop") === "on",
         pageSource: window.location.pathname,
         otp_verification_id: globalOtpId,
+        ...getStoredUtmParams(),
       };
 
       const res = await fetch("/api/submit-lead", {

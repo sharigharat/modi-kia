@@ -4,6 +4,7 @@ import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    console.log("Incoming submit-lead payload:", body);
     const { formType, otp_verification_id, pageSource, ...fields } = body;
 
     if (!formType || !fields.mobile) {
@@ -28,6 +29,12 @@ export async function POST(req: Request) {
         pickup_drop_required: fields.pickupDrop === "Yes" || fields.pickupDrop === true,
         page_source: pageSource || null,
         otp_verification_id: otp_verification_id || null,
+        utm_id: fields.utm_id || null,
+        utm_source: fields.utm_source || null,
+        utm_medium: fields.utm_medium || null,
+        utm_campaign: fields.utm_campaign || null,
+        utm_term: fields.utm_term || null,
+        utm_content: fields.utm_content || null,
       };
     } else if (formType === "contact") {
       tableName = "contact_us";
@@ -39,6 +46,12 @@ export async function POST(req: Request) {
         message: fields.message || null,
         page_source: pageSource || null,
         otp_verification_id: otp_verification_id || null,
+        utm_id: fields.utm_id || null,
+        utm_source: fields.utm_source || null,
+        utm_medium: fields.utm_medium || null,
+        utm_campaign: fields.utm_campaign || null,
+        utm_term: fields.utm_term || null,
+        utm_content: fields.utm_content || null,
       };
     } else if (formType === "testdrive" || formType === "test_drive") {
       tableName = "test_drive";
@@ -54,6 +67,12 @@ export async function POST(req: Request) {
         preferred_time: fields.preferredTime || null,
         page_source: pageSource || null,
         otp_verification_id: otp_verification_id || null,
+        utm_id: fields.utm_id || null,
+        utm_source: fields.utm_source || null,
+        utm_medium: fields.utm_medium || null,
+        utm_campaign: fields.utm_campaign || null,
+        utm_term: fields.utm_term || null,
+        utm_content: fields.utm_content || null,
       };
     } else if (formType === "numbercapture") {
       // Numbers only capture is handled by the verify-otp route, so just return success
