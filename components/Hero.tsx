@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { heroSlides } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./icons";
 
@@ -18,6 +18,11 @@ export default function Hero() {
   const slides = isMobile ? heroSlides.filter((s) => !s.hiddenOnMobile) : heroSlides;
   const count = slides.length;
   const active = slides[index] ?? slides[0];
+  // Per-slide duration for the progress dot: AUTOPLAY for photos, the
+  // actual clip length (once known) for videos, so the bar never claims
+  // a shorter time than the video actually takes to finish.
+  const [videoDurationMs, setVideoDurationMs] = useState<number | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const go = useCallback(
     (dir: number) => setIndex((i) => (i + dir + count) % count),
@@ -39,10 +44,32 @@ export default function Hero() {
     setIndex((i) => (i >= count ? 0 : i));
   }, [count]);
 
+  // Photo slides advance on a fixed timer. Video slides instead advance
+  // when the clip actually finishes (see the video's onEnded below), so a
+  // clip longer than AUTOPLAY always gets to play out in full.
   useEffect(() => {
-    const t = setInterval(() => setIndex((i) => (i + 1) % count), AUTOPLAY);
-    return () => clearInterval(t);
-  }, [count]);
+    setVideoDurationMs(null);
+    if (active.video) return undefined;
+    const t = setTimeout(() => setIndex((i) => (i + 1) % count), AUTOPLAY);
+    return () => clearTimeout(t);
+  }, [index, count, active.video]);
+
+  // Only the active slide's video should actually be playing, and it
+  // should always start from the beginning — otherwise a clip that looped
+  // quietly in the background would resume mid-way through once it
+  // becomes the visible slide.
+  useEffect(() => {
+    slides.forEach((s, i) => {
+      const el = videoRefs.current[i];
+      if (!el) return;
+      if (i === index) {
+        el.currentTime = 0;
+        el.play().catch(() => {});
+      } else {
+        el.pause();
+      }
+    });
+  }, [index, slides]);
 
   return (
     <section
@@ -67,14 +94,23 @@ export default function Hero() {
           return slide.video ? (
             <video
               key={slide.model + i}
+              ref={(el) => {
+                videoRefs.current[i] = el;
+              }}
               src={slide.video}
               poster={slide.image}
               aria-label={caption}
-              autoPlay
+              autoPlay={i === 0}
               muted
-              loop
+              loop={false}
               playsInline
               preload={i === 0 ? "auto" : "none"}
+              onLoadedMetadata={(e) => {
+                if (i === index) setVideoDurationMs(e.currentTarget.duration * 1000);
+              }}
+              onEnded={() => {
+                if (i === index) setIndex((idx) => (idx + 1) % count);
+              }}
               className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[900ms] ease-out ${objectPositionClass}`}
               style={{ opacity: i === index ? 1 : 0 }}
             />
@@ -150,10 +186,14 @@ export default function Hero() {
               style={{ width: i === index ? 32 : 10 }}
             >
               <span
+                key={i === index ? `${index}-${videoDurationMs ?? "pending"}` : i}
                 className="block h-full rounded-full bg-white"
                 style={{
                   width: i === index ? "100%" : "0%",
-                  transition: i === index ? `width ${AUTOPLAY}ms linear` : "none",
+                  transition:
+                    i === index
+                      ? `width ${s.video ? videoDurationMs ?? AUTOPLAY : AUTOPLAY}ms linear`
+                      : "none",
                 }}
               />
             </button>
