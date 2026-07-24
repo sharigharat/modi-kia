@@ -45,11 +45,27 @@ const modelShot = {
   carensClavis: "/360/exterior/carens-clavis/isg/09-d.png",
   carensClavisEv: "/360/exterior/carens-clavis-ev/ism/09-d.png",
   carnival: "/360/exterior/carnival/gwp/09-d.png",
-  // Frame 13/09 (not 04/48) deliberately: these are the real photographed
-  // frames facing the opposite direction, so the "EV6/EV9 GT-line" number
-  // plate text on the bumper still reads correctly.
-  ev6: "/360/exterior/ev6/swp/13-d.png",
-  ev9: "/360/exterior/ev9/obg/63-d.png",
+  // Frame 09 in these two rigs' own sequence is a straight-on front view,
+  // not front-left 3/4 like every other model's 09 (each 360 rig starts
+  // its sequence at a different reference angle). EV6 uses klm/16 (the
+  // "Aurora Black"-ish colourway's frame 16) and EV9 uses obg/62 — each
+  // rig's real photographed front-left 3/4 frame, found by generating a
+  // contact sheet of all 72 frames per model and visually matching the
+  // angle against Seltos/Sonet/etc., so no CSS mirroring is needed.
+  // (Earlier EV9 attempts at frames 44/48 turned out to be the *other*
+  // lateral 3/4 — nose pointing right, mirror of what every other model
+  // shows — easy to miss at a glance since both sides of a 3/4 shot look
+  // similar; frame 62 was confirmed by directly matching nose-bottom-
+  // left/tail-cut-top-right against Seltos.)
+  // Both source frames also came from a different render pass than every
+  // other model (EV6 at a smaller in-frame scale; EV9 at 1920x1080
+  // instead of 1600x800), which is what actually made them look
+  // inconsistent with the rest of the lineup. The "-normalized" files
+  // below are re-cropped versions (measured against the other models'
+  // average car-to-frame ratio) so the car sits at the same scale/
+  // position as Seltos, Sonet, etc.
+  ev6: "/360/exterior/ev6/klm/16-d-normalized.png",
+  ev9: "/360/exterior/ev9/obg/62-d-normalized.png",
   syrosEv: "/360/exterior/syros-ev/ebb/09-d.png",
 };
 

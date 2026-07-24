@@ -57,8 +57,6 @@ function CarsGridInner() {
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((car, i) => {
             const displayName = `Kia ${car.name}`;
-            // Mirror the EV9 so it faces left like the rest of the lineup.
-            const flip = car.slug === "ev9";
             return (
               <Reveal key={car.slug} delay={(i % 3) * 90} variant="fade-up">
                 <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)]">
@@ -69,7 +67,6 @@ function CarsGridInner() {
                       width={400}
                       height={150}
                       className="h-auto w-full object-contain drop-shadow-lg transition-transform duration-500 group-hover:scale-105"
-                      style={flip ? { transform: "scaleX(-1)" } : undefined}
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-5">

@@ -21,15 +21,29 @@ export default function FeaturedVehicles() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [stageWidth, setStageWidth] = useState(1000);
 
-  const filtered =
-    category === "All"
-      ? cars
-      : category === "SUV"
-        ? [
-            ...cars.filter((c) => c.category === "SUV" && c.name === "Syros"),
-            ...cars.filter((c) => c.category === "SUV" && c.name !== "Syros"),
-          ]
-        : cars.filter((c) => c.category === category);
+  const filtered = (() => {
+    if (category === "SUV") {
+      return [
+        ...cars.filter((c) => c.category === "SUV" && c.name === "Syros"),
+        ...cars.filter((c) => c.category === "SUV" && c.name !== "Syros"),
+      ];
+    }
+    if (category !== "All") {
+      return cars.filter((c) => c.category === category);
+    }
+    
+    // For "All", interleave SUVs with other cars so the list looks visually 
+    // mixed and distinctly different from the "SUV" tab.
+    const suvs = cars.filter(c => c.category === "SUV");
+    const others = cars.filter(c => c.category !== "SUV");
+    const interleaved = [];
+    const max = Math.max(suvs.length, others.length);
+    for (let i = 0; i < max; i++) {
+      if (others[i]) interleaved.push(others[i]);
+      if (suvs[i]) interleaved.push(suvs[i]);
+    }
+    return interleaved;
+  })();
   const active = filtered[index] ?? filtered[0];
 
   const selectCategory = (nextCategory: "All" | CarCategory) => {
@@ -62,8 +76,17 @@ export default function FeaturedVehicles() {
 
   // Step distance and scale/opacity falloff are proportional to the stage's
   // own measured width, so the "coverflow" spacing stays consistent across
-  // breakpoints without a hardcoded pixel value.
-  const step = Math.min(stageWidth * 0.38, 400);
+  // breakpoints without a hardcoded pixel value. No upper cap: the centre
+  // card's scaled-up width (1.28x) also grows with stageWidth, so a flat
+  // pixel cap on the step (previously 400) falls behind past ~1050px of
+  // stage width and the neighbour cards start overlapping the centre
+  // card instead of sitting beside it — worse the larger/wider the
+  // screen, up to ~113px of overlap at the container's 1400px max-width.
+  // The uncapped 0.38 multiplier was already tuned so the cards just
+  // clear each other at that max width; the section's own max-w-[1400px]
+  // is what bounds stageWidth, so this can't grow unbounded on ultra-wide
+  // monitors either.
+  const step = stageWidth * 0.38;
   const centreGapBoost = 30;
 
   return (
@@ -105,8 +128,8 @@ export default function FeaturedVehicles() {
             onClick={() => go(-1)}
             disabled={!canGoBack}
             aria-disabled={!canGoBack}
-            className={`absolute left-0 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center transition-colors sm:h-12 sm:w-12 ${
-              canGoBack ? "text-text hover:text-brand" : "cursor-not-allowed text-faint/45"
+            className={`absolute left-0 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-black/[0.06] shadow-md backdrop-blur transition-colors sm:h-12 sm:w-12 ${
+              canGoBack ? "text-text hover:bg-black/10 hover:text-brand" : "cursor-not-allowed text-faint/45"
             }`}
           >
             <ChevronLeft className="h-6 w-6" />
@@ -124,8 +147,6 @@ export default function FeaturedVehicles() {
             // centre card doesn't push the side cards out of the stage.
             const scale = offset === 0 ? 1.28 : Math.max(0.4, 0.62 - abs * 0.15);
             const opacity = abs > 2 ? 0 : 1 - abs * 0.34;
-            // Mirror the EV9 so it faces left like the rest of the lineup.
-            const flip = car.slug === "ev9";
             const translateX =
               offset === 0
                 ? 0
@@ -160,7 +181,6 @@ export default function FeaturedVehicles() {
                       height={295}
                       priority
                       className="h-auto w-full object-contain drop-shadow-xl"
-                      style={flip ? { transform: "scaleX(-1)" } : undefined}
                     />
                   </Link>
                 ) : (
@@ -171,7 +191,6 @@ export default function FeaturedVehicles() {
                     height={295}
                     priority={false}
                     className="h-auto w-full object-contain drop-shadow-xl"
-                    style={flip ? { transform: "scaleX(-1)" } : undefined}
                   />
                 )}
               </div>
@@ -183,8 +202,8 @@ export default function FeaturedVehicles() {
             onClick={() => go(1)}
             disabled={!canGoForward}
             aria-disabled={!canGoForward}
-            className={`absolute right-0 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center transition-colors sm:h-12 sm:w-12 ${
-              canGoForward ? "text-text hover:text-brand" : "cursor-not-allowed text-faint/45"
+            className={`absolute right-0 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-black/[0.06] shadow-md backdrop-blur transition-colors sm:h-12 sm:w-12 ${
+              canGoForward ? "text-text hover:bg-black/10 hover:text-brand" : "cursor-not-allowed text-faint/45"
             }`}
           >
             <ChevronRight className="h-6 w-6" />
