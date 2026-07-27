@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { cars, formatINR, type CarCategory } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./icons";
 import Reveal from "./Reveal";
@@ -20,6 +20,17 @@ export default function FeaturedVehicles() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const [stageWidth, setStageWidth] = useState(1000);
+
+  // ── Touch / swipe state ──────────────────────────────────────
+  // dragOffset: live pixel shift applied while the finger is down,
+  // giving the cards a physical feel before the snap happens.
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  // null = gesture direction not yet decided
+  const gestureAxis = useRef<"h" | "v" | null>(null);
+  const SWIPE_THRESHOLD = 40; // px needed to count as a swipe
+  const DRAG_RESISTANCE = 0.35; // dampen the live drag so it feels elastic
 
   const filtered = (() => {
     if (category === "SUV") {
@@ -69,10 +80,48 @@ export default function FeaturedVehicles() {
   const len = filtered.length;
   const canGoBack = len > 1;
   const canGoForward = len > 1;
-  const go = (dir: number) => {
+  const go = useCallback((dir: number) => {
     if (len < 2) return;
     setIndex((i) => (i + dir + len) % len);
-  };
+  }, [len]);
+
+  // ── Touch handlers ──────────────────────────────────────────
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    gestureAxis.current = null;
+    setDragOffset(0);
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    setDragOffset(0);
+    gestureAxis.current = null;
+    if (Math.abs(dx) >= SWIPE_THRESHOLD && len >= 2) {
+      go(dx < 0 ? 1 : -1);
+    }
+  }, [go, len]);
+
+  // passive:false is required so we can call preventDefault() inside touchmove
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const onMove = (e: TouchEvent) => {
+      const dx = e.touches[0].clientX - touchStartX.current;
+      const dy = e.touches[0].clientY - touchStartY.current;
+      if (gestureAxis.current === null) {
+        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+          gestureAxis.current = Math.abs(dx) > Math.abs(dy) ? "h" : "v";
+        }
+      }
+      if (gestureAxis.current === "h") {
+        e.preventDefault();
+        setDragOffset(dx * DRAG_RESISTANCE);
+      }
+    };
+    el.addEventListener("touchmove", onMove, { passive: false });
+    return () => el.removeEventListener("touchmove", onMove);
+  }, []);
 
   // Step distance and scale/opacity falloff are proportional to the stage's
   // own measured width, so the "coverflow" spacing stays consistent across
@@ -121,14 +170,19 @@ export default function FeaturedVehicles() {
         {/* Coverflow stage */}
         <div
           ref={stageRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className="relative mt-4 h-[300px] select-none sm:h-[360px] lg:h-[400px]"
+          style={{ touchAction: "pan-y" }}
         >
+          {/* Prev arrow — hidden on small touch screens to keep the UI clean;
+              swipe is the primary gesture there */}
           <button
             aria-label="Previous car"
             onClick={() => go(-1)}
             disabled={!canGoBack}
             aria-disabled={!canGoBack}
-            className={`absolute left-0 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-black/[0.06] shadow-md backdrop-blur transition-colors sm:h-12 sm:w-12 ${
+            className={`absolute left-0 top-1/2 z-40 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-black/[0.06] shadow-md backdrop-blur transition-colors sm:grid sm:h-12 sm:w-12 ${
               canGoBack ? "text-text hover:bg-black/10 hover:text-brand" : "cursor-not-allowed text-faint/45"
             }`}
           >
@@ -149,8 +203,8 @@ export default function FeaturedVehicles() {
             const opacity = abs > 2 ? 0 : 1 - abs * 0.34;
             const translateX =
               offset === 0
-                ? 0
-                : Math.sign(offset) * (abs * step + centreGapBoost);
+                ? dragOffset
+                : Math.sign(offset) * (abs * step + centreGapBoost) + dragOffset;
             return (
               <div
                 key={car.name}
@@ -159,7 +213,13 @@ export default function FeaturedVehicles() {
                     setIndex(i);
                   }
                 }}
-                className={`absolute left-1/2 top-1/2 flex h-full w-[70%] items-center justify-center sm:w-[55%] lg:w-[46%] ${isTransitioning ? "" : "transition-all duration-500 ease-out"}`}
+                className={`absolute left-1/2 top-1/2 flex h-full w-[70%] items-center justify-center sm:w-[55%] lg:w-[46%] ${
+                  dragOffset !== 0
+                    ? "" // no CSS transition while finger is down — feels instant
+                    : isTransitioning
+                    ? ""
+                    : "transition-all duration-500 ease-out"
+                }`}
                 style={{
                   transform: `translate(-50%, -50%) translateX(${translateX}px) scale(${scale})`,
                   opacity,
@@ -173,6 +233,7 @@ export default function FeaturedVehicles() {
                     href={`/cars/${car.slug}`}
                     aria-label={`View Kia ${car.name} details`}
                     className="block w-full"
+                    draggable={false}
                   >
                     <Image
                       src={car.image}
@@ -181,6 +242,7 @@ export default function FeaturedVehicles() {
                       width={800}
                       height={295}
                       priority
+                      draggable={false}
                       className="h-auto w-full object-contain drop-shadow-xl"
                     />
                   </Link>
@@ -192,6 +254,7 @@ export default function FeaturedVehicles() {
                     width={800}
                     height={295}
                     priority={false}
+                    draggable={false}
                     className="h-auto w-full object-contain drop-shadow-xl"
                   />
                 )}
@@ -199,17 +262,40 @@ export default function FeaturedVehicles() {
             );
           })}
 
+          {/* Next arrow */}
           <button
             aria-label="Next car"
             onClick={() => go(1)}
             disabled={!canGoForward}
             aria-disabled={!canGoForward}
-            className={`absolute right-0 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-black/[0.06] shadow-md backdrop-blur transition-colors sm:h-12 sm:w-12 ${
+            className={`absolute right-0 top-1/2 z-40 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-black/10 bg-black/[0.06] shadow-md backdrop-blur transition-colors sm:grid sm:h-12 sm:w-12 ${
               canGoForward ? "text-text hover:bg-black/10 hover:text-brand" : "cursor-not-allowed text-faint/45"
             }`}
           >
             <ChevronRight className="h-6 w-6" />
           </button>
+        </div>
+
+        {/* Dot indicators — visible on all breakpoints */}
+        <div
+          role="tablist"
+          aria-label="Car selector"
+          className="relative z-30 mt-3 flex items-center justify-center gap-1.5"
+        >
+          {filtered.map((car, i) => (
+            <button
+              key={car.slug}
+              role="tab"
+              aria-selected={i === index}
+              aria-label={`Go to Kia ${car.name}`}
+              onClick={() => setIndex(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === index
+                  ? "w-5 h-2 bg-brand"
+                  : "w-2 h-2 bg-border hover:bg-muted/50"
+              }`}
+            />
+          ))}
         </div>
 
         {/* Info row */}

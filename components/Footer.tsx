@@ -39,7 +39,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-deep">
       {/* Main footer grid */}
-      <div className="container-px mx-auto max-w-[1400px] pb-10 pt-14">
+      <div className="container-px mx-auto max-w-[1400px] pb-24 pt-14 md:pb-10">
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/10 pb-10 lg:grid-cols-[1.6fr_1fr_1fr_1fr_1.4fr]">
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-1">

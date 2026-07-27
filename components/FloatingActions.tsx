@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { nav } from "@/lib/data";
 import { Calendar, WhatsApp, Phone, ChevronRight, ChevronLeft } from "./icons";
+import TestDriveWizard from "./TestDriveWizard";
 
 const WHATSAPP_URL = "https://wa.me/918879020761?text=Hello,%20I%20want%20to%20book%20a%20test%20drive";
 
@@ -14,6 +15,7 @@ const actions = [
 
 export default function FloatingActions() {
   const [isOpen, setIsOpen] = useState(true);
+  const [showTestDrive, setShowTestDrive] = useState(false);
 
   return (
     <>
@@ -23,7 +25,7 @@ export default function FloatingActions() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Modi Kia on WhatsApp"
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 active:scale-95 md:bottom-5 md:right-5"
       >
         <WhatsApp className="h-7 w-7" />
       </a>
@@ -79,6 +81,53 @@ export default function FloatingActions() {
         ))}
       </div>
       </div>
+
+      {/* Mobile / Tablet sticky bottom bar — hidden on md+ (where the side panel shows) */}
+      <div className="fixed bottom-0 inset-x-0 z-40 flex md:hidden border-t border-white/10 shadow-[0_-4px_24px_rgba(0,44,95,0.18)]">
+        {/* Call Us */}
+        <a
+          href={`tel:${nav.phone.replace(/\s/g, "")}`}
+          aria-label="Call Modi Kia"
+          className="flex flex-1 items-center justify-center gap-2.5 bg-white py-3.5 text-brand transition-colors active:bg-brand/5"
+        >
+          <Phone className="h-5 w-5 shrink-0" />
+          <span className="text-sm font-semibold tracking-wide">Call Us</span>
+        </a>
+
+        {/* Divider */}
+        <div className="w-px bg-border" />
+
+        {/* Book a Test Drive */}
+        <button
+          onClick={() => setShowTestDrive(true)}
+          aria-label="Book a Test Drive"
+          className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+        >
+          <Calendar className="h-5 w-5 shrink-0" />
+          <span className="text-sm font-semibold tracking-wide">Book a Test Drive</span>
+        </button>
+      </div>
+
+      {/* Test Drive fullscreen overlay (triggered from mobile bar) */}
+      {showTestDrive && (
+        <div className="fixed inset-0 z-[100] bg-white overflow-y-auto text-left">
+          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-white px-6 py-4 shadow-sm">
+            <span className="font-display text-xl font-bold text-text">Book a Test Drive</span>
+            <button
+              onClick={() => setShowTestDrive(false)}
+              aria-label="Close"
+              className="grid h-9 w-9 place-items-center rounded border border-border bg-bg-2 text-text"
+            >
+              <span aria-hidden="true" className="text-lg font-bold leading-none">&times;</span>
+            </button>
+          </div>
+          <div className="py-10 lg:py-16">
+            <div className="container-px mx-auto max-w-[1400px]">
+              <TestDriveWizard onClose={() => setShowTestDrive(false)} />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
