@@ -65,6 +65,7 @@ export default function ContactUsPage() {
           <Image
             src="/showrooms/service-hero.jpg"
             alt="Modi Kia Service Care"
+            title="Modi Kia Service Care"
             fill
             priority
             sizes="100vw"

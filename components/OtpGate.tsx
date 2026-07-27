@@ -249,6 +249,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                   <Image
                     src="/showrooms/otp-showroom-v3.png"
                     alt="Modi Kia Showroom"
+                    title="Modi Kia Showroom"
                     fill
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover scale-110 origin-bottom"

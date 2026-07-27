@@ -121,6 +121,7 @@ export default function Testimonials() {
                 <Image
                   src={t.avatar}
                   alt={t.name}
+                  title={t.name}
                   width={44}
                   height={44}
                   className="h-11 w-11 rounded-full object-cover"

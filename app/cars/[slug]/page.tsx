@@ -28,8 +28,13 @@ export async function generateMetadata({
   const detail = getCarDetail(car);
 
   const displayName = `Kia ${car.name}`;
-  const title = `${displayName}: Price, Specs, Colours & Test Drive`;
-  const description = `${detail.overview} Starting at ${formatINR(car.priceINR)}* ex-showroom. Compare variants, colours, features and specifications, then book a Kia test drive with Modi Kia.`;
+  const title = `${displayName}: Price, Specs & Test Drive`;
+  // Kept short and car-specific for the meta description — detail.overview
+  // is longer-form copy meant for the page body, not a ~160-char snippet.
+  const description =
+    car.priceINR > 0
+      ? `${displayName} (${car.type}) from ${formatINR(car.priceINR)}* ex-showroom. Compare variants and features, then book a test drive with Modi Kia.`
+      : `${displayName} (${car.type}) — pricing coming soon. Explore expected features and specifications, then enquire with Modi Kia.`;
 
   return {
     title,

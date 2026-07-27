@@ -40,6 +40,7 @@ export function CarCard({
       <Image
         src={car.image}
         alt={car.alt}
+        title={car.alt}
         width={140}
         height={60}
         className="h-10 w-full object-contain"

@@ -20,7 +20,7 @@ import { DEALER_ID } from "@/lib/schema";
 
 const title = "About Modi Kia: Our Story, Values and Group";
 const description =
-  "Modi Kia is an authorised Kia dealership owned by the Gautam Modi Group, serving Bhiwandi & Dombivli with genuine parts, transparent pricing and dedicated service.";
+  "Modi Kia is an authorised Kia dealership owned by the Gautam Modi Group, serving Bhiwandi & Dombivli with genuine parts and dedicated service.";
 
 export const metadata: Metadata = {
   title,
@@ -102,6 +102,7 @@ export default function AboutPage() {
           <Image
             src={aboutHeroImage}
             alt="Modi Kia showroom"
+            title="Modi Kia showroom"
             fill
             priority
             sizes="100vw"
@@ -159,6 +160,7 @@ export default function AboutPage() {
               <Image
                 src={aboutCultureImage}
                 alt="Modi Kia team culture"
+                title="Modi Kia team culture"
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"
                 className="object-cover"

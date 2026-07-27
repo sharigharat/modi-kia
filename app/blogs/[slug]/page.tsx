@@ -24,10 +24,13 @@ export async function generateMetadata({
   const blog = getBlog(slug);
   if (!blog) return {};
 
-  const title = `${blog.title} ,  Modi Kia Journal`;
+  const title = blog.title;
   const description = blog.excerpt;
 
   return {
+    // The post title alone is already tuned to fit the 60-char budget once
+    // the root layout's "%s | Modi Kia" template is appended, so let that
+    // template do the branding rather than repeating it here.
     title,
     description,
     alternates: { canonical: `/blogs/${blog.slug}` },

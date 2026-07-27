@@ -11,7 +11,7 @@ import CarsGrid from "@/components/CarsGrid";
 
 const title = "New Kia Cars, Prices, Variants & Specifications";
 const description =
-  "Browse the full Kia lineup at Modi Kia ,  SUVs, MPVs and electric vehicles, with on-road prices, specs and colours for every model.";
+  "Browse the full Kia lineup at Modi Kia — SUVs, MPVs and electric vehicles, with on-road prices, specs and colours for every model.";
 
 export const metadata: Metadata = {
   title,

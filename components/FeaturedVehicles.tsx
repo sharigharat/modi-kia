@@ -177,6 +177,7 @@ export default function FeaturedVehicles() {
                     <Image
                       src={car.image}
                       alt={car.alt}
+                      title={car.alt}
                       width={800}
                       height={295}
                       priority
@@ -187,6 +188,7 @@ export default function FeaturedVehicles() {
                   <Image
                     src={car.image}
                     alt={car.alt}
+                    title={car.alt}
                     width={800}
                     height={295}
                     priority={false}

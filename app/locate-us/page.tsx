@@ -7,7 +7,7 @@ import Reveal from "@/components/Reveal";
 import { SITE_URL } from "@/lib/data";
 import { DEALER_ID } from "@/lib/schema";
 
-const title = "Locate Us | Modi Kia Showroom & Service Department";
+const title = "Kia Showroom & Service Centre in Bhiwandi";
 const description =
   "Find Modi Kia's showroom and service department on the Kalyan-Bhiwandi Road. View the branch on the map and open Google Maps directions.";
 

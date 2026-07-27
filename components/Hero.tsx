@@ -119,6 +119,7 @@ export default function Hero() {
               key={slide.model + i}
               src={slide.image}
               alt={caption}
+              title={caption}
               fill
               priority={i === 0}
               sizes="100vw"

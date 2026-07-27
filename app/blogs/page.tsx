@@ -8,12 +8,15 @@ import BlogsPageClient from "@/components/BlogsPageClient";
 import { SITE_URL, aboutHeroImage } from "@/lib/data";
 import { DEALER_ID } from "@/lib/schema";
 
-const title = "The Modi Kia Journal ,  Kia Car Guides, Tips & Model Insights";
+const title = "The Modi Kia Journal — Kia Guides & Model Insights";
 const description =
-  "Expert Kia car guides, ownership tips, model comparisons and service advice from Modi Kia ,  your authorised Kia dealer in Bhiwandi, Dombivli and the surrounding region.";
+  "Kia car guides, ownership tips, model comparisons and service advice from Modi Kia, your authorised dealer in Bhiwandi and Dombivli.";
 
 export const metadata: Metadata = {
-  title,
+  // Already carries the "Modi Kia" brand name, so bypass the root layout's
+  // "%s | Modi Kia" template with an absolute title — otherwise it renders
+  // with the brand name twice and blows past the 60-character budget.
+  title: { absolute: title },
   description,
   alternates: { canonical: "/blogs" },
   openGraph: {
@@ -66,6 +69,7 @@ export default function BlogsPage() {
           <Image
             src="/showrooms/adaptive-hero.jpg"
             alt="Modi Kia Journal - Kia Service Care"
+            title="Modi Kia Journal - Kia Service Care"
             fill
             priority
             sizes="100vw"

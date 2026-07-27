@@ -26,6 +26,7 @@ export default function ServiceCentres() {
                   <Image
                     src={loc.image}
                     alt={`Modi ${loc.name} in ${loc.city}`}
+                    title={`Modi ${loc.name} in ${loc.city}`}
                     fill
                     sizes="(max-width: 640px) 100vw, 33vw"
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"

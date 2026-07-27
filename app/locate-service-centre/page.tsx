@@ -10,7 +10,7 @@ import Reveal from "@/components/Reveal";
 import { serviceHeroImage, serviceCentres, SITE_URL } from "@/lib/data";
 import { DEALER_ID } from "@/lib/schema";
 
-const title = "Locate a Service Centre & Book a Service Appointment";
+const title = "Kia Service Appointment Booking";
 const description =
   "Book authorised Kia service online in Bhiwandi & Dombivli. Choose a convenient slot for maintenance, repairs, genuine parts and pickup/drop support.";
 
@@ -86,6 +86,7 @@ export default function LocateServiceCentrePage() {
           <Image
             src={serviceHeroImage}
             alt="Kia service centre bay"
+            title="Kia service centre bay"
             fill
             priority
             sizes="100vw"

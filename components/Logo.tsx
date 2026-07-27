@@ -9,6 +9,7 @@ export default function Logo({ className = "", dark = false }: { className?: str
       <Image
         src={dark ? "/brand/kia-logo-white.png" : "/brand/kia-logo-black.png"}
         alt="Kia"
+        title="Kia"
         width={561}
         height={131}
         priority

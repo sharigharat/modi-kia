@@ -32,6 +32,7 @@ export default function Blogs() {
                   <Image
                     src={post.image}
                     alt={post.title}
+                    title={post.title}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"

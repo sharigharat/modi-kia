@@ -145,6 +145,7 @@ export default function TestDrive() {
             <Image
               src={testDriveImage}
               alt="Kia Syros interior and dashboard"
+              title="Kia Syros interior and dashboard"
               fill
               sizes="(max-width: 1024px) 100vw, 45vw"
               className="object-cover"

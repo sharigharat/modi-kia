@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { cars, formatINR, type CarCategory } from "@/lib/data";
+import { BACK_CATEGORY_KEY } from "@/lib/carsBackCategory";
 import { ArrowRight } from "./icons";
 import Reveal from "./Reveal";
 
@@ -13,6 +14,25 @@ const categories: ("All" | CarCategory)[] = [
   "SUV",
   "MPV",
   "Electric",
+];
+
+// The raw `cars` order groups SUVs, then MPVs, then Electrics, so the first
+// couple of rows of the "All" tab already show most of the MPV lineup —
+// switching to the MPV tab then looks like barely anything changed.
+// Interleaving categories here (All tab only) keeps every category mostly
+// below the fold except one representative, so every tab switch reveals a
+// visibly different set of cards.
+const ALL_TAB_ORDER = [
+  "seltos",
+  "carens-clavis-ev",
+  "sonet",
+  "ev6",
+  "syros",
+  "carens",
+  "carens-clavis",
+  "ev9",
+  "carnival",
+  "syros-ev",
 ];
 
 function CarsGridInner() {
@@ -25,14 +45,26 @@ function CarsGridInner() {
       ? initial
       : "All";
 
+  // Tab clicks only update local state — the /cars URL itself stays clean.
+  // The current category still travels along on each car's "Explore" link
+  // (see below) so the back arrow on that car's page can return to the
+  // right tab; ?category= on /cars itself is only ever set by that back
+  // link (or an external deep link), never by clicking a tab here.
   const [category, setCategory] = useState<"All" | CarCategory>(startCategory);
+  const selectCategory = (cat: "All" | CarCategory) => setCategory(cat);
   // Within a category, cars keep the same relative order as in "All" (e.g.
   // SUV is just the first three entries), so switching tabs could look like
   // nothing happened beyond a few cards disappearing. Reversing the order
   // for any non-"All" tab makes the reshuffle visually obvious.
+  const orderedAll = ALL_TAB_ORDER.map((slug) => cars.find((c) => c.slug === slug)).filter(
+    (c): c is (typeof cars)[number] => Boolean(c),
+  );
+  // Any car not accounted for in ALL_TAB_ORDER (e.g. a new model added to
+  // the lineup later) still shows up, just appended at the end.
+  const unordered = cars.filter((c) => !ALL_TAB_ORDER.includes(c.slug));
   const filtered =
     category === "All"
-      ? cars
+      ? [...orderedAll, ...unordered]
       : cars.filter((c) => c.category === category).reverse();
 
   return (
@@ -42,7 +74,7 @@ function CarsGridInner() {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setCategory(cat)}
+              onClick={() => selectCategory(cat)}
               className={`shrink-0 rounded border-b-2 px-3 py-2 text-sm font-semibold transition-colors sm:px-4 ${
                 category === cat
                   ? "border-brand text-brand"
@@ -58,12 +90,17 @@ function CarsGridInner() {
           {filtered.map((car, i) => {
             const displayName = `Kia ${car.name}`;
             return (
-              <Reveal key={car.slug} delay={(i % 3) * 90} variant="fade-up">
+              // Keyed on category + slug (not slug alone) so a car shared
+              // between tabs — e.g. "All" and "MPV" — still remounts and
+              // replays the reveal animation on every switch, instead of
+              // silently keeping its old DOM node and just jumping position.
+              <Reveal key={`${category}-${car.slug}`} delay={(i % 3) * 90} variant="fade-up">
                 <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)]">
                   <div className="relative flex h-44 items-center justify-center bg-bg-2 p-6">
                     <Image
                       src={car.image}
                       alt={car.alt}
+                      title={car.alt}
                       width={400}
                       height={150}
                       className="h-auto w-full object-contain drop-shadow-lg transition-transform duration-500 group-hover:scale-105"
@@ -85,6 +122,7 @@ function CarsGridInner() {
                     <p className="mt-1 text-xs text-faint">{car.fuel}</p>
                     <Link
                       href={`/cars/${car.slug}`}
+                      onClick={() => sessionStorage.setItem(BACK_CATEGORY_KEY, category)}
                       className="group/link mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors after:absolute after:inset-0 after:content-[''] hover:text-brand-light"
                     >
                       Explore

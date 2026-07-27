@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL, cars } from "@/lib/data";
+import { SITE_URL, cars, blogs } from "@/lib/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -57,5 +57,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    ...blogs.map((b) => ({
+      url: `${SITE_URL}/blogs/${b.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
   ];
 }

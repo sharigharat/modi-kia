@@ -8,10 +8,35 @@ import { company, formatINR } from "@/lib/data";
 import { getCarBrochure, getCarDetail } from "@/lib/car-details";
 import { carGallery } from "@/lib/carGallery";
 import type { CarDetail } from "@/lib/data";
-import { ArrowRight, Check, ChevronDown, Download } from "./icons";
+import { BACK_CATEGORY_KEY } from "@/lib/carsBackCategory";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Download } from "./icons";
 import Reveal from "./Reveal";
 import Kia360Viewer from "./Kia360Viewer";
 import TestDriveWizard from "./TestDriveWizard";
+
+// Reads the category CarsGrid stashed in sessionStorage right before the
+// user clicked through, so the back link returns to the same SUV/MPV/
+// Electric tab rather than always resetting to "All" — without putting
+// that state in either page's URL. Read in an effect (not during render)
+// since sessionStorage isn't available during the server-rendered pass.
+function BackToCarsLink() {
+  const [href, setHref] = useState("/cars");
+
+  useEffect(() => {
+    const category = sessionStorage.getItem(BACK_CATEGORY_KEY);
+    if (category && category !== "All") setHref(`/cars?category=${category}`);
+  }, []);
+
+  return (
+    <Link
+      href={href}
+      aria-label="Back to Find a Car"
+      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-sm transition-colors hover:bg-brand-light"
+    >
+      <ArrowLeft className="h-4 w-4" />
+    </Link>
+  );
+}
 
 type DetailListProps = {
   id: string;
@@ -97,6 +122,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
         <div className="container-px mx-auto max-w-[1400px]">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+            <BackToCarsLink />
             <Link href="/" className="hover:text-brand">Home</Link>
             <span className="text-faint">/</span>
             <Link href="/cars" className="hover:text-brand">Cars</Link>
@@ -170,6 +196,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
                         <Image
                           src={image.src}
                           alt={image.alt}
+                          title={image.alt}
                           fill
                           sizes="(max-width: 640px) 50vw, 33vw"
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -187,6 +214,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
                         <Image
                           src={gallery[0].src}
                           alt="View All"
+                          title="View all photos"
                           fill
                           className="object-cover opacity-40 transition-transform duration-300 group-hover:scale-105"
                         />
@@ -347,6 +375,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
                   key={gallery[galleryIndex].src}
                   src={gallery[galleryIndex].src}
                   alt={gallery[galleryIndex].alt}
+                  title={gallery[galleryIndex].alt}
                   width={1200}
                   height={800}
                   sizes="(max-width: 1024px) 100vw, 65vw"
@@ -368,6 +397,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
                       <Image
                         src={image.src}
                         alt={image.alt}
+                        title={image.alt}
                         fill
                         sizes="(max-width: 640px) 50vw, 240px"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"

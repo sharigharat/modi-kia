@@ -996,7 +996,7 @@ export const blogs: Blog[] = [
     slug: "why-the-carens-clavis-is-the-family-road-trip-mpv-to-beat",
     date: "18 Jun 2026",
     category: "Ownership",
-    title: "Why the Carens Clavis is the family road-trip MPV to beat",
+    title: "Why the Carens Clavis Suits Family Road Trips",
     image: "/showrooms/carens-clavis-blog.jpg",
     alt: "Kia Carens Clavis on a family road trip",
     excerpt:
@@ -1007,7 +1007,7 @@ export const blogs: Blog[] = [
     slug: "5-monsoon-car-care-tips-every-kia-owner-should-know",
     date: "09 Jun 2026",
     category: "Service",
-    title: "5 Monsoon Car-Care Tips Every Kia Owner Should Know",
+    title: "5 Monsoon Care Tips for Every Kia Owner",
     image: "/showrooms/monsoon-blog.jpg",
     alt: "Kia Sonet SUV in the monsoon, car-care tips",
     excerpt:
@@ -1029,7 +1029,7 @@ export const blogs: Blog[] = [
     slug: "petrol-diesel-or-turbo-which-seltos-engine-is-right-for-you",
     date: "26 May 2026",
     category: "Ownership",
-    title: "Petrol, diesel or turbo: which Seltos engine is right for you?",
+    title: "Petrol, Diesel or Turbo: Which Seltos Fits You?",
     image: "/showrooms/seltos-blog.jpg",
     alt: "Kia Seltos engine options compared",
     excerpt:
@@ -1062,7 +1062,7 @@ export const blogs: Blog[] = [
     slug: "the-carnival-limousine-is-a-luxury-mpv-right-for-your-family",
     date: "21 Apr 2026",
     category: "Models",
-    title: "Kia Carnival Limousine: Redefining luxury travel in Bhiwandi",
+    title: "Kia Carnival Limousine: Redefining Luxury Travel",
     image: "/showrooms/carnival-blog.jpg",
     alt: "Kia Carnival Limousine luxury MPV",
     excerpt:

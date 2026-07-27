@@ -109,6 +109,7 @@ export default function Kia360Viewer({
       <Image
         src={staticImage}
         alt={staticAlt}
+        title={staticAlt}
         width={1000}
         height={440}
         priority
@@ -125,6 +126,7 @@ export default function Kia360Viewer({
       <Image
         src={staticImage}
         alt={staticAlt}
+        title={staticAlt}
         width={1000}
         height={440}
         priority
@@ -154,6 +156,7 @@ export default function Kia360Viewer({
           <img
             src={exteriorFrameUrl(slug, frame, colourCode)}
             alt={`${displayName}, 360° exterior view, frame ${((frame - 1) % EXTERIOR_FRAME_COUNT) + 1} of ${EXTERIOR_FRAME_COUNT}`}
+            title={`${displayName}, 360° exterior view`}
             draggable={false}
             className="absolute inset-0 m-auto h-auto w-full object-contain drop-shadow-2xl"
           />

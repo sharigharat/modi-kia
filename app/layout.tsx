@@ -19,9 +19,9 @@ const sora = Sora({
   display: "swap",
 });
 
-const title = "New Kia Cars, Test Drives & Authorised Service in Bhiwandi & Dombivli | Modi Kia";
+const title = "New Kia Cars & Test Drives in Bhiwandi & Dombivli | Modi Kia";
 const description =
-  "Compare new Kia cars, variants, colours and prices at Modi Kia. Book a test drive, request a transparent quote or schedule authorised Kia service in Bhiwandi & Dombivli.";
+  "Compare new Kia cars, prices and variants at Modi Kia, an authorised dealer. Book a test drive or Kia service in Bhiwandi & Dombivli today.";
 
 export const viewport: Viewport = {
   width: "device-width",
