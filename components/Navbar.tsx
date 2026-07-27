@@ -102,7 +102,7 @@ export default function Navbar() {
         <Logo />
 
         {/* Desktop links */}
-        <ul ref={navRef} className="hidden items-center gap-0.5 lg:flex relative">
+        <ul ref={navRef} className="hidden items-center gap-0.5 xl:flex relative">
           <span
             className={`absolute bottom-0 h-[2px] w-8 rounded-full bg-brand ease-out ${
               enableTransition ? "transition-all duration-300" : ""
@@ -160,7 +160,7 @@ export default function Navbar() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="grid h-9 w-9 place-items-center rounded border border-border bg-bg-2 text-text lg:hidden"
+            className="grid h-9 w-9 place-items-center rounded border border-border bg-bg-2 text-text xl:hidden"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -169,7 +169,7 @@ export default function Navbar() {
 
       {/* Mobile drawer */}
       <div
-        className={`fixed inset-0 z-50 lg:hidden ${open ? "" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-50 xl:hidden ${open ? "" : "pointer-events-none"}`}
         aria-hidden={!open}
       >
         <div

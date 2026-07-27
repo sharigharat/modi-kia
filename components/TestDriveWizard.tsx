@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Image from "next/image";
-import { cars, cityOptions, cityLabels, locations, formatINR, getTomorrowDateString, type Car } from "@/lib/data";
+import { cars, cityOptions, cityLabels, locations, formatINR, getTomorrowDateString, nav, type Car } from "@/lib/data";
 import { Calendar, Check, ChevronDown, ChevronRight, X } from "./icons";
 import Reveal from "./Reveal";
 import { OtpGate, PhoneInput } from "./OtpGate";
@@ -549,33 +549,61 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
             role="dialog"
             aria-modal="true"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md rounded-lg bg-white p-8 text-center shadow-2xl sm:p-10"
+            className="relative w-full max-w-md rounded-lg bg-white p-8 shadow-2xl sm:p-10"
           >
             <button
-              onClick={() => {
-                resetAll();
-                if (onClose) onClose();
-              }}
+              onClick={() => { resetAll(); if (onClose) onClose(); }}
               className="absolute right-4 top-4 rounded-full p-2 text-faint transition-colors hover:bg-bg-2 hover:text-text"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
             </button>
-            <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand/10 text-brand">
+
+            {/* Icon */}
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand/10 text-brand">
               <Check className="h-8 w-8" />
             </span>
-            <h3 className="mt-6 font-display text-2xl font-bold text-text">
-              Test drive booked!
+
+            {/* Headline */}
+            <h3 className="mt-5 font-display text-xl font-bold text-text">
+              Thank you for your interest!
             </h3>
-            <p className="mt-2 text-muted">
-              Thank you, {name}. A Modi Kia representative will call you at{" "}
-              {mobile} shortly to confirm your{" "}
-              {selectedCar ? `Kia ${selectedCar.name}` : ""} test drive on{" "}
-              {date} ({time}) at {city}.
-            </p>
+
+            {/* Body — matches the exact wording requested */}
+            <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+              <p>
+                We thank you for showing an interest in test driving of the{" "}
+                <span className="font-semibold text-text">
+                  Kia {selectedCar?.name ?? "vehicle"}
+                </span>.
+              </p>
+              <p>
+                We assure you our representative will contact you shortly.
+              </p>
+              {/* Disclaimer */}
+              <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
+                <p className="font-semibold">Note</p>
+                <p className="mt-0.5">
+                  This is not the Test Drive confirmation. We shall check the
+                  schedule and confirm the vehicle availability.
+                </p>
+              </div>
+              <p>We appreciate your time and patience.</p>
+              <p>
+                For any further details you may contact us on{" "}
+                <a
+                  href={`tel:${nav.phone.replace(/\s/g, "")}`}
+                  className="whitespace-nowrap font-semibold text-brand hover:underline"
+                >
+                  {nav.phone}
+                </a>
+                .
+              </p>
+            </div>
+
             <button
               onClick={resetAll}
-              className="mt-6 rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-3"
+              className="mt-6 w-full rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-3"
             >
               Book another test drive
             </button>

@@ -30,10 +30,31 @@ export default function Services() {
 
         {/* Icon strip */}
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
-          {services.map((s, i) => {
+          {services.slice(0, -1).map((s, i) => {
             const Icon = iconMap[s.icon as IconName];
             return (
               <Reveal key={s.title} delay={i * 110} variant="scale-up">
+                <div className="group flex h-full flex-col items-center gap-3 rounded-lg border border-border bg-white p-6 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-brand/20 hover:shadow-[0_12px_40px_-10px_rgba(0,44,95,0.12)]">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-brand transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="text-sm font-semibold leading-snug text-text">{s.title}</h3>
+                  <p className="text-xs leading-relaxed text-muted">{s.text}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+
+          {/* Last item — col-span-2 centres it when alone in the bottom row on mobile */}
+          {services.slice(-1).map((s) => {
+            const Icon = iconMap[s.icon as IconName];
+            return (
+              <Reveal
+                key={s.title}
+                delay={(services.length - 1) * 110}
+                variant="scale-up"
+                className="col-span-2 sm:col-span-1"
+              >
                 <div className="group flex h-full flex-col items-center gap-3 rounded-lg border border-border bg-white p-6 text-center transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-brand/20 hover:shadow-[0_12px_40px_-10px_rgba(0,44,95,0.12)]">
                   <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-brand transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
                     <Icon className="h-6 w-6" />

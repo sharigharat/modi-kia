@@ -56,8 +56,26 @@ export default function ServiceBenefits() {
         </div>
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
-          {benefits.map((b, i) => (
+          {benefits.slice(0, -1).map((b, i) => (
             <Reveal key={b.title} delay={i * 100} variant="fade-up">
+              <div className="group flex h-full flex-col items-center rounded-xl bg-white p-4 text-center border border-border shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-brand/20 hover:shadow-[0_12px_40px_-10px_rgba(0,44,95,0.12)] sm:p-5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand/5 text-brand transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
+                  <b.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-sm font-bold text-text">{b.title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-muted">{b.description}</p>
+              </div>
+            </Reveal>
+          ))}
+
+          {/* Last item: spans both columns on sm so it centres in the row */}
+          {benefits.slice(-1).map((b) => (
+            <Reveal
+              key={b.title}
+              delay={(benefits.length - 1) * 100}
+              variant="fade-up"
+              className="sm:col-span-2 lg:col-span-1"
+            >
               <div className="group flex h-full flex-col items-center rounded-xl bg-white p-4 text-center border border-border shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-brand/20 hover:shadow-[0_12px_40px_-10px_rgba(0,44,95,0.12)] sm:p-5">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand/5 text-brand transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
                   <b.icon className="h-5 w-5" />
