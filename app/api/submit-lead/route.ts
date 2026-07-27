@@ -40,6 +40,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || null,
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
+        gclid: fields.gclid || null,
+        fbclid: fields.fbclid || null,
       };
       sheetPayload = {
         formType: "service",
@@ -60,6 +62,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || "",
         utm_term: fields.utm_term || "",
         utm_content: fields.utm_content || "",
+        gclid: fields.gclid || "",
+        fbclid: fields.fbclid || "",
       };
     } else if (formType === "contact") {
       tableName = "contact_us";
@@ -77,6 +81,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || null,
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
+        gclid: fields.gclid || null,
+        fbclid: fields.fbclid || null,
       };
       sheetPayload = {
         formType: "contact",
@@ -92,6 +98,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || "",
         utm_term: fields.utm_term || "",
         utm_content: fields.utm_content || "",
+        gclid: fields.gclid || "",
+        fbclid: fields.fbclid || "",
       };
     } else if (formType === "testdrive" || formType === "test_drive") {
       tableName = "test_drive";
@@ -113,6 +121,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || null,
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
+        gclid: fields.gclid || null,
+        fbclid: fields.fbclid || null,
       };
       sheetPayload = {
         formType: "testdrive",
@@ -132,6 +142,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || "",
         utm_term: fields.utm_term || "",
         utm_content: fields.utm_content || "",
+        gclid: fields.gclid || "",
+        fbclid: fields.fbclid || "",
       };
     } else if (formType === "numbercapture") {
       // Numbers only capture is handled by the verify-otp route, so just return success

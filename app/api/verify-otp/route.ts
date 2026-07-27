@@ -70,6 +70,8 @@ export async function POST(req: Request) {
         utm_campaign: fields.utm_campaign || null,
         utm_term: fields.utm_term || null,
         utm_content: fields.utm_content || null,
+        gclid: fields.gclid || null,
+        fbclid: fields.fbclid || null,
       });
 
     if (insertError) {
@@ -87,6 +89,8 @@ export async function POST(req: Request) {
       utm_campaign: fields.utm_campaign || "",
       utm_term: fields.utm_term || "",
       utm_content: fields.utm_content || "",
+      gclid: fields.gclid || "",
+      fbclid: fields.fbclid || "",
     });
 
     return NextResponse.json({ success: true, otp_verification_id: otpRow.id });

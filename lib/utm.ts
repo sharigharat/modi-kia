@@ -1,7 +1,7 @@
 export function captureUtmParams(nextSearchParams?: URLSearchParams | any) {
   if (typeof window === "undefined") return;
   const searchParams = nextSearchParams || new URLSearchParams(window.location.search);
-  const utmParams = ["utm_id", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+  const utmParams = ["utm_id", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
   const hasAny = utmParams.some((p) => searchParams.has(p));
 
   if (hasAny) {
@@ -21,6 +21,8 @@ export function getStoredUtmParams() {
     utm_campaign: "",
     utm_term: "",
     utm_content: "",
+    gclid: "",
+    fbclid: "",
   };
 
   if (typeof window === "undefined") return defaults;
