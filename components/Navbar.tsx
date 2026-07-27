@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import TestDriveWizard from "./TestDriveWizard";
+const TestDriveWizard = dynamic(() => import("./TestDriveWizard"), { ssr: false });
 import Logo from "./Logo";
 import { nav } from "@/lib/data";
 import { Phone, Menu, X } from "./icons";

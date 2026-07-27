@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { nav } from "@/lib/data";
 import { Calendar, WhatsApp, Phone, ChevronRight, ChevronLeft } from "./icons";
-import TestDriveWizard from "./TestDriveWizard";
+import dynamic from "next/dynamic";
+const TestDriveWizard = dynamic(() => import("./TestDriveWizard"), { ssr: false });
 
 const WHATSAPP_URL = "https://wa.me/918879020761?text=Hello,%20I%20want%20to%20book%20a%20test%20drive";
 
