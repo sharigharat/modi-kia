@@ -4,3 +4,10 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# NEXT_PUBLIC_* variables are intentionally inlined into client-side JS by
+# Next.js at build time — that is their entire purpose. Netlify's secrets
+# scanner flags them as "exposed" even though they are not secrets.
+# SECRETS_SCAN_OMIT_KEYS tells the scanner to skip this specific key.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_GOOGLE_SCRIPT_URL"
