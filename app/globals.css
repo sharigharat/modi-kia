@@ -86,9 +86,17 @@ select {
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Enable smooth scrolling for in-page anchor links (when the user clicks and focuses a link),
+   but keep it off by default so Next.js route transitions instantly snap to the top
+   instead of animating and landing partway down the new page. */
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
