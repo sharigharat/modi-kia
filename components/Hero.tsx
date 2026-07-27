@@ -6,16 +6,17 @@ import { heroSlides } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./icons";
 
 const AUTOPLAY = 6500;
-// Matches the md breakpoint where the hero grows tall enough (see the
-// h-[...] classes below) that hiddenOnMobile slides stop getting cropped.
-const MOBILE_QUERY = "(max-width: 767px)";
+// Matches the lg breakpoint (1024px) where the hero finally hits 100vh.
+// Below this (phones and iPads/tablets), the aggressive aspect ratio crop
+// cuts off certain cars like the Carens, so we hide them.
+const HIDE_SLIDES_QUERY = "(max-width: 1023px)";
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
   // Default to the full desktop list for SSR/first paint, then narrow it
-  // down on mobile once we can read the real viewport — see effect below.
-  const [isMobile, setIsMobile] = useState(false);
-  const slides = isMobile ? heroSlides.filter((s) => !s.hiddenOnMobile) : heroSlides;
+  // down on small screens once we can read the real viewport — see effect below.
+  const [hideProblemSlides, setHideProblemSlides] = useState(false);
+  const slides = hideProblemSlides ? heroSlides.filter((s) => !s.hiddenOnMobile) : heroSlides;
   const count = slides.length;
   const active = slides[index] ?? slides[0];
   // Per-slide duration for the progress dot: AUTOPLAY for photos, the
@@ -30,8 +31,8 @@ export default function Hero() {
   );
 
   useEffect(() => {
-    const mql = window.matchMedia(MOBILE_QUERY);
-    const apply = () => setIsMobile(mql.matches);
+    const mql = window.matchMedia(HIDE_SLIDES_QUERY);
+    const apply = () => setHideProblemSlides(mql.matches);
     apply();
     mql.addEventListener("change", apply);
     return () => mql.removeEventListener("change", apply);
