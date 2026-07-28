@@ -14,7 +14,7 @@ const actions = [
   { label: "Call Us", href: `tel:${nav.phone.replace(/\s/g, "")}`, Icon: Phone },
 ];
 
-export default function FloatingActions() {
+export default function FloatingActions({ hideMobileBar = false }: { hideMobileBar?: boolean } = {}) {
   const [isOpen, setIsOpen] = useState(true);
   const [showTestDrive, setShowTestDrive] = useState(false);
 
@@ -84,30 +84,32 @@ export default function FloatingActions() {
       </div>
 
       {/* Mobile / Tablet sticky bottom bar — hidden on md+ (where the side panel shows) */}
-      <div className="fixed bottom-0 inset-x-0 z-40 flex md:hidden border-t border-white/10 shadow-[0_-4px_24px_rgba(0,44,95,0.18)]">
-        {/* Call Us */}
-        <a
-          href={`tel:${nav.phone.replace(/\s/g, "")}`}
-          aria-label="Call Modi Kia"
-          className="flex flex-1 items-center justify-center gap-2.5 bg-white py-3.5 text-brand transition-colors active:bg-brand/5"
-        >
-          <Phone className="h-5 w-5 shrink-0" />
-          <span className="text-sm font-semibold tracking-wide">Call Us</span>
-        </a>
+      {!hideMobileBar && (
+        <div className="fixed bottom-0 inset-x-0 z-40 flex md:hidden border-t border-white/10 shadow-[0_-4px_24px_rgba(0,44,95,0.18)]">
+          {/* Call Us */}
+          <a
+            href={`tel:${nav.phone.replace(/\s/g, "")}`}
+            aria-label="Call Modi Kia"
+            className="flex flex-1 items-center justify-center gap-2.5 bg-white py-3.5 text-brand transition-colors active:bg-brand/5"
+          >
+            <Phone className="h-5 w-5 shrink-0" />
+            <span className="text-sm font-semibold tracking-wide">Call Us</span>
+          </a>
 
-        {/* Divider */}
-        <div className="w-px bg-border" />
+          {/* Divider */}
+          <div className="w-px bg-border" />
 
-        {/* Book a Test Drive */}
-        <button
-          onClick={() => setShowTestDrive(true)}
-          aria-label="Book a Test Drive"
-          className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
-        >
-          <Calendar className="h-5 w-5 shrink-0" />
-          <span className="text-sm font-semibold tracking-wide">Book a Test Drive</span>
-        </button>
-      </div>
+          {/* Book a Test Drive */}
+          <button
+            onClick={() => setShowTestDrive(true)}
+            aria-label="Book a Test Drive"
+            className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+          >
+            <Calendar className="h-5 w-5 shrink-0" />
+            <span className="text-sm font-semibold tracking-wide">Book a Test Drive</span>
+          </button>
+        </div>
+      )}
 
       {/* Test Drive fullscreen overlay (triggered from mobile bar) */}
       {showTestDrive && (

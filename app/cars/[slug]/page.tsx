@@ -135,7 +135,7 @@ export default async function CarDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(carPageSchema).replace(/</g, "\\u003c") }}
       />
       <Navbar />
-      <FloatingActions />
+      <FloatingActions hideMobileBar />
       <main style={{ marginTop: "60px" }}>
         <CarDetailClient car={car} />
       </main>

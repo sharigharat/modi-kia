@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Car } from "@/lib/data";
-import { company, formatINR } from "@/lib/data";
+import { company, formatINR, nav } from "@/lib/data";
 import { getCarBrochure, getCarDetail } from "@/lib/car-details";
 import { carGallery } from "@/lib/carGallery";
 import type { CarDetail } from "@/lib/data";
 import { BACK_CATEGORY_KEY } from "@/lib/carsBackCategory";
-import { ArrowLeft, ArrowRight, Check, ChevronDown, Download } from "./icons";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Download, Phone, Calendar } from "./icons";
 import Reveal from "./Reveal";
 import Kia360Viewer from "./Kia360Viewer";
 import TestDriveWizard from "./TestDriveWizard";
@@ -475,6 +475,42 @@ export default function CarDetailClient({ car }: { car: Car }) {
           </div>
         </div>
       )}
+
+      {/* Mobile sticky bottom bar for individual car */}
+      <div className="fixed bottom-0 inset-x-0 z-40 flex md:hidden border-t border-border bg-white shadow-[0_-4px_24px_rgba(0,44,95,0.18)]">
+        {/* Call Us */}
+        <a
+          href={`tel:${nav.phone.replace(/\s/g, "")}`}
+          aria-label="Call Modi Kia"
+          className="flex flex-1 items-center justify-center gap-2.5 bg-white py-3.5 text-brand transition-colors active:bg-brand/5"
+        >
+          <Phone className="h-5 w-5 shrink-0" />
+          <span className="text-sm font-semibold tracking-wide">Call Us</span>
+        </a>
+
+        {/* Divider */}
+        <div className="w-px bg-border" />
+
+        {/* Book a Test Drive / Enquire Now */}
+        {car.slug === "syros-ev" ? (
+          <Link
+            href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV"
+            aria-label="Enquire Now"
+            className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+          >
+            <span className="text-sm font-semibold tracking-wide">Enquire Now</span>
+          </Link>
+        ) : (
+          <button
+            onClick={() => setShowTestDrive(true)}
+            aria-label={`Book a Test Drive for ${displayName}`}
+            className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+          >
+            <Calendar className="h-5 w-5 shrink-0" />
+            <span className="text-sm font-semibold tracking-wide">Book a Test Drive</span>
+          </button>
+        )}
+      </div>
     </>
   );
 }
