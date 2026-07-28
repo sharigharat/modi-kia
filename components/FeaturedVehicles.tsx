@@ -241,7 +241,6 @@ export default function FeaturedVehicles() {
                       title={car.alt}
                       width={800}
                       height={295}
-                      priority
                       draggable={false}
                       className="h-auto w-full object-contain drop-shadow-xl"
                     />

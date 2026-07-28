@@ -123,7 +123,9 @@ export default function Hero() {
               title={caption}
               fill
               priority={i === 0}
-              sizes="100vw"
+              // Cap at 1920px to prevent Next.js from upscaling the source image to 3840px
+              // on wide desktop screens (which drastically inflates file size and ruins LCP).
+              sizes="(max-width: 1920px) 100vw, 1920px"
               className={`object-cover transition-opacity duration-[900ms] ease-out ${objectPositionClass}`}
               style={{ opacity: i === index ? 1 : 0 }}
             />
