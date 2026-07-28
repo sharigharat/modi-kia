@@ -99,6 +99,7 @@ export default function HomeSeoContent() {
               <Reveal key={group.name} delay={i * 90} variant="fade-up">
                 <Link
                   href={group.href}
+                  aria-label={`Explore ${group.name} models`}
                   className="group flex h-full flex-col rounded-lg border border-border bg-white p-6 shadow-[0_2px_12px_0_rgba(10,10,10,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(10,10,10,0.12)]"
                 >
                   <h3 className="font-display text-lg font-bold text-text">

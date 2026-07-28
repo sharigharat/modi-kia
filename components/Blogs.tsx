@@ -101,7 +101,7 @@ export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] })
               href="/blogs"
               className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-light"
             >
-              View All
+              View All Blogs
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
@@ -138,7 +138,8 @@ export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] })
                   href={`/blogs/${post.slug}`}
                   className="group/link mt-4 inline-flex items-center gap-1 text-xs font-semibold text-brand transition-colors hover:text-brand-light"
                 >
-                  Read more
+                  <span className="sr-only">Read more about {post.title}</span>
+                  <span aria-hidden="true">Read more</span>
                   <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-0.5" />
                 </Link>
               </div>
@@ -190,7 +191,8 @@ export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] })
                     href={`/blogs/${post.slug}`}
                     className="group/link mt-4 inline-flex items-center gap-1 text-xs font-semibold text-brand transition-colors hover:text-brand-light"
                   >
-                    Read more
+                    <span className="sr-only">Read more about {post.title}</span>
+                    <span aria-hidden="true">Read more</span>
                     <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-0.5" />
                   </Link>
                 </div>
