@@ -1134,7 +1134,17 @@ export const popularCars = popularNames
 
 export const testDriveImage = "/showrooms/home-test-drive.jpg";
 export const serviceHeroImage = "/showrooms/kia-service-hero.webp";
-export const carModels = cars.map((c) => c.name).filter((name) => name !== "Syros EV");
+export const carModels = [
+  "Seltos",
+  "Sonet",
+  "Syros",
+  "Carens",
+  "Carens Clavis",
+  "Carens Clavis EV",
+  "Carnival",
+  "EV6",
+  "EV9",
+];
 export const cityOptions = ["Bhiwandi", "Dombivli"];
 /* Friendlier display labels for cityOptions in location dropdowns, while
    the underlying value stays the plain city name used for matching

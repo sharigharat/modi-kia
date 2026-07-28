@@ -3,7 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { cars, formatINR, type CarCategory } from "@/lib/data";
+import { formatINR, type CarCategory } from "@/lib/data";
+
+export type FeaturedCar = {
+  name: string;
+  slug: string;
+  image: string;
+  alt: string;
+  category: CarCategory;
+  priceINR: number;
+  engine: string;
+  transmission: string;
+};
 import { ChevronLeft, ChevronRight } from "./icons";
 import Reveal from "./Reveal";
 
@@ -14,7 +25,7 @@ const categories: ("All" | CarCategory)[] = [
   "Electric",
 ];
 
-export default function FeaturedVehicles() {
+export default function FeaturedVehicles({ initialCars }: { initialCars: FeaturedCar[] }) {
   const [category, setCategory] = useState<"All" | CarCategory>("All");
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -35,18 +46,18 @@ export default function FeaturedVehicles() {
   const filtered = (() => {
     if (category === "SUV") {
       return [
-        ...cars.filter((c) => c.category === "SUV" && c.name === "Syros"),
-        ...cars.filter((c) => c.category === "SUV" && c.name !== "Syros"),
+        ...initialCars.filter((c) => c.category === "SUV" && c.name === "Syros"),
+        ...initialCars.filter((c) => c.category === "SUV" && c.name !== "Syros"),
       ];
     }
     if (category !== "All") {
-      return cars.filter((c) => c.category === category);
+      return initialCars.filter((c) => c.category === category);
     }
     
     // For "All", interleave SUVs with other cars so the list looks visually 
     // mixed and distinctly different from the "SUV" tab.
-    const suvs = cars.filter(c => c.category === "SUV");
-    const others = cars.filter(c => c.category !== "SUV");
+    const suvs = initialCars.filter(c => c.category === "SUV");
+    const others = initialCars.filter(c => c.category !== "SUV");
     const interleaved = [];
     const max = Math.max(suvs.length, others.length);
     for (let i = 0; i < max; i++) {
@@ -288,12 +299,16 @@ export default function FeaturedVehicles() {
               aria-selected={i === index}
               aria-label={`Go to Kia ${car.name}`}
               onClick={() => setIndex(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === index
-                  ? "w-5 h-2 bg-brand"
-                  : "w-2 h-2 bg-border hover:bg-muted/50"
-              }`}
-            />
+              className="p-2 -m-2"
+            >
+              <div
+                className={`rounded-full transition-all duration-300 ${
+                  i === index
+                    ? "w-5 h-2 bg-brand"
+                    : "w-2 h-2 bg-border hover:bg-muted/50"
+                }`}
+              />
+            </button>
           ))}
         </div>
 

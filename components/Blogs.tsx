@@ -3,13 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { blogs } from "@/lib/data";
 import { ArrowRight, ChevronLeft, ChevronRight } from "./icons";
 import Reveal from "./Reveal";
 
-const POSTS = blogs.slice(0, 4);
+export type BlogSummary = {
+  slug: string;
+  image: string;
+  title: string;
+  category: string;
+  date: string;
+};
 
-export default function Blogs() {
+export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [atStart, setAtStart] = useState(true);
@@ -32,7 +37,7 @@ export default function Blogs() {
   const scrollToIndex = useCallback((i: number) => {
     const track = trackRef.current;
     if (!track) return;
-    const clamped = Math.max(0, Math.min(POSTS.length - 1, i));
+    const clamped = Math.max(0, Math.min(initialPosts.length - 1, i));
     const card = track.children[clamped] as HTMLElement | undefined;
     if (card) track.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
   }, []);
@@ -51,7 +56,7 @@ export default function Blogs() {
       const end = track.scrollLeft >= maxScroll - 1;
       setAtStart(start);
       setAtEnd(end);
-      setActive(end ? POSTS.length - 1 : start ? 0 : leftmostIndex());
+      setActive(end ? initialPosts.length - 1 : start ? 0 : leftmostIndex());
     };
     sync();
     track.addEventListener("scroll", sync, { passive: true });
@@ -78,7 +83,7 @@ export default function Blogs() {
                 aria-label="Previous blog post"
                 onClick={() => go(-1)}
                 disabled={atStart}
-                className="grid h-9 w-9 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+                className="grid h-11 w-11 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
@@ -86,7 +91,7 @@ export default function Blogs() {
                 aria-label="Next blog post"
                 onClick={() => go(1)}
                 disabled={atEnd}
-                className="grid h-9 w-9 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+                className="grid h-11 w-11 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
@@ -107,7 +112,7 @@ export default function Blogs() {
           ref={trackRef}
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {POSTS.map((post) => (
+          {initialPosts.map((post) => (
             <article
               key={post.title}
               className="group flex w-[78vw] shrink-0 snap-start flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)] sm:w-[320px]"
@@ -143,23 +148,25 @@ export default function Blogs() {
 
         {/* Dot indicators — mobile/tablet only */}
         <div className="mt-4 flex justify-center gap-2 lg:hidden">
-          {POSTS.map((post, i) => (
+          {initialPosts.map((post, i) => (
             <button
               key={post.title}
               aria-label={`Go to blog ${i + 1}`}
               onClick={() => scrollToIndex(i)}
-              className="h-1.5 rounded-full transition-all"
-              style={{
-                width: i === active ? 24 : 8,
-                background: i === active ? "var(--brand)" : "#c8cfd9",
-              }}
-            />
+              className="p-2 -m-2"
+            >
+              <div
+                className={`rounded-full transition-all ${
+                  active === i ? "bg-brand w-6 h-1.5" : "bg-[#c8cfd9] w-2 h-1.5"
+                }`}
+              />
+            </button>
           ))}
         </div>
 
         {/* Desktop — 4-column grid (hidden below lg) */}
         <div className="hidden grid-cols-4 gap-5 lg:grid">
-          {POSTS.map((post, i) => (
+          {initialPosts.map((post, i) => (
             <Reveal key={post.title} delay={i * 70}>
               <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)]">
                 <div className="relative aspect-[16/10] overflow-hidden">

@@ -56,7 +56,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Follow Modi Kia on ${label}`}
-                  className="grid h-9 w-9 place-items-center rounded border border-white/15 text-white/60 transition-all hover:border-white/40 hover:text-white"
+                  className="grid h-11 w-11 place-items-center rounded border border-white/15 text-white/60 transition-all hover:border-white/40 hover:text-white"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -66,13 +66,13 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h4 className="text-sm font-semibold text-white">Quick Links</h4>
-            <ul className="mt-4 space-y-3">
+            <h2 className="text-sm font-semibold text-white">Quick Links</h2>
+            <ul className="mt-4 space-y-1">
               {quickLinks.map((l) => (
                 <li key={l.label}>
                   <Link
                     href={l.href}
-                    className="text-sm text-white/60 transition-colors hover:text-white"
+                    className="block py-2 text-sm text-white/60 transition-colors hover:text-white"
                   >
                     {l.label}
                   </Link>
@@ -83,13 +83,13 @@ export default function Footer() {
 
           {/* Popular cars */}
           <div>
-            <h4 className="text-sm font-semibold text-white">Popular Cars</h4>
-            <ul className="mt-4 space-y-3">
+            <h2 className="text-sm font-semibold text-white">Popular Cars</h2>
+            <ul className="mt-4 space-y-1">
               {popularCars.map((c) => (
                 <li key={c.name}>
                   <Link
                     href={`/cars/${c.slug}`}
-                    className="text-sm text-white/60 transition-colors hover:text-white"
+                    className="block py-2 text-sm text-white/60 transition-colors hover:text-white"
                   >
                     Kia {c.name}
                   </Link>
@@ -100,13 +100,13 @@ export default function Footer() {
 
           {/* Service links */}
           <div>
-            <h4 className="text-sm font-semibold text-white">Service</h4>
-            <ul className="mt-4 space-y-3">
+            <h2 className="text-sm font-semibold text-white">Service</h2>
+            <ul className="mt-4 space-y-1">
               {serviceLinks.map((s) => (
                 <li key={s.label}>
                   <Link
                     href={s.href}
-                    className="text-sm text-white/60 transition-colors hover:text-white"
+                    className="block py-2 text-sm text-white/60 transition-colors hover:text-white"
                   >
                     {s.label}
                   </Link>
@@ -117,7 +117,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="col-span-2 lg:col-span-1">
-            <h4 className="text-sm font-semibold text-white">Contact Us</h4>
+            <h2 className="text-sm font-semibold text-white">Contact Us</h2>
             <ul className="mt-4 space-y-4 text-sm text-white/60">
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
@@ -131,7 +131,7 @@ export default function Footer() {
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
                 <a
                   href={`tel:${nav.phone.replace(/\s/g, "")}`}
-                  className="transition-colors hover:text-white"
+                  className="block py-1 transition-colors hover:text-white"
                 >
                   {nav.phone}
                 </a>
@@ -140,7 +140,7 @@ export default function Footer() {
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
                 <a
                   href={`mailto:${company.email}`}
-                  className="transition-colors hover:text-white"
+                  className="block py-1 transition-colors hover:text-white"
                 >
                   {company.email}
                 </a>
@@ -157,8 +157,8 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-3 pt-8 text-xs text-white/40 sm:flex-row">
           <p>© 2026 Modi Kia. All Rights Reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy-policy" className="transition-colors hover:text-white">Privacy Policy</Link>
-            <Link href="/terms-and-conditions" className="transition-colors hover:text-white">Terms &amp; Conditions</Link>
+            <Link href="/privacy-policy" className="block py-2 transition-colors hover:text-white">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="block py-2 transition-colors hover:text-white">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>

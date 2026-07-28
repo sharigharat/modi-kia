@@ -161,7 +161,7 @@ export default function Navbar() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="grid h-9 w-9 place-items-center rounded border border-border bg-bg-2 text-text xl:hidden"
+            className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text xl:hidden"
           >
             <Menu className="h-5 w-5" />
           </button>

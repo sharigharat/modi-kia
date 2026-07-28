@@ -30,6 +30,25 @@ export default function Hero() {
     [count],
   );
 
+  const touchStartX = useRef<number | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const distance = touchStartX.current - e.changedTouches[0].clientX;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      go(1); // Swiped left
+    } else if (distance < -minSwipeDistance) {
+      go(-1); // Swiped right
+    }
+    touchStartX.current = null;
+  };
+
   useEffect(() => {
     const mql = window.matchMedia(HIDE_SLIDES_QUERY);
     const apply = () => setHideProblemSlides(mql.matches);
@@ -86,7 +105,11 @@ export default function Hero() {
           tablets keeps the crop gentle enough that the whole car (and
           its number plate) stays in frame — see mobileObjectPositionClass
           on the one slide that still needed a per-image nudge. */}
-      <div className="relative w-full h-[70vh] sm:h-[75vh] md:h-[85vh] lg:h-[calc(100vh-60px)]">
+      <div 
+        className="relative w-full h-[70vh] sm:h-[75vh] md:h-[85vh] lg:h-[calc(100vh-60px)]"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
         {slides.map((slide, i) => {
           const caption = `${slide.model}, ${slide.headline} ${slide.sub} Starting at ₹${slide.price} Lakh*`;
           const objectPositionClass = slide.mobileObjectPositionClass
@@ -167,14 +190,14 @@ export default function Hero() {
         <button
           aria-label="Previous slide"
           onClick={() => go(-1)}
-          className="absolute left-4 top-[30%] lg:top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur transition-colors hover:bg-black/40"
+          className="absolute left-4 top-[30%] lg:top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur transition-colors hover:bg-black/40"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <button
           aria-label="Next slide"
           onClick={() => go(1)}
-          className="absolute right-4 top-[30%] lg:top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur transition-colors hover:bg-black/40"
+          className="absolute right-4 top-[30%] lg:top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur transition-colors hover:bg-black/40"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -186,20 +209,24 @@ export default function Hero() {
               key={s.model + i}
               aria-label={`Show slide ${i + 1} of ${count}`}
               onClick={() => setIndex(i)}
-              className="h-1.5 overflow-hidden rounded-full bg-white/30 transition-all"
-              style={{ width: i === index ? 32 : 10 }}
+              className="p-2 -m-2"
             >
-              <span
-                key={i === index ? `${index}-${videoDurationMs ?? "pending"}` : i}
-                className="block h-full rounded-full bg-white"
-                style={{
-                  width: i === index ? "100%" : "0%",
-                  transition:
-                    i === index
-                      ? `width ${s.video ? videoDurationMs ?? AUTOPLAY : AUTOPLAY}ms linear`
-                      : "none",
-                }}
-              />
+              <div
+                className="h-1.5 overflow-hidden rounded-full bg-white/30 transition-all"
+                style={{ width: i === index ? 32 : 10 }}
+              >
+                <span
+                  key={i === index ? `${index}-${videoDurationMs ?? "pending"}` : i}
+                  className="block h-full rounded-full bg-white"
+                  style={{
+                    width: i === index ? "100%" : "0%",
+                    transition:
+                      i === index
+                        ? `width ${s.video ? videoDurationMs ?? AUTOPLAY : AUTOPLAY}ms linear`
+                        : "none",
+                  }}
+                />
+              </div>
             </button>
           ))}
         </div>

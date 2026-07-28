@@ -117,7 +117,7 @@ export default function FloatingActions() {
             <button
               onClick={() => setShowTestDrive(false)}
               aria-label="Close"
-              className="grid h-9 w-9 place-items-center rounded border border-border bg-bg-2 text-text"
+              className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text"
             >
               <span aria-hidden="true" className="text-lg font-bold leading-none">&times;</span>
             </button>

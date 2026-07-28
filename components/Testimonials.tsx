@@ -84,7 +84,7 @@ export default function Testimonials() {
               aria-label="Previous review"
               onClick={() => go(-1)}
               disabled={atStart}
-              className="grid h-10 w-10 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-bg-2 disabled:hover:text-text"
+              className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-bg-2 disabled:hover:text-text"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -92,7 +92,7 @@ export default function Testimonials() {
               aria-label="Next review"
               onClick={() => go(1)}
               disabled={atEnd}
-              className="grid h-10 w-10 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-bg-2 disabled:hover:text-text"
+              className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-bg-2 disabled:hover:text-text"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -142,12 +142,14 @@ export default function Testimonials() {
               key={t.name}
               aria-label={`Go to review ${i + 1}`}
               onClick={() => scrollToIndex(i)}
-              className="h-1.5 rounded-full transition-all"
-              style={{
-                width: i === active ? 24 : 8,
-                background: i === active ? "var(--brand)" : "#c8cfd9",
-              }}
-            />
+              className="p-2 -m-2"
+            >
+              <div
+                className={`rounded-full transition-all ${
+                  active === i ? "bg-brand w-6 h-1.5" : "bg-[#c8cfd9] w-2 h-1.5"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

@@ -47,7 +47,7 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-full items-center gap-1.5 rounded-l border-r border-border bg-bg-2 px-3 py-3 text-sm font-semibold text-text outline-none transition-colors hover:bg-bg-3 focus:bg-bg-3 min-w-[85px] max-w-[100px]"
+        className="flex h-full items-center gap-1 sm:gap-1.5 rounded-l border-r border-border bg-bg-2 px-2 sm:px-3 py-3 text-sm font-semibold text-text outline-none transition-colors hover:bg-bg-3 focus:bg-bg-3 min-w-[70px] sm:min-w-[85px] max-w-[90px] sm:max-w-[100px]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={`/flags/${selected.name.toLowerCase()}.png`} alt={selected.name} className="w-5 h-[15px] object-cover rounded-[2px]" />
@@ -306,7 +306,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                               setError("");
                             }
                           }}
-                          className="w-full rounded-r bg-transparent px-4 py-3 text-sm text-text outline-none placeholder:text-faint"
+                          className="min-w-0 flex-1 rounded-r bg-transparent px-3 sm:px-4 py-3 text-sm text-text outline-none placeholder:text-faint"
                           ref={step === "phone" ? inputRef : null}
                         />
                       </div>

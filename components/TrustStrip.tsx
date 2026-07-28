@@ -43,7 +43,7 @@ export default function TrustStrip() {
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
                   <Icon className="h-5 w-5" />
                 </span>
-                <h3 className="text-sm font-semibold text-text">{item.title}</h3>
+                <h2 className="text-sm font-semibold text-text">{item.title}</h2>
                 <p className="text-xs leading-relaxed text-muted">{item.text}</p>
               </Reveal>
             );
@@ -63,7 +63,7 @@ export default function TrustStrip() {
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
                   <Icon className="h-5 w-5" />
                 </span>
-                <h3 className="text-sm font-semibold text-text">{LAST_ITEM.title}</h3>
+                <h2 className="text-sm font-semibold text-text">{LAST_ITEM.title}</h2>
                 <p className="text-xs leading-relaxed text-muted">{LAST_ITEM.text}</p>
               </Reveal>
             );
