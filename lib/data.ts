@@ -442,7 +442,9 @@ const slugify = (n: string) => n.toLowerCase().replace(/\s+/g, "-");
    out rather than shown with a swatch that doesn't actually change the
    photo. */
 const withColour = (baseImage: string, code: string) =>
-  baseImage.replace(/\/exterior\/([^\/]+)\/([^\/]+)\//, `/exterior/$1/${code}/`);
+  baseImage
+    .replace(/\/exterior\/([^\/]+)\/([^\/]+)\//, `/exterior/$1/${code}/`)
+    .replace("-normalized", "");
 
 const kiaColours = (
   baseImage: string,
