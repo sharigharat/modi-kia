@@ -146,8 +146,10 @@ export default function FeaturedVehicles({ initialCars }: { initialCars: Feature
   // clear each other at that max width; the section's own max-w-[1400px]
   // is what bounds stageWidth, so this can't grow unbounded on ultra-wide
   // monitors either.
-  const step = stageWidth * 0.38;
-  const centreGapBoost = 30;
+  // the actual multiplier dynamically increases on narrow screens to prevent overlap
+  const isMobile = stageWidth < 640;
+  const step = stageWidth * (isMobile ? 0.48 : 0.38);
+  const centreGapBoost = isMobile ? 40 : 30;
 
   return (
     <section

@@ -257,6 +257,13 @@ export default function Navbar() {
         <div className="fixed inset-0 z-[100] bg-white overflow-y-auto text-left">
           <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-white px-6 py-4 shadow-sm">
             <span className="font-display text-xl font-bold text-text">Book a Test Drive</span>
+            <button
+              onClick={() => setShowTestDrive(false)}
+              aria-label="Close"
+              className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text"
+            >
+              <span aria-hidden="true" className="text-lg font-bold leading-none">&times;</span>
+            </button>
           </div>
           <div className="py-10 lg:py-16">
             <div className="container-px mx-auto max-w-[1400px]">
