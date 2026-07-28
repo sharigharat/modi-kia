@@ -25,6 +25,22 @@ export default function Hero() {
   const [videoDurationMs, setVideoDurationMs] = useState<number | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
+  // Keep a set of slides that have been mounted so they stay in the DOM
+  // for smooth fading, but avoid downloading all of them on initial load.
+  const [mountedSlides, setMountedSlides] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    setMountedSlides((prev) => {
+      const next = new Set(prev);
+      const prevIndex = (index - 1 + count) % count;
+      const nextIndex = (index + 1) % count;
+      if (slides[index]) next.add(slides[index].model);
+      if (slides[prevIndex]) next.add(slides[prevIndex].model);
+      if (slides[nextIndex]) next.add(slides[nextIndex].model);
+      return next;
+    });
+  }, [index, count, slides]);
+
   const go = useCallback(
     (dir: number) => setIndex((i) => (i + dir + count) % count),
     [count],
@@ -111,6 +127,10 @@ export default function Hero() {
         onTouchEnd={onTouchEnd}
       >
         {slides.map((slide, i) => {
+          // Always mount the first slide for LCP, plus any currently or previously active/adjacent slides
+          const isMounted = i === 0 || mountedSlides.has(slide.model);
+          if (!isMounted) return null;
+
           const caption = `${slide.model}, ${slide.headline} ${slide.sub} Starting at ₹${slide.price} Lakh*`;
           const objectPositionClass = slide.mobileObjectPositionClass
             ? `${slide.mobileObjectPositionClass} md:object-center`
