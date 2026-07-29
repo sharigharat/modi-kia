@@ -157,23 +157,7 @@ export default function ContactUs() {
                   <p className="text-sm font-semibold text-text">{company.hours}</p>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
-                  <MapPin className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="text-xs font-medium text-muted">Pincode</p>
-                  <div className="text-sm font-semibold text-text">
-                    {locations
-                      .filter((l) => l.type === "Showroom")
-                      .map((l) => {
-                        const pin = l.address.match(/\b\d{6}\b/)?.[0];
-                        return `${l.city} - ${pin}`;
-                      })
-                      .join("  ·  ")}
-                  </div>
-                </div>
-              </li>
+
             </ul>
           </Reveal>
 
