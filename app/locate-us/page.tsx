@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
@@ -77,7 +78,9 @@ export default function LocateUsPage() {
           </div>
         </section>
 
-        <LocateUs />
+        <Suspense fallback={null}>
+          <LocateUs />
+        </Suspense>
       </main>
       <Footer />
     </>

@@ -48,7 +48,7 @@ export default function Locations() {
               href="/locate-us"
               className="group hidden items-center gap-2 rounded border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/20 sm:inline-flex"
             >
-              View All Locations
+              View on Map
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <div className="flex gap-2">
@@ -101,7 +101,7 @@ export default function Locations() {
               variant="slide-left"
               className="w-[240px] shrink-0 snap-start sm:w-[260px]"
             >
-              <article className="group relative flex h-64 flex-col justify-end overflow-hidden rounded-lg">
+              <Link href={`/locate-us?loc=${encodeURIComponent(loc.name)}`} className="group relative flex h-64 flex-col justify-end overflow-hidden rounded-lg block">
                 <Image
                   src={loc.image}
                   alt={`Modi ${loc.name} in ${loc.city}`}
@@ -122,15 +122,14 @@ export default function Locations() {
                     <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-white/60" />
                     <span>{loc.city}</span>
                   </p>
-                  <a
-                    href={`tel:${loc.phone.replace(/[^0-9+]/g, "")}`}
-                    className="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-white/90 transition-colors hover:text-white"
+                  <div
+                    className="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-white/90 transition-colors group-hover:text-white"
                   >
                     <Phone className="h-3 w-3 shrink-0 text-white/60" />
                     {loc.phone}
-                  </a>
+                  </div>
                 </div>
-              </article>
+              </Link>
             </Reveal>
           ))}
         </div>
@@ -140,7 +139,7 @@ export default function Locations() {
           href="/locate-us"
           className="group mt-6 inline-flex items-center gap-2 rounded border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/20 sm:hidden"
         >
-          View All Locations
+          View on Map
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>

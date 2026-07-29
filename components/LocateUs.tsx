@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { locations, type Location } from "@/lib/data";
 import { ArrowRight, MapPin, Phone } from "./icons";
 import Reveal from "./Reveal";
@@ -14,12 +15,43 @@ const mapEmbedSrc = (query: string) =>
   `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed&z=13`;
 
 export default function LocateUs() {
-  const [activeType, setActiveType] = useState<Location["type"]>("Showroom");
+  const searchParams = useSearchParams();
+  const locParam = searchParams.get("loc");
+
+  const initialLoc = useMemo(() => {
+    if (locParam) {
+      return locations.find(l => l.name === locParam) || locations[0];
+    }
+    return locations[0];
+  }, [locParam]);
+
+  const [activeType, setActiveType] = useState<Location["type"]>(initialLoc?.type || "Showroom");
+  
   const filteredLocations = useMemo(
     () => locations.filter((location) => location.type === activeType),
     [activeType],
   );
-  const [selectedName, setSelectedName] = useState(filteredLocations[0]?.name ?? "");
+
+  const [selectedName, setSelectedName] = useState(
+    initialLoc && initialLoc.type === activeType ? initialLoc.name : filteredLocations[0]?.name ?? ""
+  );
+
+  useEffect(() => {
+    if (locParam) {
+      const targetLoc = locations.find(l => l.name === locParam);
+      if (targetLoc) {
+        setActiveType(targetLoc.type);
+        setSelectedName(targetLoc.name);
+        setTimeout(() => {
+          const el = document.getElementById("locate-us");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+            window.history.replaceState(null, "", "/locate-us");
+          }
+        }, 100);
+      }
+    }
+  }, [locParam]);
 
   const selectedLocation =
     filteredLocations.find((location) => location.name === selectedName) ??

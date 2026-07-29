@@ -130,7 +130,7 @@ export const company = {
   // Locations and service area sourced from gautammodigroup.com — the
   // group's official business directory. Pimpalghar (Bhiwandi) houses both
   // the showroom and the service department; Dombivli is a sales showroom.
-  areasServed: ["Bhiwandi", "Dombivli"],
+  areasServed: ["Bhiwandi", "Dombivli", "Ambernath"],
   // NOTE: Modi Kia does not publish sales/service volume figures the way
   // modihyundai.co.in did. These are placeholder figures only — replace
   // with real numbers (or remove the stat block) before launch.
@@ -1125,6 +1125,17 @@ export const locations: Location[] = [
       "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
     embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
+  {
+    name: "Kia Car Showroom Ambernath",
+    type: "Showroom",
+    city: "Ambernath",
+    address: "Shop No. 7, RAGA'S TIMES SQUARE, Showroom at, 8 & 9, Industrial Area, Kansai, Ambernath, Maharashtra 421501",
+    phone: "88790 20761",
+    image: "/locations/kia-ambarnath-showroom.jpg",
+    mapsUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Ambernath&travelmode=driving",
+    embedQuery: "Modi Kia, Ambernath",
+  },
 ];
 
 /* Curated subset for the footer's "Popular Cars" column, so it doesn't
@@ -1147,12 +1158,13 @@ export const carModels = [
   "EV6",
   "EV9",
 ];
-export const cityOptions = ["Bhiwandi", "Dombivli"];
+export const cityOptions = ["Bhiwandi", "Dombivli", "Ambernath"];
 /* Friendlier display labels for cityOptions in location dropdowns, while
    the underlying value stays the plain city name used for matching
    against `locations[].city` and for schema addressLocality. */
 export const cityLabels: Record<string, string> = {
   Bhiwandi: "Kalyan-Bhiwandi Road",
   Dombivli: "Dombivli",
+  Ambernath: "Ambernath",
 };
 export const serviceCentres = locations.filter((l) => l.type === "Service Centre");
