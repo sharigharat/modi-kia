@@ -43,6 +43,7 @@ export default function ContactUs() {
         mobile: globalPhone,
         email: emailValue,
         subject: formData.get("subject") as string,
+        pincode: formData.get("pincode") as string,
         message: message,
         pageSource: window.location.pathname,
         otp_verification_id: globalOtpId,
@@ -110,10 +111,10 @@ export default function ContactUs() {
                 <div>
                   <p className="text-xs font-medium text-muted">Call Us</p>
                   <a
-                    href={`tel:${company.phoneE164}`}
+                    href="tel:+918238089600"
                     className="text-sm font-semibold text-text transition-colors hover:text-brand"
                   >
-                    {company.phone}
+                    82380 89600
                   </a>
                 </div>
               </li>
@@ -140,10 +141,10 @@ export default function ContactUs() {
                 <div>
                   <p className="text-xs font-medium text-muted">Email Us</p>
                   <a
-                    href={`mailto:${company.email}`}
+                    href="mailto:marketing@modikia.com"
                     className="text-sm font-semibold text-text transition-colors hover:text-brand"
                   >
-                    {company.email}
+                    marketing@modikia.com
                   </a>
                 </div>
               </li>
@@ -216,11 +217,12 @@ export default function ContactUs() {
                   </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">
-                    Your Email <span className="font-normal text-faint">(optional)</span>
+                    Your Email
                   </span>
                   <input
                     type="email"
                     name="email"
+                    required
                     placeholder="you@example.com"
                     onChange={() => setEmailError("")}
                     className={`${fieldBase} ${emailError ? "border-red-400 focus:border-red-400" : ""}`}
@@ -228,6 +230,18 @@ export default function ContactUs() {
                   {emailError && (
                     <p className="mt-1.5 text-xs font-medium text-red-600">{emailError}</p>
                   )}
+                </label>
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-semibold text-muted">Pincode</span>
+                  <input
+                    type="text"
+                    name="pincode"
+                    required
+                    pattern="[0-9]{6}"
+                    title="Please enter a valid 6-digit pincode"
+                    placeholder="e.g. 400001"
+                    className={fieldBase}
+                  />
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Subject</span>

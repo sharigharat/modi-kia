@@ -107,7 +107,7 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
     if (step === 1) return Boolean(carSlug);
     if (step === 2) return Boolean(city && date && time);
     if (step === 3)
-      return Boolean(name.trim() && isValidMobile && (email.trim() ? isValidEmail : true) && isValidPincode);
+      return Boolean(name.trim() && isValidMobile && isValidEmail && isValidPincode);
     return true;
   };
 
@@ -121,7 +121,7 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
         ? "Enter a valid 10-digit mobile number."
         : "",
     email:
-      attempted && step === 3 && email.trim() && !isValidEmail
+      attempted && step === 3 && !isValidEmail
         ? "Enter a valid email address (e.g. you@example.com)." : "",
     pincode:
       attempted && step === 3 && !isValidPincode ? "Enter a valid 6-digit pincode." : "",
@@ -485,10 +485,11 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">
-                    Email <span className="font-normal text-faint">(optional)</span>
+                    Email
                   </span>
                   <input
                     type="email"
+                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"

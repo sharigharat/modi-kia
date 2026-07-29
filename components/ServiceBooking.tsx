@@ -252,11 +252,12 @@ export default function ServiceBooking() {
 
               <label className="block">
                 <span className="mb-1.5 block text-xs font-semibold text-muted">
-                  Email <span className="font-normal text-faint">(optional)</span>
+                  Email
                 </span>
                 <input
                   type="email"
                   name="email"
+                  required
                   placeholder="you@example.com"
                   onChange={() => setEmailError("")}
                   className={`${fieldBase} ${emailError ? "border-red-400 focus:border-red-400" : ""}`}
@@ -268,12 +269,12 @@ export default function ServiceBooking() {
 
               <label className="block">
                 <span className="mb-1.5 block text-xs font-semibold text-muted">
-                  Registration Number{" "}
-                  <span className="font-normal text-faint">(optional)</span>
+                  Registration Number
                 </span>
                 <input
                   type="text"
                   name="registrationNumber"
+                  required
                   maxLength={12}
                   placeholder="e.g. MH04AB1234"
                   className={fieldBase}

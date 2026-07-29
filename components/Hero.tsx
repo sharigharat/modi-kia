@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { heroSlides } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./icons";
 
@@ -25,20 +25,17 @@ export default function Hero() {
   const [videoDurationMs, setVideoDurationMs] = useState<number | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Keep a set of slides that have been mounted so they stay in the DOM
-  // for smooth fading, but avoid downloading all of them on initial load.
-  const [mountedSlides, setMountedSlides] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setMountedSlides((prev) => {
-      const next = new Set(prev);
-      const prevIndex = (index - 1 + count) % count;
-      const nextIndex = (index + 1) % count;
-      if (slides[index]) next.add(slides[index].model);
-      if (slides[prevIndex]) next.add(slides[prevIndex].model);
-      if (slides[nextIndex]) next.add(slides[nextIndex].model);
-      return next;
-    });
+  // Keep only the active slide and its immediate neighbours mounted. Keeping
+  // every previously visited video alive makes decoded media accumulate as
+  // the carousel runs.
+  const mountedSlides = useMemo(() => {
+    const next = new Set<string>();
+    const prevIndex = (index - 1 + count) % count;
+    const nextIndex = (index + 1) % count;
+    if (slides[index]) next.add(slides[index].model);
+    if (slides[prevIndex]) next.add(slides[prevIndex].model);
+    if (slides[nextIndex]) next.add(slides[nextIndex].model);
+    return next;
   }, [index, count, slides]);
 
   const go = useCallback(

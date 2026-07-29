@@ -46,6 +46,8 @@ export default function Navbar() {
   const hasMounted = useRef(false);
 
   useEffect(() => {
+    const animationFrames: number[] = [];
+
     function updateIndicator() {
       if (!navRef.current) return;
       const activeItem = navRef.current.querySelector("li[data-active='true']") as HTMLElement;
@@ -60,13 +62,13 @@ export default function Navbar() {
             setIndicatorStyle({ left: parseFloat(prevLeft), opacity: 1 });
             
             // Allow the browser to paint the snapped position, then glide to the new tab
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
+            animationFrames.push(requestAnimationFrame(() => {
+              animationFrames.push(requestAnimationFrame(() => {
                 setEnableTransition(true);
                 setIndicatorStyle({ left: newLeft, opacity: 1 });
                 sessionStorage.setItem("navIndicatorLeft", newLeft.toString());
-              });
-            });
+              }));
+            }));
           } else {
             // First ever visit, just snap to the current active tab
             setIndicatorStyle({ left: newLeft, opacity: 1 });
@@ -89,6 +91,7 @@ export default function Navbar() {
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener("resize", updateIndicator);
+      animationFrames.forEach(cancelAnimationFrame);
     };
   }, [pathname]);
 

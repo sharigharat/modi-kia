@@ -59,20 +59,26 @@ export default function Kia360Viewer({
     return () => ro.disconnect();
   }, []);
 
-  // Warm the frame cache once 3D mode is opened, so dragging doesn't
-  // stall on network fetches mid-rotation.
+  // Warm a small window around the current frame. Loading all 72 frames at
+  // once causes a large decoded-image spike, especially after colour changes.
   useEffect(() => {
     if (mode !== "3d" || view !== "exterior") return;
-    let cancelled = false;
-    for (let i = 1; i <= EXTERIOR_FRAME_COUNT; i++) {
-      if (cancelled) break;
-      const url = exteriorFrameUrl(slug, i, colourCode);
+    const images: HTMLImageElement[] = [];
+    const initialFrame = 8; // zero-based equivalent of the initial frame state (9)
+    for (let offset = -4; offset <= 4; offset++) {
+      const nearbyFrame = ((initialFrame + offset + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT) + 1;
+      const url = exteriorFrameUrl(slug, nearbyFrame, colourCode);
       if (!url) continue;
       const img = new window.Image();
       img.src = url;
+      images.push(img);
     }
     return () => {
-      cancelled = true;
+      images.forEach((img) => {
+        img.onload = null;
+        img.onerror = null;
+        img.src = "";
+      });
     };
   }, [mode, view, slug, colourCode]);
 

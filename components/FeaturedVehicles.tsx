@@ -30,6 +30,7 @@ export default function FeaturedVehicles({ initialCars }: { initialCars: Feature
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
+  const transitionFrameRef = useRef<number | null>(null);
   const [stageWidth, setStageWidth] = useState(1000);
 
   // ── Touch / swipe state ──────────────────────────────────────
@@ -73,10 +74,24 @@ export default function FeaturedVehicles({ initialCars }: { initialCars: Feature
     setCategory(nextCategory);
     setIndex(0);
     // Re-enable transitions after the instant swap is painted
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setIsTransitioning(false));
+    if (transitionFrameRef.current !== null) {
+      cancelAnimationFrame(transitionFrameRef.current);
+    }
+    transitionFrameRef.current = requestAnimationFrame(() => {
+      transitionFrameRef.current = requestAnimationFrame(() => {
+        transitionFrameRef.current = null;
+        setIsTransitioning(false);
+      });
     });
   };
+
+  useEffect(() => {
+    return () => {
+      if (transitionFrameRef.current !== null) {
+        cancelAnimationFrame(transitionFrameRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const el = stageRef.current;

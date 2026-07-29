@@ -182,7 +182,7 @@ export const groupInfo = {
   brands: ["Kia", "Hyundai", "Audi", "Mahindra", "MG"],
   ventures: [
     { name: "Krishiv Insurance", text: "Insurance solutions for vehicle owners." },
-    { name: "ThinkKarz", text: "The group's premium pre-owned vehicle brand." },
+    { name: "ThinKarz", text: "The group's premium pre-owned vehicle brand." },
   ],
   values: [
     {

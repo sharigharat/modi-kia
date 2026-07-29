@@ -15,9 +15,11 @@ export default function Logo({ className = "", dark = false }: { className?: str
         priority
         className="h-6 w-auto shrink-0"
       />
-      <span className="leading-none">
-        <span className={`block font-display text-sm font-extrabold tracking-tight ${dark ? "text-white" : "text-brand"}`}>
-          MODI KIA
+      <span className="leading-none flex flex-col gap-0.5">
+        <span className="flex flex-col">
+          <span className={`block font-sans text-sm font-bold tracking-normal ${dark ? "text-white" : "text-black"}`}>
+            Modi Kia
+          </span>
         </span>
         <span className={`block text-[9px] font-medium uppercase tracking-[0.28em] ${dark ? "text-white/60" : "text-muted"}`}>
           Movement that Inspires

@@ -212,16 +212,17 @@ export default function TestDrive() {
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block text-xs font-semibold text-muted">
-                    Email <span className="font-normal text-faint">(optional)</span>
-                  </span>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    onChange={() => setEmailError("")}
-                    className={`${fieldBase} ${emailError ? "border-red-400 focus:border-red-400" : ""}`}
-                  />
+                    <span className="mb-1.5 block text-xs font-semibold text-muted">
+                      Email
+                    </span>
+                    <input
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                      onChange={() => setEmailError("")}
+                      className={`${fieldBase} ${emailError ? "border-red-400 focus:border-red-400" : ""}`}
+                    />
                   {emailError && (
                     <p className="mt-1.5 text-xs font-medium text-red-600">{emailError}</p>
                   )}
