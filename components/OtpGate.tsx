@@ -106,6 +106,8 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
   const [phone, setPhone] = useState(initialNumber);
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+  const [resendTimer, setResendTimer] = useState(0);
+  const [resendCount, setResendCount] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Hydrate unverified phone number from sessionStorage (for when users click T&C and navigate back)
@@ -157,6 +159,41 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (step === "otp" && resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [step, resendTimer]);
+
+  const handleResendOtp = async () => {
+    if (resendCount >= 3) return;
+    setIsLoading(true);
+    setError("");
+    try {
+      const formattedPhone = `${countryCode}${phone}`;
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone_number: formattedPhone, form_source: formSource }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setError(data.error || "Failed to resend OTP");
+        return;
+      }
+      setResendTimer(30);
+      setResendCount(c => c + 1);
+    } catch (err) {
+      setError("An error occurred while resending OTP.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handlePhoneSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (countryCode === "+91") {
@@ -187,6 +224,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
         return;
       }
       setStep("otp");
+      setResendTimer(30);
     } catch (err) {
       setError("An error occurred. Please try again.");
     } finally {
@@ -333,7 +371,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                   <h3 className="font-display text-lg font-bold text-text">Enter OTP</h3>
                   <p className="mt-1.5 text-xs text-muted">
                     We've sent a code to <strong>{countryCode} {phone}</strong>.{" "}
-                    <button type="button" onClick={() => setStep("phone")} className="text-brand hover:underline">
+                    <button type="button" onClick={() => { setStep("phone"); setResendCount(0); }} className="text-brand hover:underline">
                       Change
                     </button>
                   </p>
@@ -363,6 +401,23 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                       {isLoading ? "Verifying..." : "Verify & Proceed"}
                       {!isLoading && <Check className="h-4 w-4" />}
                     </button>
+                    
+                    <div className="mt-4 text-center text-xs">
+                      {resendTimer > 0 ? (
+                        <span className="text-muted">Resend OTP in {resendTimer}s</span>
+                      ) : resendCount >= 3 ? (
+                        <span className="text-red-600">Maximum resend attempts reached.</span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handleResendOtp}
+                          disabled={isLoading}
+                          className="text-brand font-medium hover:underline disabled:opacity-50 disabled:hover:no-underline"
+                        >
+                          Resend OTP
+                        </button>
+                      )}
+                    </div>
                   </form>
                 </>
               )}
