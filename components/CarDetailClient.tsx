@@ -304,7 +304,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
         </div>
       </section>
 
-      <nav aria-label="Car detail sections" className="sticky top-[60px] z-20 border-y border-border bg-white/95 backdrop-blur">
+      <nav aria-label="Car detail sections" className="sticky top-[60px] z-40 border-y border-border bg-white/95 backdrop-blur shadow-sm">
         <div className="container-px mx-auto flex max-w-[1400px] items-center justify-between py-3">
           <div className="flex gap-2 overflow-x-auto">
             {navigation.map(([id, label]) => <a key={id} href={`#${id}`} className="shrink-0 rounded px-4 py-2 text-sm font-semibold text-muted transition-colors hover:bg-bg-2 hover:text-brand">{label}</a>)}
@@ -477,37 +477,37 @@ export default function CarDetailClient({ car }: { car: Car }) {
       )}
 
       {/* Mobile sticky bottom bar for individual car */}
-      <div className="fixed bottom-0 inset-x-0 z-40 flex md:hidden border-t border-border bg-white shadow-[0_-4px_24px_rgba(0,44,95,0.18)]">
+      <div className="fixed -bottom-2 inset-x-0 z-[60] flex h-[64px] w-full items-stretch border-t border-border bg-white pb-2 shadow-[0_-4px_24px_rgba(0,0,0,0.15)] md:hidden">
         {/* Call Us */}
         <a
           href={`tel:${nav.phone.replace(/\s/g, "")}`}
           aria-label="Call Modi Kia"
-          className="flex flex-1 items-center justify-center gap-2.5 bg-white py-3.5 text-brand transition-colors active:bg-brand/5"
+          className="flex flex-1 items-center justify-center gap-2 bg-white px-3 py-2.5 text-brand transition-colors active:bg-bg-2"
         >
-          <Phone className="h-5 w-5 shrink-0" />
-          <span className="text-sm font-semibold tracking-wide">Call Us</span>
+          <Phone className="h-5 w-5 shrink-0 text-brand" />
+          <span className="text-sm font-semibold tracking-wide text-brand whitespace-nowrap">Call Us</span>
         </a>
 
         {/* Divider */}
-        <div className="w-px bg-border" />
+        <div className="h-full w-px bg-border shrink-0" />
 
         {/* Book a Test Drive / Enquire Now */}
         {car.slug === "syros-ev" ? (
           <Link
             href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV"
             aria-label="Enquire Now"
-            className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+            className="flex flex-1 items-center justify-center gap-2 bg-brand px-3 py-2.5 text-white transition-colors active:bg-brand-light"
           >
-            <span className="text-sm font-semibold tracking-wide">Enquire Now</span>
+            <span className="text-sm font-semibold tracking-wide text-white whitespace-nowrap">Enquire Now</span>
           </Link>
         ) : (
           <button
             onClick={() => setShowTestDrive(true)}
             aria-label={`Book a Test Drive for ${displayName}`}
-            className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+            className="flex flex-1 items-center justify-center gap-2 bg-brand px-3 py-2.5 text-white transition-colors active:bg-brand-light"
           >
-            <Calendar className="h-5 w-5 shrink-0" />
-            <span className="text-sm font-semibold tracking-wide">Book a Test Drive</span>
+            <Calendar className="h-5 w-5 shrink-0 text-white" />
+            <span className="text-sm font-semibold tracking-wide text-white whitespace-nowrap">Book a Test Drive</span>
           </button>
         )}
       </div>

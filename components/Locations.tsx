@@ -33,25 +33,47 @@ export default function Locations() {
     <section id="locations" className="scroll-mt-24 bg-brand py-14 lg:py-20">
       <div className="container-px mx-auto max-w-[1400px]">
         {/* Header */}
-        <Reveal className="mb-6 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+        <Reveal className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-              Find Modi Kia {tab === "Showroom" ? "Showroom" : "Service Centre"} in Bhiwandi &amp; Dombivli
+              Find Modi Kia {tab === "Showroom" ? "Showrooms" : "Service Centre"} in Bhiwandi &amp; Dombivli
             </h2>
             <p className="mt-2 text-sm text-white/70">
-              Our {tab === "Showroom" ? "showroom" : "service department"} on the
+              Our {tab === "Showroom" ? "showrooms" : "service department"} on the
               Kalyan-Bhiwandi Road.
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-3">
-            <Link
-              href="/locate-us"
-              className="group hidden items-center gap-2 rounded border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/20 sm:inline-flex"
-            >
-              View on Map
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <div className="flex gap-2">
+          <Link
+            href="/locate-us"
+            className="group hidden items-center gap-2 rounded border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/20 sm:inline-flex shrink-0"
+          >
+            View on Map
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </Reveal>
+
+        {/* Type tabs & Navigation arrows (positioned right above the cards) */}
+        <Reveal className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex gap-2">
+            {tabs.map((t) => (
+              <button
+                key={t.type}
+                type="button"
+                onClick={() => setTab(t.type)}
+                aria-pressed={tab === t.type}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  tab === t.type
+                    ? "bg-white text-brand"
+                    : "bg-white/10 text-white/70 hover:bg-white/20"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {items.length > 1 && (
+            <div className="flex gap-2 shrink-0">
               <button
                 aria-label="Previous location"
                 onClick={() => scroll("left")}
@@ -67,26 +89,7 @@ export default function Locations() {
                 <ChevronRight className="h-5 w-5" />
               </button>
             </div>
-          </div>
-        </Reveal>
-
-        {/* Type tabs */}
-        <Reveal className="mb-6 flex gap-2">
-          {tabs.map((t) => (
-            <button
-              key={t.type}
-              type="button"
-              onClick={() => setTab(t.type)}
-              aria-pressed={tab === t.type}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                tab === t.type
-                  ? "bg-white text-brand"
-                  : "bg-white/10 text-white/70 hover:bg-white/20"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+          )}
         </Reveal>
 
         {/* Scrollable location row */}

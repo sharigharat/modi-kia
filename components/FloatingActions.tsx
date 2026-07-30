@@ -26,7 +26,7 @@ export default function FloatingActions({ hideMobileBar = false }: { hideMobileB
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Modi Kia on WhatsApp"
-        className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 active:scale-95 md:bottom-5 md:right-5"
+        className="fixed bottom-20 right-4 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_20px_rgba(37,211,102,0.45)] transition-transform hover:scale-110 active:scale-95 md:bottom-6 md:right-6"
       >
         <WhatsApp className="h-7 w-7" />
       </a>
@@ -85,28 +85,28 @@ export default function FloatingActions({ hideMobileBar = false }: { hideMobileB
 
       {/* Mobile / Tablet sticky bottom bar — hidden on md+ (where the side panel shows) */}
       {!hideMobileBar && (
-        <div className="fixed bottom-0 inset-x-0 z-40 flex md:hidden border-t border-white/10 shadow-[0_-4px_24px_rgba(0,44,95,0.18)]">
+        <div className="fixed -bottom-2 inset-x-0 z-[60] flex h-[64px] w-full items-stretch border-t border-border bg-white pb-2 shadow-[0_-4px_24px_rgba(0,0,0,0.15)] md:hidden">
           {/* Call Us */}
           <a
             href={`tel:${nav.phone.replace(/\s/g, "")}`}
             aria-label="Call Modi Kia"
-            className="flex flex-1 items-center justify-center gap-2.5 bg-white py-3.5 text-brand transition-colors active:bg-brand/5"
+            className="flex flex-1 items-center justify-center gap-2 bg-white px-3 py-2.5 text-brand transition-colors active:bg-bg-2"
           >
-            <Phone className="h-5 w-5 shrink-0" />
-            <span className="text-sm font-semibold tracking-wide">Call Us</span>
+            <Phone className="h-5 w-5 shrink-0 text-brand" />
+            <span className="text-sm font-semibold tracking-wide text-brand whitespace-nowrap">Call Us</span>
           </a>
 
           {/* Divider */}
-          <div className="w-px bg-border" />
+          <div className="h-full w-px bg-border shrink-0" />
 
           {/* Book a Test Drive */}
           <button
             onClick={() => setShowTestDrive(true)}
             aria-label="Book a Test Drive"
-            className="flex flex-1 items-center justify-center gap-2.5 bg-brand py-3.5 text-white transition-colors active:bg-brand-light"
+            className="flex flex-1 items-center justify-center gap-2 bg-brand px-3 py-2.5 text-white transition-colors active:bg-brand-light"
           >
-            <Calendar className="h-5 w-5 shrink-0" />
-            <span className="text-sm font-semibold tracking-wide">Book a Test Drive</span>
+            <Calendar className="h-5 w-5 shrink-0 text-white" />
+            <span className="text-sm font-semibold tracking-wide text-white whitespace-nowrap">Book a Test Drive</span>
           </button>
         </div>
       )}

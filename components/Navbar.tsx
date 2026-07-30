@@ -102,7 +102,7 @@ export default function Navbar() {
       }`}
     >
       {/* Main nav */}
-      <nav className="container-px mx-auto flex h-[60px] max-w-[1400px] items-center justify-between">
+      <nav className="container-px mx-auto flex h-[60px] max-w-[1400px] items-center justify-between gap-2">
         <Logo />
 
         {/* Desktop links */}
@@ -164,9 +164,9 @@ export default function Navbar() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded border border-border bg-bg-2 text-text xl:hidden"
+            className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded border border-border bg-bg-2 text-brand-deep xl:hidden transition-colors hover:bg-bg-3"
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
         </div>
       </nav>

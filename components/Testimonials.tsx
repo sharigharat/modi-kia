@@ -9,12 +9,11 @@ import Reveal from "./Reveal";
 export default function Testimonials() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false);
 
-  /* Index of the left-most card currently snapped into view. The track is
-     `position: relative`, so each card's offsetLeft is measured from the
-     track's content origin and equals the scrollLeft needed to align it. */
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+
+  /* Index of the left-most card currently snapped into view. */
   const leftmostIndex = useCallback(() => {
     const track = trackRef.current;
     if (!track) return 0;
@@ -34,27 +33,42 @@ export default function Testimonials() {
   const scrollToIndex = useCallback((i: number) => {
     const track = trackRef.current;
     if (!track) return;
-    const clamped = Math.max(0, Math.min(testimonials.length - 1, i));
-    const card = track.children[clamped] as HTMLElement | undefined;
+    const count = testimonials.length;
+    const targetIndex = ((i % count) + count) % count;
+    const card = track.children[targetIndex] as HTMLElement | undefined;
     if (card) track.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
   }, []);
 
   const go = useCallback(
-    (dir: number) => scrollToIndex(leftmostIndex() + dir),
+    (dir: number) => {
+      const count = testimonials.length;
+      const current = leftmostIndex();
+      let next = current + dir;
+      if (next < 0) next = count - 1;
+      if (next >= count) next = 0;
+      scrollToIndex(next);
+    },
     [leftmostIndex, scrollToIndex],
   );
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)) {
+      go(dx < 0 ? 1 : -1);
+    }
+  };
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
     const sync = () => {
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      const start = track.scrollLeft <= 1;
-      const end = track.scrollLeft >= maxScroll - 1;
-      setAtStart(start);
-      setAtEnd(end);
-      // Keep the dots honest at the extremes even when several cards share the view.
-      setActive(end ? testimonials.length - 1 : start ? 0 : leftmostIndex());
+      setActive(leftmostIndex());
     };
     sync();
     track.addEventListener("scroll", sync, { passive: true });
@@ -68,40 +82,40 @@ export default function Testimonials() {
   return (
     <section className="bg-white py-14 lg:py-20">
       <div className="container-px mx-auto max-w-[1400px]">
-        {/* Header */}
-        <Reveal className="mb-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-          <div>
+        {/* Header — Arrow buttons positioned on the right side on all screen sizes */}
+        <Reveal className="mb-8 flex items-end justify-between gap-4 sm:mb-10 sm:items-center">
+          <div className="max-w-2xl">
             <h2 className="font-display text-2xl font-bold text-text sm:text-3xl">
               What Our Customers Say
             </h2>
-            <p className="mt-3 text-sm text-muted">
+            <p className="mt-2 text-sm text-muted">
               <span className="font-semibold text-text">{company.stats.satisfaction} customer satisfaction</span>{" "}
               across {company.stats.carsSold} Kia cars sold and {company.stats.servicesDone} services completed.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2">
             <button
               aria-label="Previous review"
               onClick={() => go(-1)}
-              disabled={atStart}
-              className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-bg-2 disabled:hover:text-text"
+              className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               aria-label="Next review"
               onClick={() => go(1)}
-              disabled={atEnd}
-              className="grid h-11 w-11 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-bg-2 disabled:hover:text-text"
+              className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded border border-border bg-bg-2 text-text transition-colors hover:bg-bg-3 hover:text-brand"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>
         </Reveal>
 
-        {/* Cards */}
+        {/* Cards — Touch handlers added for touchscreen infinite swipe */}
         <div
           ref={trackRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className="relative flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {testimonials.map((t) => (

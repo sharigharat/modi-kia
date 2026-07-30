@@ -25,7 +25,7 @@ export default function FAQ({
   const rest = words.join(" ");
 
   return (
-    <section id={id} className="scroll-mt-24 bg-bg-2 py-14 lg:py-20">
+    <section id={id} className="scroll-mt-24 bg-bg-2 pt-6 pb-14 lg:pt-8 lg:pb-20">
       <div className="container-px mx-auto max-w-[1400px]">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           {/* Left: heading */}

@@ -116,9 +116,24 @@ export const Network = (p: IconProps) => (
   </svg>
 );
 
-export const Rupee = (p: IconProps) => (
-  <svg {...base} {...p}>
-    <path d="M6 3h12M6 8h12M6 13c8 0 8 8 0 8h-1M6 13h6M9 13c4 0 4-5 0-5" />
+export const Rupee = ({ className, ...p }: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    stroke="none"
+    className={className ?? "h-6 w-6"}
+    {...p}
+  >
+    <text
+      x="12"
+      y="17.5"
+      textAnchor="middle"
+      fontSize="18"
+      fontWeight="700"
+      fontFamily="system-ui, -apple-system, sans-serif"
+    >
+      ₹
+    </text>
   </svg>
 );
 
