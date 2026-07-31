@@ -1071,6 +1071,94 @@ export const blogs: Blog[] = [
       "First-class rear seats, 33 ADAS features and a whisper-quiet cabin. We look at who the Carnival Limousine is really built for.",
     readTime: "5 min read",
   },
+  {
+    slug: "sonet-gtx-plus-vs-htx-variant-comparison",
+    date: "12 Apr 2026",
+    category: "Models",
+    title: "Sonet GTX+ vs HTX: Which variant gives maximum value?",
+    image: "/showrooms/sonet-blog.jpg",
+    alt: "Kia Sonet GTX+ compact SUV",
+    excerpt:
+      "Comparing features, Bose audio, sunroof, and safety tech between Sonet HTX and GTX+ to help you make an informed buying decision.",
+    readTime: "5 min read",
+  },
+  {
+    slug: "top-7-features-in-new-kia-seltos-adas-suite",
+    date: "05 Apr 2026",
+    category: "Ownership",
+    title: "Top 7 Features in the New Kia Seltos ADAS Suite",
+    image: "/showrooms/seltos-blog.jpg",
+    alt: "Kia Seltos ADAS safety features",
+    excerpt:
+      "From Autonomous Emergency Braking to Smart Cruise Control, how Kia's Level 2 ADAS keeps your highway drives safe and effortless.",
+    readTime: "6 min read",
+  },
+  {
+    slug: "essential-highway-driving-tips-for-kia-owners",
+    date: "28 Mar 2026",
+    category: "Ownership",
+    title: "10 Essential Highway Checklist Items for Your Kia",
+    image: "/showrooms/carens-clavis-blog.jpg",
+    alt: "Kia Carens highway driving trip",
+    excerpt:
+      "Crucial tyre pressure, fluid level, lighting, and cruise control tips before embarking on your next intercity road trip.",
+    readTime: "5 min read",
+  },
+  {
+    slug: "kia-syros-interior-space-and-family-comfort",
+    date: "19 Mar 2026",
+    category: "Models",
+    title: "Kia Syros Interior Space & Comfort: A Family Review",
+    image: "/showrooms/seltos-blog.jpg",
+    alt: "Kia Syros interior and seating space",
+    excerpt:
+      "We evaluate legroom, boot space, rear AC vents, and child seat mounts in the all-new Kia Syros sub-4m SUV.",
+    readTime: "4 min read",
+  },
+  {
+    slug: "understanding-ev-battery-longevity-and-fast-charging",
+    date: "10 Mar 2026",
+    category: "Electric",
+    title: "EV Battery Longevity: Maximizing Your Kia EV's Health",
+    image: "/showrooms/ev-mobility-blog.jpg",
+    alt: "Kia EV6 battery fast charging",
+    excerpt:
+      "Best practices for daily 80% charging limits, battery pre-conditioning, and maintaining maximum range over years of ownership.",
+    readTime: "7 min read",
+  },
+  {
+    slug: "why-wheel-alignment-and-balancing-saves-kia-tyres",
+    date: "01 Mar 2026",
+    category: "Service",
+    title: "Why Wheel Alignment & Balancing Saves Your Kia Tyres",
+    image: "/showrooms/service-blog.jpg",
+    alt: "Kia service technician checking tyre alignment",
+    excerpt:
+      "Uneven tyre wear can reduce tyre life by 40%. Learn when to schedule alignment and balancing at Modi Kia service centres.",
+    readTime: "4 min read",
+  },
+  {
+    slug: "kia-carens-6-seater-vs-7-seater-layout-comparison",
+    date: "22 Feb 2026",
+    category: "Models",
+    title: "Kia Carens 6-Seater vs 7-Seater: Which Layout Suits You?",
+    image: "/showrooms/carens-clavis-blog.jpg",
+    alt: "Kia Carens 6-seater captain chairs layout",
+    excerpt:
+      "Comparing middle-row captain seats vs 3-seater bench layouts for family comfort, child seats, and luggage space.",
+    readTime: "5 min read",
+  },
+  {
+    slug: "kia-connect-smart-features-elevate-daily-driving",
+    date: "15 Feb 2026",
+    category: "Ownership",
+    title: "How Kia Connect Telematics Elevates Daily Ownership",
+    image: "/showrooms/home-charging-blog.png",
+    alt: "Kia Connect mobile app remote engine start",
+    excerpt:
+      "Remote AC control, geo-fencing, live car tracking, and stolen vehicle immobilization explained for new Kia owners.",
+    readTime: "6 min read",
+  },
 ];
 
 export type Location = {

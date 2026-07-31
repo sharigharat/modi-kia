@@ -10,9 +10,12 @@ import Reveal from "./Reveal";
 const categories = ["All", "Models", "Ownership", "Service", "Electric"] as const;
 type CategoryFilter = (typeof categories)[number];
 
+const ITEMS_PER_PAGE = 6;
+
 export default function BlogsPageClient() {
   const [category, setCategory] = useState<CategoryFilter>("All");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const isSearching = Boolean(search.trim());
 
@@ -44,6 +47,24 @@ export default function BlogsPageClient() {
     ? categoryFiltered.length === 0
     : grid.length === 0;
 
+  const totalPages = Math.ceil(grid.length / ITEMS_PER_PAGE);
+  const paginatedGrid = grid.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleCategoryChange = (cat: CategoryFilter) => {
+    setCategory(cat);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    document.getElementById("blog-grid")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <>
       {/* Search bar */}
@@ -68,7 +89,7 @@ export default function BlogsPageClient() {
               <input
                 type="text"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder='Search articles (e.g. "Seltos", "EV", "service")'
                 className="w-full rounded-lg border border-border bg-white py-2.5 pl-10 pr-10 text-sm text-text placeholder:text-faint transition-colors focus:border-brand/50 focus:outline-none focus:ring-1 focus:ring-brand/20"
               />
@@ -76,8 +97,8 @@ export default function BlogsPageClient() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSearch("");
-                    setCategory("All");
+                    handleSearchChange("");
+                    handleCategoryChange("All");
                   }}
                   aria-label="Clear search"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-text"
@@ -122,7 +143,7 @@ export default function BlogsPageClient() {
               {categories.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => setCategory(cat)}
+                  onClick={() => handleCategoryChange(cat)}
                   aria-pressed={category === cat}
                   className={`shrink-0 rounded border-b-2 px-3 py-2 text-sm font-semibold transition-colors sm:px-4 ${
                     category === cat
@@ -185,7 +206,7 @@ export default function BlogsPageClient() {
       )}
 
       {/* Card grid */}
-      <section className="bg-white py-8 lg:py-10">
+      <section id="blog-grid" className="scroll-mt-20 bg-white py-8 lg:py-10">
         <div className="container-px mx-auto max-w-[1400px]">
           {noResults ? (
             <p className="py-10 text-center text-sm text-muted">
@@ -194,43 +215,93 @@ export default function BlogsPageClient() {
                 : "No articles in this category yet, check back soon."}
             </p>
           ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {grid.map((post, i) => (
-                <Reveal key={post.title} delay={(i % 3) * 80} variant="fade-up">
-                  <Link
-                    href={`/blogs/${post.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)]"
-                  >
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <Image
-                        src={post.image}
-                        alt={post.alt}
-                        title={post.alt}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-5">
-                      <span className="w-fit rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand">
-                        {post.category}
-                      </span>
-                      <h3 className="mt-3 flex-1 text-base font-bold leading-snug text-text transition-colors group-hover:text-brand sm:text-lg">
-                        {post.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted">
-                        {post.excerpt}
-                      </p>
-                      <div className="mt-4 flex items-center gap-2 border-t border-border pt-3 text-xs text-faint">
-                        <span>{post.date}</span>
-                        <span aria-hidden>·</span>
-                        <span>{post.readTime}</span>
+            <>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {paginatedGrid.map((post, i) => (
+                  <Reveal key={post.title} delay={(i % 3) * 80} variant="fade-up">
+                    <Link
+                      href={`/blogs/${post.slug}`}
+                      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)]"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <Image
+                          src={post.image}
+                          alt={post.alt}
+                          title={post.alt}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        />
                       </div>
+                      <div className="flex flex-1 flex-col p-5">
+                        <span className="w-fit rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand">
+                          {post.category}
+                        </span>
+                        <h3 className="mt-3 flex-1 text-base font-bold leading-snug text-text transition-colors group-hover:text-brand sm:text-lg">
+                          {post.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-muted">
+                          {post.excerpt}
+                        </p>
+                        <div className="mt-4 flex items-center gap-2 border-t border-border pt-3 text-xs text-faint">
+                          <span>{post.date}</span>
+                          <span aria-hidden>·</span>
+                          <span>{post.readTime}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
+
+              {/* Pagination controls */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
+                  <p className="text-xs text-muted sm:text-sm">
+                    Showing <span className="font-semibold text-text">{(currentPage - 1) * ITEMS_PER_PAGE + 1}</span>–
+                    <span className="font-semibold text-text">{Math.min(currentPage * ITEMS_PER_PAGE, grid.length)}</span> of{" "}
+                    <span className="font-semibold text-text">{grid.length}</span> articles
+                  </p>
+
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <button
+                      type="button"
+                      disabled={currentPage === 1}
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      className="rounded border border-border bg-white px-3 py-1.5 text-xs font-semibold text-text transition-colors hover:bg-bg-2 disabled:cursor-not-allowed disabled:opacity-40 sm:text-sm"
+                    >
+                      Previous
+                    </button>
+
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => handlePageChange(p)}
+                          className={`min-w-[32px] rounded px-2.5 py-1.5 text-xs font-semibold transition-colors sm:min-w-[36px] sm:text-sm ${
+                            currentPage === p
+                              ? "bg-brand text-white"
+                              : "border border-border bg-white text-text hover:bg-bg-2"
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      ))}
                     </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
+
+                    <button
+                      type="button"
+                      disabled={currentPage === totalPages}
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      className="rounded border border-border bg-white px-3 py-1.5 text-xs font-semibold text-text transition-colors hover:bg-bg-2 disabled:cursor-not-allowed disabled:opacity-40 sm:text-sm"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

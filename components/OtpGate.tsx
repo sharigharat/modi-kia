@@ -63,7 +63,6 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded border border-border px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand/20"
-              autoFocus
             />
           </div>
           <div className="overflow-y-auto p-1">
@@ -96,7 +95,7 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
   );
 }
 
-export function OtpGate({ children, className, autoFocus = true, formSource = "unknown", alignTop = false, showImage = false, onClose }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, alignTop?: boolean, showImage?: boolean, onClose?: () => void }) {
+export function OtpGate({ children, className, autoFocus = false, formSource = "unknown", alignTop = false, showImage = false, onClose }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, alignTop?: boolean, showImage?: boolean, onClose?: () => void }) {
   const { globalPhone, setGlobalPhone } = useGlobalOtp();
   const initialCode = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[0] : "+91";
   const initialNumber = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[1] : (globalPhone || "");
@@ -148,13 +147,15 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
   }, [globalPhone]);
 
   useEffect(() => {
-    if (autoFocus && inputRef.current) {
-      // Small delay to ensure any layout transitions have completed
-      const timer = setTimeout(() => {
-        inputRef.current?.focus({ preventScroll: true });
-      }, 50);
-      return () => clearTimeout(timer);
+    if (!autoFocus || !inputRef.current) return;
+    // Suppress automatic focus on mobile devices to prevent unwanted virtual keyboard popup
+    if (typeof window !== "undefined" && (window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches)) {
+      return;
     }
+    const timer = setTimeout(() => {
+      inputRef.current?.focus({ preventScroll: true });
+    }, 50);
+    return () => clearTimeout(timer);
   }, [autoFocus, step]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -280,7 +281,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
 
         {/* Overlay Modal */}
         {step !== "verified" && (
-          <div className={`absolute inset-x-0 z-[50] flex justify-center px-2 py-4 sm:p-4 ${alignTop ? "top-8 sm:top-20" : "top-1/2 -translate-y-1/2"}`}>
+          <div className={`absolute inset-x-0 z-[50] flex justify-center px-2 py-2 sm:p-4 ${alignTop ? "top-2 sm:top-4 md:top-12" : "top-2 sm:top-4 md:top-1/2 md:-translate-y-1/2"}`}>
             <Reveal variant="fade-up" className="flex w-full max-w-2xl rounded-xl border border-border bg-white shadow-2xl">
               {showImage && (
                 <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
