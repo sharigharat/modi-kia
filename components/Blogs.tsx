@@ -17,55 +17,105 @@ export type BlogSummary = {
 export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false);
 
-  /* Find the index of the left-most card currently snapped into view. */
-  const leftmostIndex = useCallback(() => {
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+
+  const N = initialPosts.length;
+  const triplePosts = [...initialPosts, ...initialPosts, ...initialPosts];
+
+  /* Index of the card closest to the track's scroll position (0 to 3N-1). */
+  const getClosestIndex = useCallback(() => {
     const track = trackRef.current;
-    if (!track) return 0;
+    if (!track) return N;
     const cards = Array.from(track.children) as HTMLElement[];
-    let closest = 0;
+    let closest = N;
     let min = Infinity;
     cards.forEach((c, i) => {
       const d = Math.abs(c.offsetLeft - track.scrollLeft);
       if (d < min) { min = d; closest = i; }
     });
     return closest;
-  }, []);
+  }, [N]);
 
-  const scrollToIndex = useCallback((i: number) => {
+  const scrollToIndex = useCallback((i: number, smooth = true) => {
     const track = trackRef.current;
     if (!track) return;
-    const clamped = Math.max(0, Math.min(initialPosts.length - 1, i));
-    const card = track.children[clamped] as HTMLElement | undefined;
-    if (card) track.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
-  }, [initialPosts]);
+    const card = track.children[i] as HTMLElement | undefined;
+    if (card) {
+      track.scrollTo({
+        left: card.offsetLeft,
+        behavior: smooth ? "smooth" : ("instant" as ScrollBehavior),
+      });
+    }
+  }, []);
 
   const go = useCallback(
-    (dir: number) => scrollToIndex(leftmostIndex() + dir),
-    [leftmostIndex, scrollToIndex],
+    (dir: number) => {
+      const current = getClosestIndex();
+      const next = current + dir;
+      scrollToIndex(next, true);
+    },
+    [getClosestIndex, scrollToIndex],
   );
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)) {
+      go(dx < 0 ? 1 : -1);
+    }
+  };
+
+  // Set initial scroll position to start at Set 1 (middle set)
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const initialCard = track.children[N] as HTMLElement | undefined;
+    if (initialCard) {
+      track.scrollLeft = initialCard.offsetLeft;
+    }
+  }, [N]);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+
+    let isResetting = false;
+
     const sync = () => {
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      const start = track.scrollLeft <= 1;
-      const end = track.scrollLeft >= maxScroll - 1;
-      setAtStart(start);
-      setAtEnd(end);
-      setActive(end ? initialPosts.length - 1 : start ? 0 : leftmostIndex());
+      const closest = getClosestIndex();
+      setActive(((closest % N) + N) % N);
+
+      // If we scroll into Set 2 (2N to 3N-1) or Set 0 (0 to N-1),
+      // seamlessly jump back into Set 1 without animation when scrolling stops/pauses.
+      if (!isResetting) {
+        if (closest >= 2 * N) {
+          isResetting = true;
+          const targetIndex = closest - N;
+          scrollToIndex(targetIndex, false);
+          setTimeout(() => { isResetting = false; }, 100);
+        } else if (closest < N) {
+          isResetting = true;
+          const targetIndex = closest + N;
+          scrollToIndex(targetIndex, false);
+          setTimeout(() => { isResetting = false; }, 100);
+        }
+      }
     };
-    sync();
+
     track.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
     return () => {
       track.removeEventListener("scroll", sync);
       window.removeEventListener("resize", sync);
     };
-  }, [leftmostIndex, initialPosts]);
+  }, [getClosestIndex, scrollToIndex, N]);
 
   return (
     <section id="blogs" className="scroll-mt-24 bg-bg-2 pt-14 pb-6 lg:pt-20 lg:pb-8">
@@ -87,16 +137,14 @@ export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] })
               <button
                 aria-label="Previous blog post"
                 onClick={() => go(-1)}
-                disabled={atStart}
-                className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+                className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 aria-label="Next blog post"
                 onClick={() => go(1)}
-                disabled={atEnd}
-                className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand disabled:cursor-not-allowed disabled:opacity-40"
+                className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded border border-border bg-white text-text transition-colors hover:bg-bg-3 hover:text-brand"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
@@ -112,14 +160,16 @@ export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] })
           </div>
         </Reveal>
 
-        {/* Scroll track across all viewports — cards peek on right & left so adjacent blogs are always visible */}
+        {/* Scroll track — Triple cloned array for seamless forward-only infinite looping */}
         <div
           ref={trackRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className="relative flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {initialPosts.map((post) => (
+          {triplePosts.map((post, index) => (
             <article
-              key={post.title}
+              key={`${post.title}-${index}`}
               className="group flex w-[82vw] shrink-0 snap-start flex-col overflow-hidden rounded-lg border border-border bg-white shadow-[0_2px_12px_0_rgba(0,44,95,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_0_rgba(0,44,95,0.12)] sm:w-[320px] lg:w-[350px]"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
@@ -158,12 +208,16 @@ export default function Blogs({ initialPosts }: { initialPosts: BlogSummary[] })
             <button
               key={post.title}
               aria-label={`Go to blog ${i + 1}`}
-              onClick={() => scrollToIndex(i)}
+              onClick={() => {
+                const current = getClosestIndex();
+                const setOffset = Math.floor(current / N) * N;
+                scrollToIndex(setOffset + i, true);
+              }}
               className="p-2 -m-2"
             >
               <div
-                className={`rounded-full transition-all ${
-                  active === i ? "bg-brand w-6 h-1.5" : "bg-[#c8cfd9] w-2 h-1.5"
+                className={`rounded-full transition-all duration-300 ${
+                  active === i ? "bg-brand w-6 h-1.5" : "bg-[#c8cfd9] w-2 h-1.5 hover:bg-muted/50"
                 }`}
               />
             </button>
