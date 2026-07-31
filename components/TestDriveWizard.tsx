@@ -550,7 +550,7 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
             role="dialog"
             aria-modal="true"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md rounded-lg bg-white p-8 shadow-2xl sm:p-10"
+            className="relative w-full max-w-lg rounded-lg bg-white p-4 sm:p-10 shadow-2xl"
           >
             <button
               onClick={() => { resetAll(); if (onClose) onClose(); }}

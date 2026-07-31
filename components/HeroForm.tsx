@@ -54,7 +54,7 @@ export default function HeroForm() {
   }
 
   return (
-    <div className="w-full max-w-[340px] rounded-lg bg-white p-6 shadow-2xl">
+    <div className="w-full max-w-[380px] rounded-lg bg-white p-4 sm:p-6 shadow-2xl">
       <h3 className="font-display text-xl font-bold text-text">Book a Test Drive</h3>
       <p className="mt-1 text-xs text-muted">
         {step === 1 ? "Step 1 of 2: Tell us what you want to drive" : "Step 2 of 2: Pick a time and location"}

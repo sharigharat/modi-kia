@@ -47,7 +47,7 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-full items-center gap-1 sm:gap-1.5 rounded-l border-r border-border bg-bg-2 px-2 sm:px-3 py-3 text-sm font-semibold text-text outline-none transition-colors hover:bg-bg-3 focus:bg-bg-3 min-w-[70px] sm:min-w-[85px] max-w-[90px] sm:max-w-[100px]"
+        className="flex h-full items-center gap-1 sm:gap-1.5 rounded-l border-r border-border bg-bg-2 px-1.5 sm:px-3 py-3 text-xs sm:text-sm font-semibold text-text outline-none transition-colors hover:bg-bg-3 focus:bg-bg-3 min-w-[65px] sm:min-w-[85px] max-w-[85px] sm:max-w-[100px]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={`/flags/${selected.name.toLowerCase()}.png`} alt={selected.name} className="w-5 h-[15px] object-cover rounded-[2px]" />
@@ -280,7 +280,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
 
         {/* Overlay Modal */}
         {step !== "verified" && (
-          <div className={`absolute inset-x-0 z-[50] flex justify-center p-4 ${alignTop ? "top-10 sm:top-20" : "top-1/2 -translate-y-1/2"}`}>
+          <div className={`absolute inset-x-0 z-[50] flex justify-center px-2 py-4 sm:p-4 ${alignTop ? "top-8 sm:top-20" : "top-1/2 -translate-y-1/2"}`}>
             <Reveal variant="fade-up" className="flex w-full max-w-2xl rounded-xl border border-border bg-white shadow-2xl">
               {showImage && (
                 <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
@@ -294,12 +294,12 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                   />
                 </div>
               )}
-              <div className={`relative w-full rounded-xl bg-white p-6 sm:p-8 ${showImage ? "md:w-7/12 md:rounded-l-none" : ""}`}>
+              <div className={`relative w-full rounded-xl bg-white p-4 sm:p-8 ${showImage ? "md:w-7/12 md:rounded-l-none" : ""}`}>
                 {onClose && (
                   <button
                     type="button"
                     onClick={onClose}
-                    className="absolute right-4 top-4 rounded-full p-2 text-faint transition-colors hover:bg-bg-2 hover:text-text"
+                    className="absolute right-3 top-3 rounded-full p-2 text-faint transition-colors hover:bg-bg-2 hover:text-text sm:right-4 sm:top-4"
                     aria-label="Close"
                   >
                     <X className="h-5 w-5" />
@@ -311,7 +311,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                   <p className="mt-1.5 text-xs text-muted">
                     To serve you better, please verify your phone number to proceed.
                   </p>
-                  <form onSubmit={handlePhoneSubmit} className="mt-5 space-y-4">
+                  <form onSubmit={handlePhoneSubmit} className="mt-4 sm:mt-5 space-y-4">
                     <label className="block">
                       <span className="mb-1.5 block text-xs font-semibold text-muted">Mobile Number</span>
                       <div className="flex w-full rounded border border-border bg-white transition-colors focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
@@ -344,7 +344,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                               setError("");
                             }
                           }}
-                          className="min-w-0 flex-1 rounded-r bg-transparent px-3 sm:px-4 py-3 text-sm text-text outline-none placeholder:text-faint"
+                          className="min-w-0 flex-1 rounded-r bg-transparent px-2.5 sm:px-4 py-3 text-sm text-text outline-none placeholder:text-faint"
                           ref={step === "phone" ? inputRef : null}
                         />
                       </div>
@@ -352,7 +352,7 @@ export function OtpGate({ children, className, autoFocus = true, formSource = "u
                     </label>
                     <label className="flex items-start gap-2.5 cursor-pointer">
                       <input type="checkbox" required className="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-brand cursor-pointer" />
-                      <span className="text-[11px] leading-relaxed text-muted">
+                      <span className="text-[11px] leading-snug sm:leading-relaxed text-muted">
                         I agree to Modi Kia's <Link href="/terms-and-conditions" className="text-brand font-medium hover:underline">T&C</Link> and <Link href="/privacy-policy" className="text-brand font-medium hover:underline">Privacy Policy</Link>. This consent overrides any DNC/NDNC registrations.
                       </span>
                     </label>
