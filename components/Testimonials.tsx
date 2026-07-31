@@ -148,6 +148,7 @@ export default function Testimonials() {
         {/* Cards — Triple cloned array for seamless forward-only infinite looping */}
         <div
           ref={trackRef}
+          suppressHydrationWarning
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           className="relative flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

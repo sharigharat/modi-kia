@@ -281,7 +281,7 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
 
         {/* Overlay Modal */}
         {step !== "verified" && (
-          <div className={`absolute inset-x-0 z-[50] flex justify-center px-2 py-2 sm:p-4 ${alignTop ? "top-2 sm:top-4 md:top-12" : "top-2 sm:top-4 md:top-1/2 md:-translate-y-1/2"}`}>
+          <div suppressHydrationWarning className={`absolute inset-x-0 z-[50] flex justify-center px-2 py-2 sm:p-4 ${alignTop ? "top-2 sm:top-4 md:top-12" : "top-2 sm:top-4 md:top-1/2 md:-translate-y-1/2"}`}>
             <Reveal variant="fade-up" className="flex w-full max-w-2xl rounded-xl border border-border bg-white shadow-2xl">
               {showImage && (
                 <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
