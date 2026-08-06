@@ -6,7 +6,7 @@ import { Calendar, WhatsApp, Phone, ChevronRight, ChevronLeft } from "./icons";
 import dynamic from "next/dynamic";
 const TestDriveWizard = dynamic(() => import("./TestDriveWizard"), { ssr: false });
 
-const WHATSAPP_URL = "https://wa.me/918879020761?text=Hello,%20I%20want%20to%20book%20a%20test%20drive";
+const WHATSAPP_URL = "https://wa.me/918238089600?text=Hello,%20I%20want%20to%20book%20a%20test%20drive";
 
 const actions = [
   { label: "Book a\nTest Drive", href: "/book-a-test-drive", Icon: Calendar },

@@ -122,9 +122,10 @@ export default function Footer() {
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
                 <span>
-                  Modi Kia, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station,
-                  Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra
-                  421302
+                  Modi Kia, {company.primaryAddress.street},{" "}
+                  {company.primaryAddress.locality},{" "}
+                  {company.primaryAddress.region}{" "}
+                  {company.primaryAddress.postalCode}
                 </span>
               </li>
               <li className="flex gap-3">

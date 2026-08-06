@@ -113,10 +113,10 @@ export const SITE_URL =
 export const company = {
   name: "Modi Kia",
   tagline: "Movement that Inspires",
-  phone: "88790 20761",
-  phoneE164: "+918879020761",
+  phone: "82380 89600",
+  phoneE164: "+918238089600",
   // NOTE: verify before launch — not published on the source site.
-  email: "contact@modikia.co.in",
+  email: "marketing@modikia.com",
   primaryAddress: {
     street: "Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar",
     locality: "Bhiwandi",
@@ -125,8 +125,8 @@ export const company = {
     country: "IN",
   },
   // NOTE: confirm exact opening hours with the dealership before launch.
-  hours: "Mon to Sun, 9:00 AM to 8:00 PM",
-  hoursSpec: { days: "Mo-Su", opens: "09:00", closes: "20:00" },
+  hours: "Mon to Sun, 9:30 AM to 7:30 PM (Modi Kia Pimpalghar)",
+  hoursSpec: { days: "Mo-Su", opens: "09:30", closes: "19:30" },
   // Locations and service area sourced from gautammodigroup.com — the
   // group's official business directory. Pimpalghar (Bhiwandi) houses both
   // the showroom and the service department; Dombivli is a sales showroom.
@@ -1185,7 +1185,7 @@ export const locations: Location[] = [
     type: "Showroom",
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
-    phone: "88790 20761",
+    phone: "82380 89600",
     image: "/locations/kia-pimpalghar-showroom-v2.webp",
     mapsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
@@ -1196,7 +1196,7 @@ export const locations: Location[] = [
     type: "Showroom",
     city: "Dombivli",
     address: "B-1, Parvati Heights, Shop No 02, Ground Floor, Kalyan-Shilphata Rd, Padle, Dombivli, Thane, Maharashtra 421204",
-    phone: "88790 20761",
+    phone: "82380 89600",
     image: "/locations/kia-dombivli-showroom-v2.webp",
     mapsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=B-1%2C%20Parvati%20Heights%2C%20Shop%20No%2002%2C%20Ground%20Floor%2C%20Kalyan-Shilphata%20Rd%2C%20Padle%2C%20Dombivli%2C%20Thane%2C%20Maharashtra%20421204&travelmode=driving",
@@ -1207,7 +1207,7 @@ export const locations: Location[] = [
     type: "Service Centre",
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
-    phone: "88790 20761",
+    phone: "82380 89600",
     image: "/locations/kia-pimpalghar-service-v2.webp",
     mapsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
@@ -1218,7 +1218,7 @@ export const locations: Location[] = [
     type: "Showroom",
     city: "Ambernath",
     address: "Shop No. 7, RAGA'S TIMES SQUARE, Showroom at, 8 & 9, Industrial Area, Kansai, Ambernath, Maharashtra 421501",
-    phone: "88790 20761",
+    phone: "82380 89600",
     image: "/locations/kia-ambarnath-showroom.jpg",
     mapsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Ambernath&travelmode=driving",
