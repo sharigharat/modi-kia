@@ -115,6 +115,8 @@ export const company = {
   tagline: "Movement that Inspires",
   phone: "82380 89600",
   phoneE164: "+918238089600",
+  whatsapp: "88281 18139",
+  whatsappE164: "+918828118139",
   // NOTE: verify before launch — not published on the source site.
   email: "marketing@modikia.com",
   primaryAddress: {

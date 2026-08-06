@@ -6,7 +6,7 @@ import { Calendar, WhatsApp, Phone, ChevronRight, ChevronLeft } from "./icons";
 import dynamic from "next/dynamic";
 const TestDriveWizard = dynamic(() => import("./TestDriveWizard"), { ssr: false });
 
-const WHATSAPP_URL = "https://wa.me/918238089600?text=Hello,%20I%20want%20to%20book%20a%20test%20drive";
+const WHATSAPP_URL = "https://wa.me/918828118139?text=Hello,%20I%20want%20to%20book%20a%20test%20drive";
 
 const actions = [
   { label: "Book a\nTest Drive", href: "/book-a-test-drive", Icon: Calendar },
@@ -23,6 +23,7 @@ export default function FloatingActions({ hideMobileBar = false }: { hideMobileB
       {/* Standalone WhatsApp bubble, bottom-right, on every page and screen size */}
       <a
         href={WHATSAPP_URL}
+        suppressHydrationWarning
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Modi Kia on WhatsApp"
@@ -58,6 +59,7 @@ export default function FloatingActions({ hideMobileBar = false }: { hideMobileB
           <a
             key={label}
             href={href}
+            suppressHydrationWarning
             aria-label={label}
             className={`group flex items-center bg-brand text-white transition-colors hover:bg-brand-light ${
               i === 0 ? "rounded-tl-lg" : ""

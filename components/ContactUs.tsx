@@ -125,12 +125,12 @@ export default function ContactUs() {
                 <div>
                   <p className="text-xs font-medium text-muted">WhatsApp</p>
                   <a
-                    href={`https://wa.me/${company.phoneE164.replace("+", "")}`}
+                    href={`https://wa.me/${company.whatsappE164.replace("+", "")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm font-semibold text-text transition-colors hover:text-brand"
                   >
-                    {company.phone}
+                    {company.whatsapp}
                   </a>
                 </div>
               </li>
