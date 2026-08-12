@@ -159,7 +159,6 @@ export const nav = {
     { label: "Find a car", href: "/cars" },
     { label: "Service", href: "/locate-service-centre" },
     { label: "Locate Us", href: "/locate-us" },
-    { label: "Blogs", href: "/blogs" },
     { label: "Contact Us", href: "/contact-us" },
   ],
 };

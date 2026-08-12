@@ -28,6 +28,15 @@ export async function generateMetadata({
   const description = blog.excerpt;
 
   return {
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
     // The post title alone is already tuned to fit the 60-char budget once
     // the root layout's "%s | Modi Kia" template is appended, so let that
     // template do the branding rather than repeating it here.
@@ -55,6 +64,7 @@ export default async function BlogDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  notFound();
   const { slug } = await params;
   const blog = getBlog(slug);
   if (!blog) notFound();

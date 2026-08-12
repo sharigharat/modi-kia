@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { company, testimonials } from "@/lib/data";
 import { Star, ChevronLeft, ChevronRight } from "./icons";
@@ -156,7 +155,7 @@ export default function Testimonials() {
           {tripleTestimonials.map((t, index) => (
             <figure
               key={`${t.name}-${index}`}
-              className="flex w-[85vw] shrink-0 snap-start flex-col rounded-lg border border-border bg-white p-6 shadow-[0_2px_16px_0_rgba(0,44,95,0.07)] transition-shadow hover:shadow-[0_4px_24px_0_rgba(0,44,95,0.12)] sm:w-[360px]"
+              className="flex w-[85vw] shrink-0 snap-start flex-col rounded-lg border border-border bg-white p-6 shadow-[0_2px_16px_0_rgba(0,44,95,0.07)] transition-shadow hover:shadow-[0_4px_24px_0_rgba(0,44,95,0.12)] sm:w-[360px] lg:w-[calc((100%-40px)/3)]"
             >
               <div className="flex gap-1">
                 {Array.from({ length: t.rating }).map((_, i) => (
@@ -166,15 +165,7 @@ export default function Testimonials() {
               <blockquote className="mt-4 flex-1 text-base leading-relaxed text-text/80">
                 &ldquo;{t.text}&rdquo;
               </blockquote>
-              <figcaption className="mt-5 flex items-center gap-4 border-t border-border pt-5">
-                <Image
-                  src={t.avatar}
-                  alt={t.name}
-                  title={t.name}
-                  width={44}
-                  height={44}
-                  className="h-11 w-11 rounded-full object-cover"
-                />
+              <figcaption className="mt-5 border-t border-border pt-5">
                 <div>
                   <p className="text-sm font-semibold text-text">{t.name}</p>
                   <p className="text-xs text-muted">{t.role}</p>

@@ -47,7 +47,6 @@ export default function Home() {
         <TestDrive />
         <Services />
         <Testimonials />
-        <Blogs initialPosts={blogSummaries} />
         <FAQ />
         <Locations />
       </main>

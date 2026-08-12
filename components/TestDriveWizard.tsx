@@ -601,13 +601,6 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
                 .
               </p>
             </div>
-
-            <button
-              onClick={resetAll}
-              className="mt-6 w-full rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-3"
-            >
-              Book another test drive
-            </button>
           </div>
         </div>
       )}

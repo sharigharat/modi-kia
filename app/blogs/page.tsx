@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,6 +14,15 @@ const description =
   "Kia car guides, ownership tips, model comparisons and service advice from Modi Kia, your authorised dealer in Bhiwandi and Dombivli.";
 
 export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
   // Already carries the "Modi Kia" brand name, so bypass the root layout's
   // "%s | Modi Kia" template with an absolute title — otherwise it renders
   // with the brand name twice and blows past the 60-character budget.
@@ -54,6 +64,7 @@ const blogsPageSchema = {
 };
 
 export default function BlogsPage() {
+  notFound();
   return (
     <>
       <script
