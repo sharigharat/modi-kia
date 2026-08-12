@@ -64,10 +64,10 @@ export default async function BlogDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  notFound();
   const { slug } = await params;
-  const blog = getBlog(slug);
-  if (!blog) notFound();
+  const blog = getBlog(slug) ?? blogs[0];
+
+  notFound();
 
   const categoryLabel =
     blog.category === "Models"
