@@ -2,7 +2,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TrustStrip from "@/components/TrustStrip";
 import FeaturedVehicles from "@/components/FeaturedVehicles";
-import Offers from "@/components/Offers";
 import TestDrive from "@/components/TestDrive";
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials";
@@ -42,9 +41,8 @@ export default function Home() {
         <Hero />
         <TrustStrip />
         <FeaturedVehicles initialCars={featuredCars} />
-        <Offers />
-        <HomeSeoContent />
         <TestDrive />
+        <HomeSeoContent />
         <Services />
         <Testimonials />
         <FAQ />

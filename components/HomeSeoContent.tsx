@@ -119,28 +119,22 @@ export default function HomeSeoContent() {
       </section>
 
       {/* Why buy from an authorised dealer */}
-      <section className="bg-white py-14 lg:py-20">
-        <div className="container-px mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-2 lg:items-center">
-          <Reveal variant="slide-right">
-            <span className="eyebrow mb-3 block">Why Modi Kia</span>
-            <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl lg:text-[2.25rem]">
+      <section className="bg-white py-10 lg:py-12">
+        <div className="container-px mx-auto max-w-3xl">
+          <Reveal variant="fade-up">
+            <span className="eyebrow mb-2 block">Why Modi Kia</span>
+            <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl">
               Your authorised Kia dealer in Bhiwandi &amp; Dombivli
             </h2>
-            <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted sm:text-base">
+            <div className="mt-3.5 space-y-2.5 text-sm leading-relaxed text-muted sm:text-base">
               <p>
-                Modi Kia is an authorised Kia India dealership on the
-                Kalyan-Bhiwandi Road. Every new car, genuine part and
-                accessory we supply is sourced directly from Kia, so your
-                purchase is backed by the full manufacturer warranty and
-                nationwide service network.
+                Modi Kia is an authorised Kia India dealership on Kalyan-Bhiwandi Road, serving Bhiwandi, Dombivli, Kalyan, Thane and the Mumbai Metropolitan Region. Every new Kia car, genuine part and accessory we supply is sourced directly from Kia India, backed by full manufacturer warranty and nationwide service support.
               </p>
               <p>
-                Part of the Gautam Modi Group, our team brings decades of
-                combined authorised-dealership experience to every test
-                drive, finance plan and service booking.
+                As part of the Gautam Modi Group, our team provides transparent, customer-first service across test drives, flexible finance options, vehicle trade-in exchange, and certified maintenance.
               </p>
             </div>
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               <Link
                 href="/book-a-test-drive"
                 className="btn-primary"
@@ -151,29 +145,6 @@ export default function HomeSeoContent() {
                 About Modi Kia
               </Link>
             </div>
-          </Reveal>
-
-          <Reveal delay={120} variant="slide-left">
-            <dl className="grid grid-cols-2 gap-4">
-              {[
-                [company.stats.carsSold, "New cars delivered"],
-                [company.stats.usedCarsSold, "Pre-owned cars sold"],
-                [company.stats.servicesDone, "Services completed"],
-                [company.stats.satisfaction, "Customer satisfaction"],
-              ].map(([stat, label]) => (
-                <div
-                  key={label}
-                  className="rounded-lg border border-border bg-bg-2 p-6 text-center"
-                >
-                  <dt className="font-display text-3xl font-bold text-brand sm:text-4xl">
-                    {stat}
-                  </dt>
-                  <dd className="mt-1 text-xs font-medium text-muted sm:text-sm">
-                    {label}
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </Reveal>
         </div>
       </section>

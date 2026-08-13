@@ -95,7 +95,22 @@ export function CountrySelect({ value, onChange }: { value: string, onChange: (v
   );
 }
 
-export function OtpGate({ children, className, autoFocus = false, formSource = "unknown", alignTop = false, showImage = false, onClose }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, alignTop?: boolean, showImage?: boolean, onClose?: () => void }) {
+function getHeading(formSource: string, customTitle?: string): string {
+  if (customTitle) return customTitle;
+  const src = formSource.toLowerCase();
+  if (src.includes("testdrive") || src.includes("test-drive") || src.includes("td")) {
+    return "Verify to Book a Test Drive";
+  }
+  if (src.includes("service")) {
+    return "Verify to Book a Service Appointment";
+  }
+  if (src.includes("contact") || src.includes("enquire") || src.includes("quote")) {
+    return "Verify to Send a Message";
+  }
+  return "Verify to Proceed";
+}
+
+export function OtpGate({ children, className, autoFocus = false, formSource = "unknown", title, alignTop = false, showImage = false, onClose }: { children: ReactNode, className?: string, autoFocus?: boolean, formSource?: string, title?: string, alignTop?: boolean, showImage?: boolean, onClose?: () => void }) {
   const { globalPhone, setGlobalPhone } = useGlobalOtp();
   const initialCode = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[0] : "+91";
   const initialNumber = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[1] : (globalPhone || "");
@@ -308,7 +323,7 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
                 )}
                 {step === "phone" ? (
                 <>
-                  <h3 className="font-display text-lg font-bold text-text">Verify your Mobile Number</h3>
+                  <h3 className="font-display text-lg font-bold text-text">{getHeading(formSource, title)}</h3>
                   <p className="mt-1.5 text-xs text-muted">
                     To serve you better, please verify your phone number to proceed.
                   </p>

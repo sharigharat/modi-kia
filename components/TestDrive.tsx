@@ -150,8 +150,8 @@ export default function TestDrive() {
               sizes="(max-width: 1024px) 100vw, 45vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent lg:bg-gradient-to-r lg:from-black/70 lg:via-black/30 lg:to-transparent" />
-            <div className="absolute bottom-0 left-0 p-8 lg:p-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/40 to-transparent" />
+            <div className="absolute top-0 left-0 p-8 lg:p-10 text-left flex flex-col items-start">
               <p className="text-sm font-semibold uppercase tracking-wider text-white/70">
                 Book a Test Drive
               </p>
