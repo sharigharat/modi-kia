@@ -483,6 +483,52 @@ carDetails["syros-ev"] = detail({
   sourceUrl: "https://www.kia.com/in/our-vehicles/syros-ev.html",
 });
 
+carDetails["sorento"] = detail({
+  overview:
+    "The Kia Sorento is Kia's global flagship SUV, now confirmed for an India debut after four generations and 4.8 million+ sales worldwide since 2002. Kia's India page is currently a \"Coming Soon\" teaser with pre-booking open, so this page covers the Sorento's confirmed global identity and awards rather than India-specific pricing or equipment, which have not been published yet.",
+  idealFor: "Buyers who want to be first in line for Kia's global flagship SUV once it lands in India, and who are comfortable pre-booking ahead of full India-spec pricing and equipment details.",
+  performance: [
+    "Diesel and Strong Hybrid powertrain options are confirmed for the global Sorento line-up; exact India-spec engine, power and torque figures have not been published yet.",
+    "Front-wheel and all-wheel drive configurations are offered globally; India-spec drivetrain availability is unconfirmed.",
+    "Ask Modi Kia for the latest pre-booking update as Kia releases India-specific performance figures closer to launch.",
+  ],
+  safety: [
+    "The global 4th-generation Sorento carries a 2026 IIHS Top Safety Pick, 2025 NHTSA 5-Star Safety rating and 2020 ENCAP/ANCAP 5-Star Safety ratings.",
+    "India-spec safety equipment (airbag count, ADAS suite, camera systems) has not been published yet — confirm final specification with Modi Kia before pre-booking.",
+  ],
+  interior: [
+    "Global Sorento seats up to 7 across three rows, depending on market and variant; exact India-spec seating configuration is unconfirmed.",
+    "Full interior equipment (upholstery, sunroof, ambient lighting) for the India-spec car has not been published yet.",
+  ],
+  exterior: [
+    "Kia's own teaser copy describes this as \"the most evolved Sorento ever\" — its fourth global generation since the nameplate launched in 2002.",
+    "Exterior colours and trim levels for the India-spec Sorento have not been announced yet.",
+  ],
+  infotainment: [
+    "Kia Connect and the brand's latest cabin technology are expected, in line with recent India launches like the Syros EV and EV9.",
+    "Exact screen sizes and connected-car features for the India-spec Sorento have not been published yet.",
+  ],
+  comfort: [
+    "Global-market Sorentos offer captain seats, tri-zone climate control and driver-assist convenience features on higher trims; India-spec equipment is unconfirmed.",
+    "Ask Modi Kia for the current pre-booking brochure as India-spec comfort features are announced.",
+  ],
+  variants: [
+    "India-spec variant names, trims and colour choices have not been published yet — Kia's India page is a pre-booking teaser only.",
+    "Pre-book now via Modi Kia to secure priority updates and delivery once Kia confirms India pricing and variant details.",
+  ],
+  specifications: [
+    { label: "Global generations", value: "4th generation (launched 2002, evolved through 2009, 2014 and 2020)" },
+    { label: "Worldwide sales", value: "4.8 million+ sold across 132+ countries since 2002" },
+    { label: "Global recognition", value: "2026 IIHS Top Safety Pick, 2025 NHTSA 5-Star, 2021 Red Dot Award, 2020 Good Design Award" },
+    { label: "Powertrain (global)", value: "Diesel and Strong Hybrid options, FWD/AWD" },
+    { label: "India pricing", value: "Not yet announced — pre-booking open" },
+    { label: "India launch status", value: "Coming Soon (official Kia India teaser page)" },
+  ],
+  warranty:
+    "Kia has not yet published India-specific warranty terms for the Sorento, since the car has not launched here. Expect the standard Kia India passenger-car warranty terms to apply — confirm exact coverage with Modi Kia closer to launch.",
+  sourceUrl: "https://www.kia.com/in/our-vehicles/sorento.html",
+});
+
 export function getCarDetail(car: Car): CarDetail {
   const researched = carDetails[car.slug];
   if (researched) return researched;
@@ -556,6 +602,10 @@ export function getCarBrochure(car: Car): string | undefined {
       return `${base}/content/dam/kia2/in/en/our-vehicles/carnival/Kia_Carnival_Brochure_Desktop.pdf`;
     case "ev9":
       return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/ev9/Kia_EV9_Brochure_Desktop.pdf`;
+    // Sorento has no brochure yet — kia.com/in's Sorento page is still a
+    // "Coming Soon" pre-booking teaser with no downloadable PDF published.
+    case "sorento":
+      return undefined;
     default:
       return undefined;
   }

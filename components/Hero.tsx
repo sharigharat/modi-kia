@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { heroSlides } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./icons";
@@ -128,7 +129,7 @@ export default function Hero() {
           const isMounted = i === 0 || mountedSlides.has(slide.model);
           if (!isMounted) return null;
 
-          const caption = `${slide.model}, ${slide.headline} ${slide.sub} Starting at ₹${slide.price} Lakh*`;
+          const caption = `${slide.model}, ${slide.headline} ${slide.sub}${slide.price ? ` Starting at ₹${slide.price} Lakh*` : " Coming soon"}`;
           const objectPositionClass = slide.mobileObjectPositionClass
             ? `${slide.mobileObjectPositionClass} md:object-center`
             : "object-center";
@@ -197,6 +198,15 @@ export default function Hero() {
             <p className="mt-2 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
               {active.sub}
             </p>
+            {active.cta && (
+              <Link
+                href={active.cta.href}
+                className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-neutral-800/90 border border-white/20 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/40 backdrop-blur transition-all hover:bg-neutral-700 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                {active.cta.label}
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            )}
           </div>
         </div>
 

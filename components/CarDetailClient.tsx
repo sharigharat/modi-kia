@@ -9,28 +9,39 @@ import { getCarBrochure, getCarDetail } from "@/lib/car-details";
 import { carGallery } from "@/lib/carGallery";
 import type { CarDetail } from "@/lib/data";
 import { BACK_CATEGORY_KEY } from "@/lib/carsBackCategory";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, ChevronDown, Download, Phone, Calendar } from "./icons";
 import Reveal from "./Reveal";
 import Kia360Viewer from "./Kia360Viewer";
 import TestDriveWizard from "./TestDriveWizard";
 
-// Reads the category CarsGrid stashed in sessionStorage right before the
-// user clicked through, so the back link returns to the same SUV/MPV/
-// Electric tab rather than always resetting to "All" — without putting
-// that state in either page's URL. Read in an effect (not during render)
-// since sessionStorage isn't available during the server-rendered pass.
+// Returns to the exact page or section the user arrived from via router.back(),
+// or falls back to /cars with stored category filter if opened directly.
 function BackToCarsLink() {
-  const [href, setHref] = useState("/cars");
+  const router = useRouter();
+  const [hasHistory, setHasHistory] = useState(false);
+  const [fallbackHref, setFallbackHref] = useState("/cars");
 
   useEffect(() => {
+    if (typeof window !== "undefined" && document.referrer && document.referrer.includes(window.location.host)) {
+      setHasHistory(true);
+    }
     const category = sessionStorage.getItem(BACK_CATEGORY_KEY);
-    if (category && category !== "All") setHref(`/cars?category=${category}`);
+    if (category && category !== "All") setFallbackHref(`/cars?category=${category}`);
   }, []);
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (hasHistory) {
+      e.preventDefault();
+      router.back();
+    }
+  };
 
   return (
     <Link
-      href={href}
-      aria-label="Back to Find a Car"
+      href={fallbackHref}
+      onClick={handleClick}
+      aria-label="Go back"
       className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-sm transition-colors hover:bg-brand-light"
     >
       <ArrowLeft className="h-4 w-4" />
@@ -74,6 +85,11 @@ export default function CarDetailClient({ car }: { car: Car }) {
   const detail = getCarDetail(car);
   const brochureUrl = getCarBrochure(car);
   const displayName = `Kia ${car.name}`;
+  // Pre-booking-only cars (priceINR: 0 — Syros EV, Sorento) get an
+  // "Enquire Now" CTA everywhere instead of "Book a Test Drive", since
+  // there's no released car to test drive yet.
+  const isComingSoon = car.priceINR === 0;
+  const enquireHref = `/contact-us?message=${encodeURIComponent(`I want to enquire about ${displayName}`)}`;
   const transmissions = car.transmission.split(",").map((t) => t.trim());
   const engines = car.engine.split(",").map((t) => t.trim());
   const gallery = carGallery[car.slug] ?? [];
@@ -275,8 +291,8 @@ export default function CarDetailClient({ car }: { car: Car }) {
 
               {/* CTAs — brochure up near the hero */}
               <div ref={ctaRef} className="mt-6 flex flex-col sm:flex-row sm:flex-wrap 2xl:flex-nowrap gap-3">
-                {car.slug === "syros-ev" ? (
-                  <Link href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV" className="group w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-2 rounded bg-brand px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light">
+                {isComingSoon ? (
+                  <Link href={enquireHref} className="group w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-2 rounded bg-brand px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-brand-light">
                     Enquire Now <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 ) : (
@@ -311,8 +327,8 @@ export default function CarDetailClient({ car }: { car: Car }) {
           </div>
           
           <div className={`hidden flex-wrap items-center gap-3 transition-opacity duration-300 xl:flex ${showStickyCtas ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-            {car.slug === "syros-ev" ? (
-              <Link href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV" className="rounded bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light">
+            {isComingSoon ? (
+              <Link href={enquireHref} className="rounded bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light">
                 Enquire Now
               </Link>
             ) : (
@@ -443,8 +459,8 @@ export default function CarDetailClient({ car }: { car: Car }) {
         <div className="container-px mx-auto grid max-w-[1400px] gap-5 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="rounded-lg border border-border bg-bg-2 p-6 sm:p-8"><p className="text-xs font-semibold uppercase tracking-wider text-brand">Variants and colours</p><h2 className="mt-2 font-display text-2xl font-bold text-text">Choose the right specification, not just the right price.</h2><ul className="mt-5 space-y-3">{detail.variants.map((variant) => <li key={variant} className="flex gap-2 text-sm leading-relaxed text-text"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />{variant}</li>)}</ul><p className="mt-6 text-xs leading-relaxed text-muted">Available colours: {car.colors.map((item) => item.name).join(", ")}. Paint availability is subject to the selected variant and current stock.</p></div>
           <aside className="rounded-lg bg-brand p-6 text-white sm:p-8"><p className="text-xs font-semibold uppercase tracking-wider text-white/60">Ownership confidence</p><h2 className="mt-2 font-display text-2xl font-bold">Warranty and next steps</h2><p className="mt-4 text-sm leading-relaxed text-white/75">{detail.warranty}</p><div className="mt-5 flex flex-col items-start gap-3">{brochureUrl && <a href={brochureUrl} target="_blank" rel="noreferrer" className="inline-flex text-sm font-semibold text-white underline underline-offset-4 hover:text-white/80">Download official brochure (PDF)</a>}</div><div className="mt-7 space-y-3">
-            {car.slug === "syros-ev" ? (
-              <Link href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV" className="w-full group flex items-center justify-center gap-2 rounded bg-white px-5 py-3 text-sm font-semibold text-brand transition-colors hover:bg-white/90">Enquire Now <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></Link>
+            {isComingSoon ? (
+              <Link href={enquireHref} className="w-full group flex items-center justify-center gap-2 rounded bg-white px-5 py-3 text-sm font-semibold text-brand transition-colors hover:bg-white/90">Enquire Now <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></Link>
             ) : (
               <button onClick={() => setShowTestDrive(true)} className="w-full group flex items-center justify-center gap-2 rounded bg-white px-5 py-3 text-sm font-semibold text-brand transition-colors hover:bg-white/90">Book a Test Drive <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></button>
             )}
@@ -492,9 +508,9 @@ export default function CarDetailClient({ car }: { car: Car }) {
         <div className="h-full w-px bg-border shrink-0" />
 
         {/* Book a Test Drive / Enquire Now */}
-        {car.slug === "syros-ev" ? (
+        {isComingSoon ? (
           <Link
-            href="/contact-us?message=I%20want%20to%20enquire%20about%20Kia%20Syros%20EV"
+            href={enquireHref}
             aria-label="Enquire Now"
             className="flex flex-1 items-center justify-center gap-2 bg-brand px-3 py-2.5 text-white transition-colors active:bg-brand-light"
           >

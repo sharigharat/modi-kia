@@ -232,4 +232,17 @@ export const carGallery: Record<string, GalleryImage[]> = {
     g("Wireless Charging Pad", "/gallery/syros-ev/wireless-charging-pad-206.jpg"),
     g("Airbags", "/gallery/syros-ev/airbags-94.jpg"),
   ],
+  // Sorento has no CarDekho gallery yet (it hasn't launched in India), and
+  // kia.com/in's own Sorento page has no real product photography either —
+  // it's a "Coming Soon" teaser with the car under a cover. These images
+  // are that same official kia.com/in teaser content: the four global
+  // generations, the "Most Evolved Sorento Ever" banner, worldwide sales/
+  // reach stats and the model's global award history — all fetched and
+  // saved locally from the teaser page itself.
+  sorento: [
+    g("1st Generation (2002)", "/gallery/sorento/generation-1-2002.png"),
+    g("2nd Generation (2009)", "/gallery/sorento/generation-2-2009.png"),
+    g("3rd Generation (2014)", "/gallery/sorento/generation-3-2014.png"),
+    g("4th Generation (2020)", "/gallery/sorento/generation-4-2020.png"),
+  ],
 };

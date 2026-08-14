@@ -119,7 +119,7 @@ export default function Kia360Viewer({
         width={1000}
         height={440}
         priority
-        className="h-auto w-full object-contain drop-shadow-2xl"
+        className="absolute inset-0 m-auto h-auto w-full object-contain drop-shadow-2xl"
       />
     );
   }

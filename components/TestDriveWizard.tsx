@@ -81,7 +81,10 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
   // the lineup, rather than one flat grid. The general "Book a Test
   // Drive" entry points (navbar, standalone page) get no initial slug,
   // so they keep the single unsplit grid exactly as before.
-  const availableCars = cars.filter(c => c.slug !== "syros-ev");
+  // Pre-booking-only cars (priceINR: 0 — Syros EV, Sorento) get an
+  // "Enquire Now" CTA instead, so they're excluded from the test-drive
+  // booking flow entirely.
+  const availableCars = cars.filter(c => c.priceINR > 0);
   const preselectedCar = initialCarSlugProp
     ? availableCars.find((c) => c.slug === initialCarSlugProp)
     : undefined;

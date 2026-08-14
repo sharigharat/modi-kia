@@ -33,6 +33,7 @@ const ALL_TAB_ORDER = [
   "ev9",
   "carnival",
   "syros-ev",
+  "sorento",
 ];
 
 function CarsGridInner() {

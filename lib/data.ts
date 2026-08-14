@@ -67,6 +67,11 @@ const modelShot = {
   ev6: "/360/exterior/ev6/klm/16-d-normalized.png",
   ev9: "/360/exterior/ev9/obg/62-d-normalized.png",
   syrosEv: "/360/exterior/syros-ev/ebb/09-d.png",
+  // Sorento is still at the covered-car teaser stage on kia.com/in (no
+  // 360° rig or colour-specific renders published yet) — this is Kia's
+  // own "SORENTO" nav-menu preview shot, the only official product image
+  // that exists for the India-market car at this pre-booking stage.
+  sorento: "/hero-images/sorento.png",
 };
 
 /* Cinematic, full-bleed lifestyle photography (one per model), originally
@@ -90,6 +95,12 @@ const heroShot = {
   // same official photography with no text burned into the image.
   ev6: "/hero-images/ev6.jpg",
   ev9: "/hero-images/EV9.avif",
+  // Same covered-car teaser shot as modelShot.sorento above — Kia hasn't
+  // published dedicated lifestyle photography for the India Sorento yet,
+  // so the hero video (see heroVideo.sorento) is what actually carries
+  // this slide; this still doubles as its poster frame and as car.image
+  // for the cards/carousel that don't play video.
+  sorento: "/hero-images/sorento.png",
 };
 
 /* Local hero video clips, supplied directly and copied into
@@ -100,6 +111,7 @@ const heroVideo = {
   carensClavisEv: "/hero-videos/carens-clavis-ev.mp4",
   carnival: "/hero-videos/carnival.mp4",
   ev6: "/hero-videos/ev6.mp4",
+  sorento: "/hero-videos/sorento.mp4",
 };
 
 /* Homepage hero carousel banners — now served from public/hero-images/
@@ -276,9 +288,27 @@ export type Slide = {
   // cropped awkwardly even with an object-position nudge) are skipped
   // below md, and only appear in the carousel on larger screens.
   hiddenOnMobile?: boolean;
+  // Optional CTA button under the headline/sub text — only set for slides
+  // that need it (currently just Sorento, so the "coming soon" slide can
+  // link straight through to its detail page instead of just autoplaying).
+  cta?: { label: string; href: string };
 };
 
 export const heroSlides: Slide[] = [
+  {
+    model: "Kia SORENTO",
+    slug: "sorento",
+    badge: "Coming Soon",
+    headline: "The Kia Sorento",
+    sub: "Global Icon. India Bound.",
+    // No price published yet — Hero.tsx omits the "Starting at ₹... Lakh*"
+    // clause from the slide's caption whenever price is empty.
+    price: "",
+    image: banner(heroShot.sorento),
+    video: heroVideo.sorento,
+    alt: "Kia Sorento flagship SUV, official India teaser image",
+    cta: { label: "Know More", href: "/cars/sorento" },
+  },
   {
     model: "Kia SELTOS",
     slug: "seltos",
@@ -778,6 +808,42 @@ export const cars: Car[] = [
       "Lifetime battery warranty and Assured Buyback programme",
     ],
   },
+  {
+    name: "Sorento",
+    slug: slugify("Sorento"),
+    type: "Flagship SUV",
+    category: "SUV",
+    // Earlier pre-launch stage than Syros EV — Kia has only put up a
+    // "Coming Soon" teaser page for India (pre-booking/"Show Interest"
+    // only, no configurator), so no ex-showroom price exists yet either.
+    price: "",
+    priceINR: 0,
+    // kia.com/in's Sorento teaser confirms Diesel and Strong Hybrid
+    // powertrain options with FWD/AWD, but has not published exact
+    // engine, transmission or ARAI figures for the India-spec car.
+    engine: "Diesel and Strong Hybrid powertrain options (exact engine specifications not yet published for India)",
+    transmission: "Not yet published for India; confirm current details with Modi Kia closer to launch",
+    fuel: "Diesel · Hybrid",
+    blurb: "Kia's global flagship SUV, ready for its India debut. Global icon. India bound.",
+    cta: "Explore the Sorento",
+    image: modelShot.sorento,
+    alt: "Kia Sorento flagship SUV, official India teaser image",
+    // No colour swatches published yet — the teaser page only shows the
+    // car under a black cover, so a single honest placeholder swatch
+    // stands in rather than inventing paint options.
+    colors: [
+      { name: "Colour to be announced", hex: "#14151A", code: "teaser", image: modelShot.sorento },
+    ],
+    seating: "Up to 7 (exact India-spec seating configuration not yet confirmed)",
+    mileage: "Mileage/range not yet published for the India-spec Sorento.",
+    bootSpace: "Boot space not yet published for the India-spec Sorento.",
+    highlights: [
+      "Kia's global flagship SUV, now confirmed for India — Global Icon. India Bound.",
+      "4th-generation global Sorento carries a 2021 Red Dot Award, 2020 Good Design Award and 2026 IIHS Top Safety Pick (global recognition; final India-spec equipment to be confirmed)",
+      "4.8 million+ Sorentos sold worldwide since 2002, across 132+ countries",
+      "Diesel and Strong Hybrid powertrain options expected; pre-booking now open ahead of the India launch",
+    ],
+  },
 ];
 
 export const trust = [
@@ -1215,7 +1281,7 @@ export const locations: Location[] = [
 
 /* Curated subset for the footer's "Popular Cars" column, so it doesn't
    list every model. */
-const popularNames = ["Seltos", "Sonet", "Syros", "Carens", "Carnival", "EV6", "EV9", "Syros EV"];
+const popularNames = ["Seltos", "Sonet", "Syros", "Carens", "Carnival", "EV6", "EV9", "Syros EV", "Sorento"];
 export const popularCars = popularNames
   .map((n) => cars.find((c) => c.name === n))
   .filter((c): c is Car => Boolean(c));
