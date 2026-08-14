@@ -528,10 +528,10 @@ function CarFaq({
 }) {
   const faqs = [
     {
-      q: `What is the price of the ${displayName} in Bhiwandi and Dombivli?`,
+      q: `What is the price of the ${displayName} in Bhiwandi, Dombivli and Ambernath?`,
       a: car.priceINR > 0 
-        ? `The ${displayName} starts at ${formatINR(car.priceINR)}* (ex-showroom). On-road pricing depends on the chosen variant, colour, insurance, accessories and RTO charges, request a quotation from Modi Kia for an exact, all-inclusive figure for Bhiwandi and Dombivli.`
-        : `Pricing for the upcoming ${displayName} has not yet been announced by Kia India. Stay tuned or enquire with Modi Kia to get notified as soon as bookings and exact pricing become available for Bhiwandi and Dombivli.`,
+        ? `The ${displayName} starts at ${formatINR(car.priceINR)}* (ex-showroom). On-road pricing depends on the chosen variant, colour, insurance, accessories and RTO charges, request a quotation from Modi Kia for an exact, all-inclusive figure for Bhiwandi, Dombivli and Ambernath.`
+        : `Pricing for the upcoming ${displayName} has not yet been announced by Kia India. Stay tuned or enquire with Modi Kia to get notified as soon as bookings and exact pricing become available for Bhiwandi, Dombivli and Ambernath.`,
     },
     {
       q: `How many variants does the ${displayName} offer?`,
@@ -551,7 +551,7 @@ function CarFaq({
     },
     {
       q: `Where can I test drive the ${displayName}?`,
-      a: `Book a test drive online or call Modi Kia on 88790 20761. We have a showroom and service department serving ${company.areasServed.join(", ")}.${brochureUrl ? " You can also download the official brochure above." : ""}`,
+      a: `Book a test drive online or call Modi Kia on ${company.phone}. We have a showroom and service department serving ${company.areasServed.join(", ")}.${brochureUrl ? " You can also download the official brochure above." : ""}`,
     },
   ];
 

@@ -45,7 +45,7 @@ export default function Footer() {
             <Logo dark />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
               Modi Kia is an authorised Kia dealership offering new car
-              sales, servicing and genuine Kia parts in Bhiwandi & Dombivli.
+              sales, servicing and genuine Kia parts in Bhiwandi, Dombivli & Ambernath.
             </p>
             <div className="mt-6 flex gap-2.5">
               {socials.map(({ Icon, label, href }) => (

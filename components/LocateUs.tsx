@@ -189,7 +189,7 @@ export default function LocateUs() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-light"
                 >
-                  Get Directions
+                  Get Details
                   <ArrowRight className="h-4 w-4" />
                 </a>
               </div>

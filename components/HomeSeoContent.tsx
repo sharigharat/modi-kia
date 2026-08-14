@@ -124,11 +124,11 @@ export default function HomeSeoContent() {
           <Reveal variant="fade-up">
             <span className="eyebrow mb-2 block">Why Modi Kia</span>
             <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl">
-              Your authorised Kia dealer in Bhiwandi &amp; Dombivli
+              Your authorised Kia dealer in Bhiwandi, Dombivli &amp; Ambernath
             </h2>
             <div className="mt-3.5 space-y-2.5 text-sm leading-relaxed text-muted sm:text-base">
               <p>
-                Modi Kia is an authorised Kia India dealership on Kalyan-Bhiwandi Road, serving Bhiwandi, Dombivli, Kalyan, Thane and the Mumbai Metropolitan Region. Every new Kia car, genuine part and accessory we supply is sourced directly from Kia India, backed by full manufacturer warranty and nationwide service support.
+                Modi Kia is an authorised Kia India dealership with showrooms across Bhiwandi, Dombivli and Ambernath. Every new Kia car, genuine part and accessory we supply is sourced directly from Kia India, backed by full manufacturer warranty and nationwide service support.
               </p>
               <p>
                 As part of the Gautam Modi Group, our team provides transparent, customer-first service across test drives, flexible finance options, vehicle trade-in exchange, and certified maintenance.

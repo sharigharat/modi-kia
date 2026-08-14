@@ -36,11 +36,12 @@ export default function Locations() {
         <Reveal className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-              Find Modi Kia {tab === "Showroom" ? "Showrooms" : "Service Centre"} in Bhiwandi &amp; Dombivli
+              Find Modi Kia {tab === "Showroom" ? "Showrooms" : "Service Centre"} in {tab === "Showroom" ? "Bhiwandi, Dombivli & Ambernath" : "Bhiwandi"}
             </h2>
             <p className="mt-2 text-sm text-white/70">
-              Our {tab === "Showroom" ? "showrooms" : "service department"} on the
-              Kalyan-Bhiwandi Road.
+              {tab === "Showroom"
+                ? "Our showrooms across Bhiwandi, Dombivli and Ambernath."
+                : "Our authorised service department on Kalyan-Bhiwandi Road."}
             </p>
           </div>
           <Link

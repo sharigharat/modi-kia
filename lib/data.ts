@@ -127,7 +127,7 @@ export const company = {
     country: "IN",
   },
   // NOTE: confirm exact opening hours with the dealership before launch.
-  hours: "Mon to Sun, 9:30 AM to 7:30 PM (Modi Kia Pimpalghar)",
+  hours: "Mon to Sun, 9:30 AM to 7:30 PM",
   hoursSpec: { days: "Mo-Su", opens: "09:30", closes: "19:30" },
   // Locations and service area sourced from gautammodigroup.com — the
   // group's official business directory. Pimpalghar (Bhiwandi) houses both
@@ -237,17 +237,17 @@ export const aboutFaqData = [
   {
     question: "Is Modi Kia an authorised Kia dealership?",
     answer:
-      "Yes. Modi Kia is an authorised Kia India dealership, with sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road) and Dombivli (Kalyan-Shilphata Road), and a dedicated service department on the Kalyan–Bhiwandi Road in Bhiwandi, Maharashtra.",
+      "Yes. Modi Kia is an authorised Kia India dealership, with sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath, and a dedicated service department on the Kalyan–Bhiwandi Road in Bhiwandi, Maharashtra.",
   },
   {
     question: "What can I do at Modi Kia?",
     answer:
-      "Modi Kia handles new Kia car sales, test drives, exchange/trade-in for pre-owned vehicles, financing and a dedicated service department, from its Bhiwandi and Dombivli showrooms and Bhiwandi service department.",
+      "Modi Kia handles new Kia car sales, test drives, exchange/trade-in for pre-owned vehicles, financing and a dedicated service department, from its Bhiwandi, Dombivli and Ambernath showrooms and Bhiwandi service department.",
   },
   {
     question: "Which areas does Modi Kia serve?",
     answer:
-      "Modi Kia serves Bhiwandi, Dombivli and the surrounding region from its showrooms in Bhiwandi and Dombivli, and its service department on the Kalyan–Bhiwandi Road.",
+      "Modi Kia serves Bhiwandi, Dombivli, Ambernath and the surrounding region from its showrooms in Bhiwandi, Dombivli and Ambernath, and its service department on the Kalyan–Bhiwandi Road.",
   },
   {
     question: "When did Kia enter the Indian market?",
@@ -938,7 +938,7 @@ export const faqData = [
   {
     question: "How do I book a test drive at Modi Kia?",
     answer:
-      "You can book a test drive online using the form on this page, or by calling us on 88790 20761. Once you share your details, our team will confirm your preferred date, time and location, at our showroom or your home.",
+      `You can book a test drive online using the form on this page, or by calling us on ${company.phone}. Once you share your details, our team will confirm your preferred date, time and location, at our showroom or your home.`,
   },
   {
     question: "Do you offer car finance and exchange?",
@@ -951,11 +951,6 @@ export const faqData = [
       "Yes. Use Book a Service from the menu or footer to choose your model, preferred service slot and a convenient date, and our team will call to confirm.",
   },
   {
-    question: "What is the warranty period on a new Kia car?",
-    answer:
-      "New Kia cars come with a standard 3-year/unlimited-km manufacturer warranty (electric-vehicle high-voltage batteries additionally carry an 8-year/1,60,000km cover), with optional extended warranty plans available. Our sales team can confirm exact coverage for your chosen model.",
-  },
-  {
     question: "Do you accept trade-ins for old cars?",
     answer:
       "Yes. We evaluate your current vehicle and offer an exchange bonus you can apply against your new Kia's on-road price.",
@@ -963,12 +958,7 @@ export const faqData = [
   {
     question: "Which areas does Modi Kia serve?",
     answer:
-      "We have sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road) and Dombivli (Kalyan-Shilphata Road), and a service department on the Kalyan–Bhiwandi Road, serving Bhiwandi, Dombivli and the surrounding region.",
-  },
-  {
-    question: "What documents do I need to buy a car from Modi Kia?",
-    answer:
-      "You will typically need photo ID, address proof, passport-size photographs and PAN details. Our team will guide you through the exact paperwork for cash or finance purchases.",
+      "We have sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath (Kansai Industrial Area), and a service department on the Kalyan–Bhiwandi Road, serving Bhiwandi, Dombivli, Ambernath and the surrounding region.",
   },
 ];
 
@@ -1182,14 +1172,13 @@ export type Location = {
    listing on gautammodigroup.com/business. */
 export const locations: Location[] = [
   {
-    name: "Kia Car Showroom Pimpalghar",
+    name: "Kia Car Showroom Pimpalghar, Kalyan",
     type: "Showroom",
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
     phone: "82380 89600",
     image: "/locations/kia-pimpalghar-showroom-v2.webp",
-    mapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
+    mapsUrl: "https://share.google/w1r74oRGCHAQbB0Ca",
     embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
   {
@@ -1199,19 +1188,17 @@ export const locations: Location[] = [
     address: "B-1, Parvati Heights, Shop No 02, Ground Floor, Kalyan-Shilphata Rd, Padle, Dombivli, Thane, Maharashtra 421204",
     phone: "82380 89600",
     image: "/locations/kia-dombivli-showroom-v2.webp",
-    mapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=B-1%2C%20Parvati%20Heights%2C%20Shop%20No%2002%2C%20Ground%20Floor%2C%20Kalyan-Shilphata%20Rd%2C%20Padle%2C%20Dombivli%2C%20Thane%2C%20Maharashtra%20421204&travelmode=driving",
+    mapsUrl: "https://share.google/9BeyzKzhhBpjreBxL",
     embedQuery: "Modi Kia, Dombivli",
   },
   {
-    name: "Kia Service Centre Pimpalghar",
+    name: "Kia Service Centre Pimpalghar, Kalyan",
     type: "Service Centre",
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
     phone: "82380 89600",
     image: "/locations/kia-pimpalghar-service-v2.webp",
-    mapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Pimpalghar%2C%20Bhiwandi&travelmode=driving",
+    mapsUrl: "https://share.google/w1r74oRGCHAQbB0Ca",
     embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
   {
@@ -1220,9 +1207,8 @@ export const locations: Location[] = [
     city: "Ambernath",
     address: "Shop No. 7, RAGA'S TIMES SQUARE, Showroom at, 8 & 9, Industrial Area, Kansai, Ambernath, Maharashtra 421501",
     phone: "82380 89600",
-    image: "/locations/kia-ambarnath-showroom.jpg",
-    mapsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Modi%20Kia%2C%20Ambernath&travelmode=driving",
+    image: "/locations/modi-kia-ambarnath.webp",
+    mapsUrl: "https://share.google/NvWYuN0TBfdIPNLq3",
     embedQuery: "Modi Kia, Ambernath",
   },
 ];

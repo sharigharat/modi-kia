@@ -8,9 +8,9 @@ import Reveal from "@/components/Reveal";
 import { SITE_URL } from "@/lib/data";
 import { DEALER_ID } from "@/lib/schema";
 
-const title = "Kia Showroom & Service Centre in Bhiwandi";
+const title = "Kia Showrooms in Bhiwandi, Dombivli & Ambernath";
 const description =
-  "Find Modi Kia's showroom and service department on the Kalyan-Bhiwandi Road. View the branch on the map and open Google Maps directions.";
+  "Find Modi Kia showrooms in Bhiwandi, Dombivli & Ambernath and our authorised service department on Kalyan-Bhiwandi Road. View branches on the map and get Google Maps directions.";
 
 export const metadata: Metadata = {
   title,

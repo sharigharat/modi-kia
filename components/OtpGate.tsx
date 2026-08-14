@@ -301,13 +301,36 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
               {showImage && (
                 <div className="relative hidden w-5/12 overflow-hidden rounded-l-xl md:block">
                   <Image
-                    src="/showrooms/otp-showroom-v3.png"
+                    src="/showrooms/modi-kia-verification-pop.jpg"
                     alt="Modi Kia Showroom"
                     title="Modi Kia Showroom"
                     fill
                     sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover scale-110 origin-bottom"
+                    className="object-cover"
                   />
+                  {/* Colour fade overlay treatment */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+                  {/* Overlay text content */}
+                  <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">
+                      MODI KIA
+                    </p>
+                    <h4 className="mt-1 font-display text-base font-bold leading-snug text-white">
+                      Experience Kia, Your Way
+                    </h4>
+                    <p className="mt-1.5 text-[11px] leading-relaxed text-white/80">
+                      Authorised Kia dealer. Book a test drive at our showroom or right at your home.
+                    </p>
+                    <div className="mt-3 flex items-center gap-3 text-[10px] font-medium text-white/90">
+                      <span className="flex items-center gap-1">
+                        <Check className="h-3 w-3 text-white/80" /> Authorised Dealer
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Check className="h-3 w-3 text-white/80" /> Doorstep Test Drive
+                      </span>
+                    </div>
+                  </div>
                 </div>
               )}
               <div className={`relative w-full rounded-xl bg-white p-4 sm:p-8 ${showImage ? "md:w-7/12 md:rounded-l-none" : ""}`}>
