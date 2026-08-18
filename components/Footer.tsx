@@ -25,6 +25,7 @@ const quickLinks = [
 
 const serviceLinks = [
   { label: "Book a Service", href: "/locate-service-centre#book-service" },
+  { label: "Service That Cares", href: "/locate-service-centre#service-that-cares" },
 ];
 
 const socials = [

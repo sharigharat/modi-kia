@@ -10,8 +10,7 @@ import { DEALER_ID } from "@/lib/schema";
 
 const title = "Contact Us";
 const description =
-  "Get in touch with Modi Kia. Call, WhatsApp, email us, or send a message to our team.";
-
+  "Get in touch with Modi Kia. Call, email us, or send a message to our team.";
 export const metadata: Metadata = {
   title,
   description,
@@ -81,8 +80,7 @@ export default function ContactUsPage() {
                 Get in Touch
               </h1>
               <p className="mt-3 max-w-xl text-sm text-white/80 sm:text-base">
-                Call {company.phone}, WhatsApp us, email us, or send a message and
-                our team will get back to you.
+                Call {company.phone}, email us, or send a message and our team will get back to you.
               </p>
             </Reveal>
           </div>

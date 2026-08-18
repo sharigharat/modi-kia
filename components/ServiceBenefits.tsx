@@ -33,7 +33,7 @@ const benefits = [
 
 export default function ServiceBenefits() {
   return (
-    <section className="bg-bg-2 py-16 sm:py-24">
+    <section id="service-that-cares" className="scroll-mt-24 bg-bg-2 py-16 sm:py-24">
       <div className="container-px mx-auto max-w-[1400px]">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <Reveal>

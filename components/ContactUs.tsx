@@ -118,22 +118,7 @@ export default function ContactUs() {
                   </a>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
-                  <WhatsApp className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="text-xs font-medium text-muted">WhatsApp</p>
-                  <a
-                    href={`https://wa.me/${company.whatsappE164.replace("+", "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-semibold text-text transition-colors hover:text-brand"
-                  >
-                    {company.whatsapp}
-                  </a>
-                </div>
-              </li>
+
               <li className="flex items-start gap-3">
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand/10 text-brand">
                   <Mail className="h-4 w-4" />

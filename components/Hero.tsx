@@ -108,6 +108,7 @@ export default function Hero() {
   return (
     <section
       id="home"
+      suppressHydrationWarning
       className="relative scroll-mt-24 overflow-hidden bg-brand-deep"
       style={{ marginTop: "60px" }} /* offset for fixed nav */
     >
@@ -120,6 +121,7 @@ export default function Hero() {
           its number plate) stays in frame — see mobileObjectPositionClass
           on the one slide that still needed a per-image nudge. */}
       <div 
+        suppressHydrationWarning
         className="relative w-full h-[70vh] sm:h-[75vh] md:h-[85vh] lg:h-[calc(100vh-60px)]"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
