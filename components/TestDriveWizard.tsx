@@ -5,7 +5,7 @@ import Image from "next/image";
 import { cars, cityOptions, cityLabels, locations, formatINR, getTomorrowDateString, nav, type Car } from "@/lib/data";
 import { Calendar, Check, ChevronDown, ChevronRight, X } from "./icons";
 import Reveal from "./Reveal";
-import { OtpGate, PhoneInput } from "./OtpGate";
+import { OtpGate, PhoneInput, VerifiedPhoneBar } from "./OtpGate";
 import { useGlobalOtp } from "./GlobalOtpProvider";
 import { getStoredUtmParams } from "@/lib/utm";
 
@@ -66,7 +66,6 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
   const mobile = globalPhone;
   const [email, setEmail] = useState("");
   const [pincode, setPincode] = useState("");
-  const [address, setAddress] = useState("");
 
   const [minDate, setMinDate] = useState("");
 
@@ -184,7 +183,6 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
         mobile: mobile,
         email: email,
         pincode: pincode,
-        address: address,
         preferredDate: date,
         preferredTime: time,
         pageSource: window.location.pathname,
@@ -221,7 +219,6 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
     setName("");
     setEmail("");
     setPincode("");
-    setAddress("");
   };
 
   useEffect(() => {
@@ -289,8 +286,11 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
             <X className="h-5 w-5" />
           </button>
         )}
+        {/* Verified Phone Bar at top */}
+        <VerifiedPhoneBar className="mb-6" />
+
         {/* Step indicator */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-8 sm:mb-10">
           {steps.map((label, i) => {
             const n = i + 1;
             const state = n === step ? "active" : n < step ? "done" : "todo";
@@ -328,7 +328,7 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
           })}
         </div>
 
-        <form onSubmit={onSubmit} className="mt-8">
+        <form onSubmit={onSubmit} className="mt-6">
           {step === 1 && (
             <Reveal variant="fade-in">
               {preselectedCar ? (
@@ -518,18 +518,6 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
                     <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.pincode}</p>
                   )}
                 </label>
-                <label className="col-span-full block">
-                  <span className="mb-1.5 block text-xs font-semibold text-muted">
-                    Address <span className="font-normal text-faint">(optional)</span>
-                  </span>
-                  <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="House no., street, area"
-                    className={fieldBase}
-                  />
-                </label>
               </div>
             </Reveal>
           )}
@@ -553,7 +541,7 @@ export function TestDriveWizardInner({ initialCarSlugProp, onClose, formSource }
             role="dialog"
             aria-modal="true"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg rounded-lg bg-white p-4 sm:p-10 shadow-2xl"
+            className="relative w-full max-w-lg rounded-lg bg-white p-4 sm:p-10 shadow-2xl text-center"
           >
             <button
               onClick={() => { resetAll(); if (onClose) onClose(); }}

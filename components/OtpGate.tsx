@@ -528,3 +528,60 @@ export function PhoneInput({ name = "mobile" }: { name?: string }) {
     </>
   );
 }
+
+export function VerifiedPhoneBar({ className }: { className?: string }) {
+  const { globalPhone, setGlobalPhone } = useGlobalOtp();
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  if (!globalPhone) return null;
+
+  return (
+    <>
+      <div className={`flex items-center justify-between rounded-lg border border-green-200/80 bg-green-50/70 px-3.5 py-2 text-xs text-green-900 ${className || ""}`}>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1 font-bold text-green-700">
+            <Check className="h-3.5 w-3.5" /> Verified Mobile:
+          </span>
+          <span className="font-semibold text-text">{globalPhone}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowConfirm(true)}
+          className="font-semibold text-brand hover:underline"
+        >
+          Change Number
+        </button>
+      </div>
+
+      {showConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <Reveal variant="fade-up" className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
+            <h4 className="font-display text-lg font-bold text-text">Change Mobile Number?</h4>
+            <p className="mt-2 text-sm text-muted">
+              If you want to change the number, you will have to re-verify it with a new OTP. Your current form progress will be saved.
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowConfirm(false)}
+                className="rounded border border-border px-4 py-2 text-sm font-semibold text-text transition-colors hover:bg-bg-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowConfirm(false);
+                  setGlobalPhone("");
+                }}
+                className="rounded bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light"
+              >
+                Okay, Re-verify
+              </button>
+            </div>
+          </Reveal>
+        </div>
+      )}
+    </>
+  );
+}

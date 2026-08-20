@@ -582,31 +582,19 @@ export function getCarDetail(car: Car): CarDetail {
 }
 
 export function getCarBrochure(car: Car): string | undefined {
-  const base = "https://www.kia.com";
-  switch (car.slug) {
-    case "seltos":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/new-seltos/showroom/brochure/Kia_Seltos_Brochure_Desktop_2026.pdf`;
-    case "sonet":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/sonet/brochure/Sonet_Wild_Reborn_Brochure_2026_Desktop.pdf`;
-    case "syros":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/syros/Kia_Syros_Brochure_2026_Desktop.pdf`;
-    case "syros-ev":
-      return `/brochures/Kia_Syros_EV_Brochure_2026.pdf`;
-    case "carens":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/Brochures/Carens_Leaflet.pdf`;
-    case "carens-clavis":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/kia-clavis/broc/Kia_Carens_Clavis_Brochure_Desktop.pdf`;
-    case "carens-clavis-ev":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/kia-carens-clavis-ev/showroom/Kia_Carens_Clavis_EV_Brochure_Desktop.pdf`;
-    case "carnival":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/carnival/Kia_Carnival_Brochure_Desktop.pdf`;
-    case "ev9":
-      return `${base}/content/dam/kia2/in/en/our-vehicles/showroom/ev9/Kia_EV9_Brochure_Desktop.pdf`;
-    // Sorento has no brochure yet — kia.com/in's Sorento page is still a
-    // "Coming Soon" pre-booking teaser with no downloadable PDF published.
-    case "sorento":
-      return undefined;
-    default:
-      return undefined;
+  const localBrochures = [
+    "seltos",
+    "sonet",
+    "syros",
+    "syros-ev",
+    "carens",
+    "carens-clavis",
+    "carens-clavis-ev",
+    "carnival",
+    "ev9",
+  ];
+  if (localBrochures.includes(car.slug)) {
+    return `/brochures/${car.slug}.pdf`;
   }
+  return undefined;
 }

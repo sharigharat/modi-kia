@@ -5,7 +5,7 @@ import { carModels, serviceCentres, getTomorrowDateString } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
 import Link from "next/link";
 import Reveal from "./Reveal";
-import { OtpGate, PhoneInput } from "./OtpGate";
+import { OtpGate, PhoneInput, VerifiedPhoneBar } from "./OtpGate";
 import { useGlobalOtp } from "./GlobalOtpProvider";
 import { getStoredUtmParams } from "@/lib/utm";
 
@@ -181,6 +181,7 @@ export default function ServiceBooking() {
               Our team will confirm your booking shortly.
             </p>
           </div>
+          <VerifiedPhoneBar className="mb-6" />
           {submitted ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <span className="grid h-16 w-16 place-items-center rounded-full bg-brand/10 text-brand">
@@ -196,7 +197,7 @@ export default function ServiceBooking() {
                 onClick={() => { setSubmitted(false); setEmailError(""); }}
                 className="mt-6 rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-3"
               >
-                Book another
+                Go back
               </button>
             </div>
           ) : (

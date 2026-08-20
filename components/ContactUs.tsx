@@ -170,7 +170,7 @@ export default function ContactUs() {
                   onClick={() => { setSubmitted(false); setEmailError(""); }}
                   className="mt-5 rounded border border-border px-5 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-bg-3"
                 >
-                  Send another
+                  Go back
                 </button>
               </div>
             ) : (
@@ -212,7 +212,7 @@ export default function ContactUs() {
                     className={fieldBase}
                   />
                 </label>
-                <label className="block">
+                <label className="col-span-full block">
                   <span className="mb-1.5 block text-xs font-semibold text-muted">Subject</span>
                   <input type="text" name="subject" required placeholder="How can we help?" className={fieldBase} />
                 </label>

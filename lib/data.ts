@@ -226,7 +226,7 @@ export const kiaIndiaFacts = {
   // NOTE: Kia's own site does not publish a live sales/service-point count.
   // This figure is sourced from CarDekho's third-party dealer directory,
   // not from kia.com directly — confirm the current count before launch.
-  network: "582+ dealer touchpoints across 368+ cities in India (per CarDekho's dealer directory).",
+  network: "582+ dealer touchpoints across 368+ cities in India.",
   milestone: "Kia India began mass production of the Seltos at Anantapur in July 2019 and has since crossed 6.3 lakh+ dispatches, including exports.",
   csr: [
     {
@@ -252,7 +252,7 @@ export const aboutFaqData = [
       "Yes. Modi Kia is an authorised Kia India dealership, with sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath, and a dedicated service department on the Kalyan–Bhiwandi Road in Bhiwandi, Maharashtra.",
   },
   {
-    question: "What can I do at Modi Kia?",
+    question: "What are the services available at Modi Kia?",
     answer:
       "Modi Kia handles new Kia car sales, test drives, exchange/trade-in for pre-owned vehicles, financing and a dedicated service department, from its Bhiwandi, Dombivli and Ambernath showrooms and Bhiwandi service department.",
   },
@@ -1238,7 +1238,7 @@ export type Location = {
    listing on gautammodigroup.com/business. */
 export const locations: Location[] = [
   {
-    name: "Kia Car Showroom Pimpalghar, Kalyan",
+    name: "Modi Kia Car Showroom Pimpalghar, Kalyan",
     type: "Showroom",
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
@@ -1248,7 +1248,7 @@ export const locations: Location[] = [
     embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
   {
-    name: "Kia Car Showroom Dombivli",
+    name: "Modi Kia Car Showroom Dombivli",
     type: "Showroom",
     city: "Dombivli",
     address: "B-1, Parvati Heights, Shop No 02, Ground Floor, Kalyan-Shilphata Rd, Padle, Dombivli, Thane, Maharashtra 421204",
@@ -1258,7 +1258,7 @@ export const locations: Location[] = [
     embedQuery: "Modi Kia, Dombivli",
   },
   {
-    name: "Kia Service Centre Pimpalghar, Kalyan",
+    name: "Modi Kia Service Centre Pimpalghar, Kalyan",
     type: "Service Centre",
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
@@ -1268,7 +1268,7 @@ export const locations: Location[] = [
     embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },
   {
-    name: "Kia Car Showroom Ambernath",
+    name: "Modi Kia Car Showroom Ambernath",
     type: "Showroom",
     city: "Ambernath",
     address: "Shop No. 7, RAGA'S TIMES SQUARE, Showroom at, 8 & 9, Industrial Area, Kansai, Ambernath, Maharashtra 421501",

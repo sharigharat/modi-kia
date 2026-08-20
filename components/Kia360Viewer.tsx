@@ -42,7 +42,9 @@ export default function Kia360Viewer({
   const [showHint, setShowHint] = useState(true);
   const [boxWidth, setBoxWidth] = useState(0);
   const dragRef = useRef<{ startX: number; startFrame: number; startPan: number; dragging: boolean } | null>(null);
+  const rafId = useRef<number | null>(null);
   const boxRef = useRef<HTMLDivElement>(null);
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
 
   const available = has360(slug);
 
@@ -59,28 +61,48 @@ export default function Kia360Viewer({
     return () => ro.disconnect();
   }, []);
 
-  // Warm a small window around the current frame. Loading all 72 frames at
-  // once causes a large decoded-image spike, especially after colour changes.
+  // Preload all 72 exterior frames into memory in priority order once 3D mode opens,
+  // so dragging is 100% instant and flicker-free on Netlify CDN and mobile devices.
   useEffect(() => {
     if (mode !== "3d" || view !== "exterior") return;
-    const images: HTMLImageElement[] = [];
-    const initialFrame = 8; // zero-based equivalent of the initial frame state (9)
-    for (let offset = -4; offset <= 4; offset++) {
-      const nearbyFrame = ((initialFrame + offset + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT) + 1;
-      const url = exteriorFrameUrl(slug, nearbyFrame, colourCode);
-      if (!url) continue;
-      const img = new window.Image();
-      img.src = url;
-      images.push(img);
+    let isCancelled = false;
+
+    const loadQueue: number[] = [];
+    const center = frame;
+    loadQueue.push(center);
+    for (let offset = 1; offset <= EXTERIOR_FRAME_COUNT / 2; offset++) {
+      loadQueue.push(((center + offset - 1 + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT) + 1);
+      loadQueue.push(((center - offset - 1 + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT) + 1);
     }
-    return () => {
-      images.forEach((img) => {
-        img.onload = null;
-        img.onerror = null;
-        img.src = "";
-      });
+
+    const loadNextBatch = (index: number) => {
+      if (isCancelled || index >= loadQueue.length) return;
+      const f = loadQueue[index];
+      const url = exteriorFrameUrl(slug, f, colourCode);
+      if (url && !imageCache.current.has(url)) {
+        const img = new window.Image();
+        img.onload = () => {
+          if (!isCancelled) loadNextBatch(index + 1);
+        };
+        img.onerror = () => {
+          if (!isCancelled) loadNextBatch(index + 1);
+        };
+        img.src = url;
+        imageCache.current.set(url, img);
+      } else {
+        loadNextBatch(index + 1);
+      }
     };
-  }, [mode, view, slug, colourCode]);
+
+    // Load first 6 frames concurrently for fast initial response
+    for (let i = 0; i < 6 && i < loadQueue.length; i++) {
+      loadNextBatch(i);
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [mode, view, slug, colourCode, frame]);
 
   const onPointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -95,19 +117,30 @@ export default function Kia360Viewer({
     (e: React.PointerEvent<HTMLDivElement>) => {
       const drag = dragRef.current;
       if (!drag?.dragging) return;
-      const deltaX = e.clientX - drag.startX;
-      if (view === "exterior") {
-        const deltaFrames = Math.round(deltaX / DRAG_PX_PER_FRAME);
-        setFrame(drag.startFrame - deltaFrames);
-      } else {
-        setPanX(drag.startPan + deltaX);
-      }
+      const clientX = e.clientX;
+
+      if (rafId.current !== null) return;
+      rafId.current = requestAnimationFrame(() => {
+        rafId.current = null;
+        if (!dragRef.current?.dragging) return;
+        const deltaX = clientX - drag.startX;
+        if (view === "exterior") {
+          const deltaFrames = Math.round(deltaX / DRAG_PX_PER_FRAME);
+          setFrame(drag.startFrame - deltaFrames);
+        } else {
+          setPanX(drag.startPan + deltaX);
+        }
+      });
     },
     [view],
   );
 
   const endDrag = useCallback(() => {
     if (dragRef.current) dragRef.current.dragging = false;
+    if (rafId.current !== null) {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = null;
+    }
   }, []);
 
   if (!available) {
@@ -123,6 +156,9 @@ export default function Kia360Viewer({
       />
     );
   }
+
+  const currentFrameUrl = exteriorFrameUrl(slug, frame, colourCode);
+  const normalizedFrameNum = ((frame - 1) % EXTERIOR_FRAME_COUNT + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT + 1;
 
   return (
     <div ref={boxRef} className="absolute inset-0">
@@ -160,8 +196,8 @@ export default function Kia360Viewer({
           // flying past as the pointer moves.
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={exteriorFrameUrl(slug, frame, colourCode)}
-            alt={`${displayName}, 360° exterior view, frame ${((frame - 1) % EXTERIOR_FRAME_COUNT) + 1} of ${EXTERIOR_FRAME_COUNT}`}
+            src={currentFrameUrl}
+            alt={`${displayName}, 360° exterior view, frame ${normalizedFrameNum} of ${EXTERIOR_FRAME_COUNT}`}
             title={`${displayName}, 360° exterior view`}
             draggable={false}
             className="absolute inset-0 m-auto h-auto w-full object-contain drop-shadow-2xl"

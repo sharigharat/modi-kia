@@ -75,13 +75,6 @@ const aboutPageSchema = {
   ],
 };
 
-const stats = [
-  { value: company.stats.carsSold, label: "New Cars Sold" },
-  { value: company.stats.usedCarsSold, label: "Used Cars Sold" },
-  { value: company.stats.servicesDone, label: "Services Completed" },
-  { value: company.stats.satisfaction, label: "Customer Satisfaction" },
-];
-
 function joinWithAnd(items: string[]) {
   if (items.length <= 1) return items.join("");
   return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
@@ -127,7 +120,7 @@ export default function AboutPage() {
         </section>
 
         {/* Our story */}
-        <section className="bg-white py-14 lg:py-20">
+        <section className="bg-white pt-14 pb-6 lg:pt-20 lg:pb-8">
           <div className="container-px mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-2 lg:gap-16">
             <Reveal variant="slide-right">
               <p className="text-xs font-semibold uppercase tracking-wider text-brand">
@@ -139,8 +132,9 @@ export default function AboutPage() {
               <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted sm:text-base">
                 <p>
                   Modi Kia is an authorised Kia dealership, owned and
-                  operated by the {groupInfo.name}. Our showroom and service
-                  department are on the Kalyan-Bhiwandi Road, and Kia is the
+                  operated by the {groupInfo.name}. We operate sales showrooms in
+                  Bhiwandi, Dombivli and Ambernath, alongside a dedicated
+                  service centre on the Kalyan–Bhiwandi Road in Bhiwandi. Kia is the
                   featured brand in our corner of the group&apos;s wider
                   multi-brand portfolio.
                 </p>
@@ -169,29 +163,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Stats strip */}
-        <section className="bg-bg-2 py-10">
-          <div className="container-px mx-auto grid max-w-[1400px] grid-cols-2 gap-6 sm:grid-cols-4">
-            {stats.map((s, i) => (
-              <Reveal
-                key={s.label}
-                delay={i * 90}
-                variant="scale-up"
-                className="text-center"
-              >
-                <p className="font-display text-2xl font-bold text-brand sm:text-3xl">
-                  {s.value}
-                </p>
-                <p className="mt-1 text-xs font-medium text-muted sm:text-sm">
-                  {s.label}
-                </p>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
         {/* Core values */}
-        <section className="bg-white py-14 lg:py-20">
+        <section className="bg-white pt-6 pb-14 lg:pt-8 lg:pb-20">
           <div className="container-px mx-auto max-w-[1400px]">
             <Reveal className="mx-auto max-w-xl text-center">
               <p className="text-xs font-semibold uppercase tracking-wider text-brand">
@@ -219,47 +192,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Kia Motors India credibility */}
-        <section className="bg-brand-deep py-14 text-white lg:py-20">
-          <div className="container-px mx-auto max-w-[1400px]">
-            <Reveal className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">
-                Backed By
-              </p>
-              <h2 className="mt-2 font-display text-2xl font-bold sm:text-3xl">
-                Kia Motors India: &ldquo;{kiaIndiaFacts.tagline}&rdquo;
-              </h2>
-              <p className="mt-3 text-sm text-white/70 sm:text-base">
-                Kia entered the Indian market in {kiaIndiaFacts.founded}, and
-                has since grown into one of the country&apos;s leading
-                automobile manufacturers, with{" "}
-                {kiaIndiaFacts.network} {kiaIndiaFacts.milestone}
-              </p>
-            </Reveal>
-            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {kiaIndiaFacts.csr.map((c, i) => (
-                <Reveal
-                  key={c.title}
-                  delay={i * 100}
-                  variant="fade-up"
-                  className="rounded-lg border border-white/15 bg-white/5 p-6"
-                >
-                  <div className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-white" />
-                    <div>
-                      <h3 className="text-sm font-semibold text-white">
-                        {c.title}
-                      </h3>
-                      <p className="mt-1 text-xs leading-relaxed text-white/70">
-                        {c.text}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+
 
         <FAQ
           id="about-faq"

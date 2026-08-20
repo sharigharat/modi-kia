@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import Image from "next/image";
-import { carModels, cityOptions, cityLabels, testDriveImage, getTomorrowDateString } from "@/lib/data";
+import { carModels, cityOptions, cityLabels, testDriveImage, getTomorrowDateString, nav } from "@/lib/data";
 import { Calendar, Check, ChevronDown } from "./icons";
 import Link from "next/link";
 import Reveal from "./Reveal";
@@ -67,6 +67,7 @@ function SelectField({
 export default function TestDrive() {
   const { globalOtpId } = useGlobalOtp();
   const [submitted, setSubmitted] = useState(false);
+  const [submittedCar, setSubmittedCar] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -109,7 +110,6 @@ export default function TestDrive() {
         mobile: formData.get("mobile"),
         email: emailValue,
         pincode: formData.get("pincode"),
-        address: formData.get("address"),
         preferredDate: date,
         preferredTime: effectiveTime,
         pageSource: window.location.pathname,
@@ -124,7 +124,8 @@ export default function TestDrive() {
       });
 
       if (!res.ok) throw new Error("Submission failed");
-      
+
+      setSubmittedCar((formData.get("carModel") as string) || "");
       setSubmitted(true);
       form.reset();
       setDate("");
@@ -168,21 +169,47 @@ export default function TestDrive() {
           {/* Form side */}
           <Reveal delay={200} variant="slide-left" className="bg-bg-2 p-8 sm:p-10 lg:p-12">
             {submitted ? (
-              <div className="flex h-full flex-col items-center justify-center py-10 text-center">
-                <span className="grid h-16 w-16 place-items-center rounded-full bg-brand/10 text-brand">
+              <div className="flex h-full flex-col items-center justify-center py-6 text-center">
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand/10 text-brand">
                   <Check className="h-8 w-8" />
                 </span>
-                <h3 className="mt-6 font-display text-2xl font-bold text-text">
-                  Booking received!
+                <h3 className="mt-5 font-display text-xl font-bold text-text">
+                  Thank you for your interest!
                 </h3>
-                <p className="mt-2 max-w-sm text-muted">
-                  Thank you. A Modi Kia representative will call you shortly to confirm your test drive.
-                </p>
+                <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+                  <p>
+                    We thank you for showing an interest in test driving of the{" "}
+                    <span className="font-semibold text-text">
+                      Kia {submittedCar || "vehicle"}
+                    </span>.
+                  </p>
+                  <p>
+                    We assure you our representative will contact you shortly.
+                  </p>
+                  <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800 text-center">
+                    <p className="font-semibold">Note</p>
+                    <p className="mt-0.5">
+                      This is not the Test Drive confirmation. We shall check the
+                      schedule and confirm the vehicle availability.
+                    </p>
+                  </div>
+                  <p>We appreciate your time and patience.</p>
+                  <p>
+                    For any further details you may contact us on{" "}
+                    <a
+                      href={`tel:${nav.phone.replace(/\s/g, "")}`}
+                      className="whitespace-nowrap font-semibold text-brand hover:underline"
+                    >
+                      {nav.phone}
+                    </a>
+                    .
+                  </p>
+                </div>
                 <button
-                  onClick={() => { setSubmitted(false); setEmailError(""); }}
-                  className="mt-6 rounded border border-border px-6 py-3 text-sm font-semibold text-text transition-colors hover:bg-bg-3"
+                  onClick={() => setSubmitted(false)}
+                  className="mt-6 rounded border border-border px-6 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-white"
                 >
-                  Book another
+                  Go back
                 </button>
               </div>
             ) : (
@@ -237,18 +264,6 @@ export default function TestDrive() {
                     inputMode="numeric"
                     pattern="[0-9]{6}"
                     placeholder="6-digit pincode"
-                    className={fieldBase}
-                  />
-                </label>
-
-                <label className="col-span-full block">
-                  <span className="mb-1.5 block text-xs font-semibold text-muted">
-                    Address <span className="font-normal text-faint">(optional)</span>
-                  </span>
-                  <input
-                    name="address"
-                    type="text"
-                    placeholder="House no., street, area"
                     className={fieldBase}
                   />
                 </label>

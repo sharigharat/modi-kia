@@ -544,10 +544,10 @@ function CarFaq({
 }) {
   const faqs = [
     {
-      q: `What is the price of the ${displayName} in Bhiwandi, Dombivli and Ambernath?`,
+      q: `What is the price of the ${displayName}?`,
       a: car.priceINR > 0 
-        ? `The ${displayName} starts at ${formatINR(car.priceINR)}* (ex-showroom). On-road pricing depends on the chosen variant, colour, insurance, accessories and RTO charges, request a quotation from Modi Kia for an exact, all-inclusive figure for Bhiwandi, Dombivli and Ambernath.`
-        : `Pricing for the upcoming ${displayName} has not yet been announced by Kia India. Stay tuned or enquire with Modi Kia to get notified as soon as bookings and exact pricing become available for Bhiwandi, Dombivli and Ambernath.`,
+        ? `The ${displayName} starts at ${formatINR(car.priceINR)}* (ex-showroom). On-road pricing depends on the chosen variant, colour, insurance, accessories and RTO charges; request a quotation from Modi Kia for an exact, all-inclusive figure.`
+        : `Pricing for the upcoming ${displayName} has not yet been announced by Kia India. Stay tuned or enquire with Modi Kia to get notified as soon as bookings and exact pricing become available.`,
     },
     {
       q: `How many variants does the ${displayName} offer?`,

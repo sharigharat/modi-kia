@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { locations, type Location } from "@/lib/data";
-import { MapPin, Phone, ArrowRight, ChevronLeft, ChevronRight } from "./icons";
+import { MapPin, Phone, ArrowRight } from "./icons";
 import Reveal from "./Reveal";
 
 const tabs: { label: string; type: Location["type"] }[] = [
@@ -20,14 +20,6 @@ export default function Locations() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ left: 0 });
   }, [tab]);
-
-  const scroll = (dir: "left" | "right") => {
-    const track = scrollRef.current;
-    if (!track) return;
-    const card = track.children[0] as HTMLElement | undefined;
-    const step = (card?.offsetWidth ?? 280) + 16; // card + gap
-    track.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
-  };
 
   return (
     <section id="locations" className="scroll-mt-24 bg-brand py-14 lg:py-20">
@@ -53,7 +45,7 @@ export default function Locations() {
           </Link>
         </Reveal>
 
-        {/* Type tabs & Navigation arrows (positioned right above the cards) */}
+        {/* Type tabs */}
         <Reveal className="mb-6 flex items-center justify-between gap-4">
           <div className="flex gap-2">
             {tabs.map((t) => (
@@ -72,25 +64,6 @@ export default function Locations() {
               </button>
             ))}
           </div>
-
-          {items.length > 1 && (
-            <div className="flex gap-2 shrink-0">
-              <button
-                aria-label="Previous location"
-                onClick={() => scroll("left")}
-                className="grid h-10 w-10 place-items-center rounded border border-white/25 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="Next location"
-                onClick={() => scroll("right")}
-                className="grid h-10 w-10 place-items-center rounded border border-white/25 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
-          )}
         </Reveal>
 
         {/* Scrollable location row */}
@@ -108,8 +81,8 @@ export default function Locations() {
               <Link href={`/locate-us?loc=${encodeURIComponent(loc.name)}`} className="group relative flex h-64 flex-col justify-end overflow-hidden rounded-lg block">
                 <Image
                   src={loc.image}
-                  alt={`Modi ${loc.name} in ${loc.city}`}
-                  title={`Modi ${loc.name} in ${loc.city}`}
+                  alt={`${loc.name} in ${loc.city}`}
+                  title={`${loc.name} in ${loc.city}`}
                   fill
                   sizes="260px"
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"

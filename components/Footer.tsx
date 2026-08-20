@@ -10,7 +10,6 @@ import {
   Instagram,
   Twitter,
   LinkedIn,
-  YouTube,
 } from "./icons";
 
 const quickLinks = [
@@ -31,7 +30,6 @@ const serviceLinks = [
 const socials = [
   { Icon: Facebook, label: "Facebook", href: company.social.facebook },
   { Icon: Instagram, label: "Instagram", href: company.social.instagram },
-  { Icon: YouTube, label: "YouTube", href: company.social.youtube },
   { Icon: LinkedIn, label: "LinkedIn", href: company.social.linkedin },
 ];
 
@@ -118,36 +116,36 @@ export default function Footer() {
           {/* Contact */}
           <div className="col-span-2 lg:col-span-1">
             <h2 className="text-sm font-semibold text-white">Contact Us</h2>
-            <ul className="mt-4 space-y-4 text-sm text-white/60">
-              <li className="flex gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
-                <span>
+            <ul className="mt-4 space-y-3.5 text-sm text-white/60">
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-1 h-4 w-4 shrink-0 text-white/40" />
+                <span className="leading-relaxed">
                   Modi Kia, {company.primaryAddress.street},{" "}
                   {company.primaryAddress.locality},{" "}
                   {company.primaryAddress.region}{" "}
                   {company.primaryAddress.postalCode}
                 </span>
               </li>
-              <li className="flex gap-3">
-                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
+              <li className="flex items-center gap-3">
+                <Phone className="h-4 w-4 shrink-0 text-white/40" />
                 <a
                   href={`tel:${nav.phone.replace(/\s/g, "")}`}
-                  className="block py-1 transition-colors hover:text-white"
+                  className="transition-colors hover:text-white"
                 >
                   {nav.phone}
                 </a>
               </li>
-              <li className="flex gap-3">
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
+              <li className="flex items-center gap-3">
+                <Mail className="h-4 w-4 shrink-0 text-white/40" />
                 <a
                   href={`mailto:${company.email}`}
-                  className="block py-1 transition-colors hover:text-white"
+                  className="transition-colors hover:text-white"
                 >
                   {company.email}
                 </a>
               </li>
-              <li className="flex gap-3">
-                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
+              <li className="flex items-center gap-3">
+                <Clock className="h-4 w-4 shrink-0 text-white/40" />
                 <span>{company.hours}</span>
               </li>
             </ul>
