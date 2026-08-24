@@ -321,11 +321,60 @@ export default function CarDetailClient({ car }: { car: Car }) {
       </section>
 
       <nav aria-label="Car detail sections" className="sticky top-[60px] z-40 border-y border-border bg-white/95 backdrop-blur shadow-sm">
-        <div className="container-px mx-auto flex max-w-[1400px] items-center justify-between py-3">
-          <div className="flex gap-2 overflow-x-auto">
-            {navigation.map(([id, label]) => <a key={id} href={`#${id}`} className="shrink-0 rounded px-4 py-2 text-sm font-semibold text-muted transition-colors hover:bg-bg-2 hover:text-brand">{label}</a>)}
+        <div className="container-px mx-auto flex max-w-[1400px] items-center justify-between py-2.5 sm:py-3">
+          <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 sm:gap-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {navigation.map(([id, label]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="shrink-0 rounded px-3 py-1.5 text-xs font-semibold text-muted transition-colors hover:bg-bg-2 hover:text-brand sm:px-4 sm:py-2 sm:text-sm"
+              >
+                {label}
+              </a>
+            ))}
+
+            {/* Inline CTAs on Mobile/Tablet right after Variants */}
+            {showStickyCtas && (
+              <div className="ml-1 flex shrink-0 items-center gap-2 border-l border-border/80 pl-2.5 xl:hidden">
+                {isComingSoon ? (
+                  <Link
+                    href={enquireHref}
+                    className="shrink-0 rounded bg-brand px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-light"
+                  >
+                    Enquire Now
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowTestDrive(true)}
+                    className="shrink-0 rounded bg-brand px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-light"
+                  >
+                    Book a Test Drive
+                  </button>
+                )}
+                <Link
+                  href="/contact-us"
+                  onClick={(e) => sessionStorage.setItem("autoScroll", "contact")}
+                  className="shrink-0 rounded border border-brand px-3 py-1.5 text-xs font-semibold text-brand transition-colors hover:bg-brand hover:text-white"
+                >
+                  Get a Variant Quote
+                </Link>
+                {brochureUrl && (
+                  <a
+                    href={brochureUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex shrink-0 items-center gap-1 rounded border border-border bg-bg-2 px-3 py-1.5 text-xs font-semibold text-text transition-colors hover:border-brand hover:text-brand"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    Download Brochure
+                  </a>
+                )}
+              </div>
+            )}
           </div>
           
+          {/* Desktop CTAs */}
           <div className={`hidden flex-wrap items-center gap-3 transition-opacity duration-300 xl:flex ${showStickyCtas ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
             {isComingSoon ? (
               <Link href={enquireHref} className="rounded bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light">

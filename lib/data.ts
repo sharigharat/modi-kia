@@ -189,9 +189,9 @@ export const groupInfo = {
   name: "Gautam Modi Group",
   url: "https://gautammodigroup.com",
   founded:
-    "Grown over decades from a 100-member team to a 3,500+ strong organisation.",
+    "Grown over decades from a small dedicated team into a large, thriving organisation.",
   growth:
-    "Monthly sales have scaled from over 500 to more than 1,500 units, reflecting sustained market leadership and customer trust.",
+    "Monthly vehicle sales have scaled significantly across all dealership locations, reflecting sustained market leadership and customer trust.",
   brands: ["Kia", "Hyundai", "Audi", "Mahindra", "MG"],
   ventures: [
     { name: "Krishiv Insurance", text: "Insurance solutions for vehicle owners." },
@@ -1225,6 +1225,7 @@ export type Location = {
   address: string;
   phone: string;
   image: string;
+  imagePosition?: string;
   mapsUrl: string;
   embedQuery: string;
 };
@@ -1263,7 +1264,8 @@ export const locations: Location[] = [
     city: "Bhiwandi",
     address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
     phone: "82380 89600",
-    image: "/locations/kia-pimpalghar-service-v2.webp",
+    image: "/locations/modi-kia-service-center.jpeg",
+    imagePosition: "object-[35%_20%]",
     mapsUrl: "https://share.google/w1r74oRGCHAQbB0Ca",
     embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
   },

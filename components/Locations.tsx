@@ -85,7 +85,7 @@ export default function Locations() {
                   title={`${loc.name} in ${loc.city}`}
                   fill
                   sizes="260px"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                  className={`object-cover ${loc.imagePosition || "object-center"} transition-transform duration-500 ease-out group-hover:scale-110`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
                 <div className="relative p-4">

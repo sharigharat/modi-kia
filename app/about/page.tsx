@@ -163,6 +163,41 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Local commitment */}
+        <section className="bg-white py-6 lg:py-8">
+          <div className="container-px mx-auto max-w-[1400px]">
+            <Reveal variant="fade-up">
+              <div className="overflow-hidden rounded-2xl bg-brand-deep p-8 sm:p-10 lg:p-14 text-white shadow-xl">
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 items-center">
+                  <div className="lg:col-span-5">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-white/70">
+                      Our Local Commitment
+                    </p>
+                    <h2 className="mt-3 font-display text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
+                      Here for every milestone on the road.
+                    </h2>
+                  </div>
+                  <div className="lg:col-span-7 flex flex-col justify-between gap-6">
+                    <p className="text-sm leading-relaxed text-white/80 sm:text-base">
+                      Whether you are buying your first car, upgrading your family SUV or arranging routine service, our showroom and service teams provide practical help close to home. Visit Modi Kia across Bhiwandi, Dombivli and Ambernath for new Kia cars, test drives, genuine parts and expert service support.
+                    </p>
+                    <div className="flex flex-wrap gap-2.5 pt-2">
+                      {["Bhiwandi", "Dombivli", "Ambernath"].map((loc) => (
+                        <span
+                          key={loc}
+                          className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white shadow-sm backdrop-blur"
+                        >
+                          {loc}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* Core values */}
         <section className="bg-white pt-6 pb-14 lg:pt-8 lg:pb-20">
           <div className="container-px mx-auto max-w-[1400px]">

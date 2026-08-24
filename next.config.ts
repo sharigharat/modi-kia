@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",
@@ -26,6 +27,28 @@ const nextConfig: NextConfig = {
         hostname: "stimg.cardekho.com",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/360/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/brochures/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
 };
 

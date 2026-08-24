@@ -20,13 +20,11 @@ type Kia360ViewerProps = {
   colourCode?: string;
 };
 
-const DRAG_PX_PER_FRAME = 8;
-// Kia's own interior viewer shows roughly a 90°-wide look-around, not the
-// whole 360° sweep at once. The source panorama is a 2:1 equirectangular
-// image (360° × 180°), so sizing its CSS background width to (boxWidth ×
-// 360/FOV) reproduces that same field of view instead of squashing the
-// entire panorama into the box.
+const DRAG_PX_PER_FRAME = 7;
 const INTERIOR_FOV_DEG = 90;
+
+// Global in-memory cache for pre-decoded 360° frame images so returning to a paint or model is 100% instant (0ms latency).
+const global360Cache = new Map<string, HTMLImageElement>();
 
 export default function Kia360Viewer({
   slug,
@@ -41,16 +39,23 @@ export default function Kia360Viewer({
   const [panX, setPanX] = useState(0);
   const [showHint, setShowHint] = useState(true);
   const [boxWidth, setBoxWidth] = useState(0);
+  
+  const [isLoading360, setIsLoading360] = useState(false);
+  
+  const frameRef = useRef(9);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const dragRef = useRef<{ startX: number; startFrame: number; startPan: number; dragging: boolean } | null>(null);
   const rafId = useRef<number | null>(null);
   const boxRef = useRef<HTMLDivElement>(null);
-  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
 
   const available = has360(slug);
 
-  // The interior panorama's background-size is computed from the box's
-  // actual rendered pixel width (see INTERIOR_FOV_DEG above), so it has to
-  // be measured rather than expressed as a CSS percentage.
+  // Synchronize frame state with frameRef for fast drawing
+  useEffect(() => {
+    frameRef.current = frame;
+  }, [frame]);
+
+  // Measure container box width for interior panorama calculations
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
@@ -61,56 +66,174 @@ export default function Kia360Viewer({
     return () => ro.disconnect();
   }, []);
 
-  // Preload all 72 exterior frames into memory in priority order once 3D mode opens,
-  // so dragging is 100% instant and flicker-free on Netlify CDN and mobile devices.
-  useEffect(() => {
-    if (mode !== "3d" || view !== "exterior") return;
-    let isCancelled = false;
+  // Helper to get normalized 1..72 frame number
+  const getNormalizedFrame = useCallback((f: number) => {
+    let n = ((f - 1) % EXTERIOR_FRAME_COUNT) + 1;
+    if (n <= 0) n += EXTERIOR_FRAME_COUNT;
+    return n;
+  }, []);
 
-    const loadQueue: number[] = [];
-    const center = frame;
-    loadQueue.push(center);
-    for (let offset = 1; offset <= EXTERIOR_FRAME_COUNT / 2; offset++) {
-      loadQueue.push(((center + offset - 1 + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT) + 1);
-      loadQueue.push(((center - offset - 1 + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT) + 1);
+  // Helper to draw a specific frame onto the GPU-accelerated Canvas
+  const drawFrameToCanvas = useCallback((frameNum: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const normalized = getNormalizedFrame(frameNum);
+    const primaryUrl = exteriorFrameUrl(slug, normalized, colourCode);
+    if (!primaryUrl) return;
+
+    let img = global360Cache.get(primaryUrl);
+
+    // Fallback: If target frame isn't loaded yet, find the closest preloaded frame so screen NEVER flickers or goes blank
+    if (!img || !img.complete) {
+      let fallbackImg: HTMLImageElement | undefined;
+      for (let offset = 1; offset < EXTERIOR_FRAME_COUNT / 2; offset++) {
+        const checkLeft = getNormalizedFrame(normalized - offset);
+        const checkRight = getNormalizedFrame(normalized + offset);
+        const urlL = exteriorFrameUrl(slug, checkLeft, colourCode);
+        const urlR = exteriorFrameUrl(slug, checkRight, colourCode);
+        const imgL = urlL ? global360Cache.get(urlL) : undefined;
+        const imgR = urlR ? global360Cache.get(urlR) : undefined;
+        if (imgL && imgL.complete) { fallbackImg = imgL; break; }
+        if (imgR && imgR.complete) { fallbackImg = imgR; break; }
+      }
+      img = fallbackImg;
     }
 
-    const loadNextBatch = (index: number) => {
-      if (isCancelled || index >= loadQueue.length) return;
-      const f = loadQueue[index];
+    if (!img || !img.complete) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+
+    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+    }
+
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    // Aspect ratio contain calculation
+    const imgAspect = img.naturalWidth / img.naturalHeight;
+    const canvasAspect = rect.width / rect.height;
+    let drawW = rect.width;
+    let drawH = rect.height;
+    let drawX = 0;
+    let drawY = 0;
+
+    if (imgAspect > canvasAspect) {
+      drawH = rect.width / imgAspect;
+      drawY = (rect.height - drawH) / 2;
+    } else {
+      drawW = rect.height * imgAspect;
+      drawX = (rect.width - drawW) / 2;
+    }
+
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+    ctx.restore();
+  }, [slug, colourCode, getNormalizedFrame]);
+
+  // High-performance 2-tier asynchronous preloader with img.decode()
+  useEffect(() => {
+    if (mode !== "3d" || view !== "exterior") {
+      setIsLoading360(false);
+      return;
+    }
+    let isCancelled = false;
+
+    const currentNorm = getNormalizedFrame(frameRef.current);
+    const initialUrl = exteriorFrameUrl(slug, currentNorm, colourCode);
+    const initialCached = initialUrl ? global360Cache.get(initialUrl) : null;
+    if (!initialCached || !initialCached.complete) {
+      setIsLoading360(true);
+    } else {
+      setIsLoading360(false);
+    }
+
+    const loadSingleFrame = async (f: number): Promise<HTMLImageElement | null> => {
       const url = exteriorFrameUrl(slug, f, colourCode);
-      if (url && !imageCache.current.has(url)) {
+      if (!url) return null;
+      if (global360Cache.has(url)) {
+        return global360Cache.get(url)!;
+      }
+
+      return new Promise((resolve) => {
         const img = new window.Image();
-        img.onload = () => {
-          if (!isCancelled) loadNextBatch(index + 1);
+        img.crossOrigin = "anonymous";
+        img.onload = async () => {
+          if (img.decode) {
+            try { await img.decode(); } catch {}
+          }
+          if (!isCancelled) {
+            global360Cache.set(url, img);
+            // Draw immediately if this is the active frame
+            if (getNormalizedFrame(frameRef.current) === f) {
+              drawFrameToCanvas(f);
+              setIsLoading360(false);
+            }
+          }
+          resolve(img);
         };
-        img.onerror = () => {
-          if (!isCancelled) loadNextBatch(index + 1);
-        };
+        img.onerror = () => resolve(null);
         img.src = url;
-        imageCache.current.set(url, img);
-      } else {
-        loadNextBatch(index + 1);
+      });
+    };
+
+    const loadFrames = async () => {
+      // Tier 1: Fast key frames (every 4th frame: 1, 5, 9, 13...) for instant 60fps rotation capability
+      const keyFrames: number[] = [];
+      for (let i = 1; i <= EXTERIOR_FRAME_COUNT; i += 4) {
+        keyFrames.push(i);
+      }
+      // Put current frame first
+      keyFrames.sort((a, b) => Math.abs(a - currentNorm) - Math.abs(b - currentNorm));
+      
+      await Promise.all(keyFrames.map(f => loadSingleFrame(f)));
+      if (isCancelled) return;
+
+      // Draw active frame immediately after key frames load
+      drawFrameToCanvas(frameRef.current);
+      setIsLoading360(false);
+
+      // Tier 2: Preload remaining intermediate frames in background
+      const remainingFrames: number[] = [];
+      for (let i = 1; i <= EXTERIOR_FRAME_COUNT; i++) {
+        if (!keyFrames.includes(i)) remainingFrames.push(i);
+      }
+      remainingFrames.sort((a, b) => Math.abs(a - currentNorm) - Math.abs(b - currentNorm));
+
+      for (const f of remainingFrames) {
+        if (isCancelled) break;
+        await loadSingleFrame(f);
       }
     };
 
-    // Load first 6 frames concurrently for fast initial response
-    for (let i = 0; i < 6 && i < loadQueue.length; i++) {
-      loadNextBatch(i);
-    }
+    loadFrames();
 
     return () => {
       isCancelled = true;
     };
-  }, [mode, view, slug, colourCode, frame]);
+  }, [mode, view, slug, colourCode, getNormalizedFrame, drawFrameToCanvas]);
 
+  // Re-draw canvas whenever mode/view/boxWidth changes or component resizes
+  useEffect(() => {
+    if (mode === "3d" && view === "exterior") {
+      drawFrameToCanvas(frameRef.current);
+    }
+  }, [mode, view, boxWidth, drawFrameToCanvas]);
+
+  // Pointer drag handlers with requestAnimationFrame throttling for smooth 60 FPS rotation
   const onPointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
-      dragRef.current = { startX: e.clientX, startFrame: frame, startPan: panX, dragging: true };
+      dragRef.current = { startX: e.clientX, startFrame: frameRef.current, startPan: panX, dragging: true };
       setShowHint(false);
     },
-    [frame, panX],
+    [panX]
   );
 
   const onPointerMove = useCallback(
@@ -126,13 +249,16 @@ export default function Kia360Viewer({
         const deltaX = clientX - drag.startX;
         if (view === "exterior") {
           const deltaFrames = Math.round(deltaX / DRAG_PX_PER_FRAME);
-          setFrame(drag.startFrame - deltaFrames);
+          const newFrame = drag.startFrame - deltaFrames;
+          frameRef.current = newFrame;
+          drawFrameToCanvas(newFrame);
+          setFrame(newFrame);
         } else {
           setPanX(drag.startPan + deltaX);
         }
       });
     },
-    [view],
+    [view, drawFrameToCanvas]
   );
 
   const endDrag = useCallback(() => {
@@ -157,14 +283,11 @@ export default function Kia360Viewer({
     );
   }
 
-  const currentFrameUrl = exteriorFrameUrl(slug, frame, colourCode);
-  const normalizedFrameNum = ((frame - 1) % EXTERIOR_FRAME_COUNT + EXTERIOR_FRAME_COUNT) % EXTERIOR_FRAME_COUNT + 1;
+  const normalizedFrameNum = getNormalizedFrame(frame);
 
   return (
     <div ref={boxRef} className="absolute inset-0">
-      {/* Static product shot — always in the DOM so it's what search
-          engines and no-JS visitors see, and what renders before the
-          viewer is switched into 3D mode. */}
+      {/* Static product shot — always in the DOM for SEO and pre-3D render */}
       <Image
         src={staticImage}
         alt={staticAlt}
@@ -191,16 +314,10 @@ export default function Kia360Viewer({
         onPointerCancel={endDrag}
       >
         {view === "exterior" ? (
-          // Raw <img>, not next/image: instant frame-swap during drag —
-          // Next's on-demand resize pipeline can't keep up with 72 frames
-          // flying past as the pointer moves.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={currentFrameUrl}
-            alt={`${displayName}, 360° exterior view, frame ${normalizedFrameNum} of ${EXTERIOR_FRAME_COUNT}`}
-            title={`${displayName}, 360° exterior view`}
-            draggable={false}
-            className="absolute inset-0 m-auto h-auto w-full object-contain drop-shadow-2xl"
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 h-full w-full object-contain drop-shadow-2xl"
+            aria-label={`${displayName}, 360° exterior view, frame ${normalizedFrameNum} of ${EXTERIOR_FRAME_COUNT}`}
           />
         ) : (
           <div
@@ -210,13 +327,6 @@ export default function Kia360Viewer({
             style={{
               backgroundImage: `url(${interiorPanoUrl(slug)})`,
               backgroundRepeat: "repeat-x",
-              // Explicit px width/height (not "auto 100%"): sizing off the
-              // box height alone rendered ~245° of the panorama into the
-              // box at once, which is why it looked stretched. Deriving
-              // both dimensions from the same INTERIOR_FOV_DEG keeps a
-              // realistic ~90° look-around and stays undistorted, since
-              // the source's horizontal:vertical angular density is equal
-              // (a 360°×180° equirectangular image is always 2:1).
               backgroundSize: boxWidth
                 ? `${(boxWidth * 360) / INTERIOR_FOV_DEG}px ${(boxWidth * 180) / INTERIOR_FOV_DEG}px`
                 : "auto 100%",
@@ -226,7 +336,7 @@ export default function Kia360Viewer({
           />
         )}
 
-        {showHint && (
+        {showHint && !isLoading360 && (
           <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
             <span className="animate-pulse rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white">
               Drag to look around
@@ -234,6 +344,19 @@ export default function Kia360Viewer({
           </div>
         )}
       </div>
+
+      {/* 360° Loading indicator overlay */}
+      {mode === "3d" && isLoading360 && (
+        <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-[2px] transition-opacity duration-300">
+          <div className="flex items-center gap-3 rounded-full bg-black/80 px-5 py-2.5 shadow-lg text-white">
+            <svg className="h-4 w-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            <span className="text-xs font-semibold tracking-wide">Loading 3D Experience...</span>
+          </div>
+        </div>
+      )}
 
       {/* Corner toggle: static photo <-> 3D render */}
       <button
@@ -253,8 +376,7 @@ export default function Kia360Viewer({
         {mode === "3d" ? "Exit 3D View" : "360° View"}
       </button>
 
-      {/* Exterior / Interior sub-tabs, only shown once 3D mode is on —
-          mirrors kia.com's own "Exterior / Interior" toggle exactly. */}
+      {/* Exterior / Interior sub-tabs */}
       {mode === "3d" && (
         <div className="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 gap-1 rounded-full bg-white/90 p-1 text-xs font-semibold shadow-sm backdrop-blur">
           {(["exterior", "interior"] as const).map((v) => (

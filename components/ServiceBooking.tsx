@@ -181,7 +181,6 @@ export default function ServiceBooking() {
               Our team will confirm your booking shortly.
             </p>
           </div>
-          <VerifiedPhoneBar className="mb-6" />
           {submitted ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <span className="grid h-16 w-16 place-items-center rounded-full bg-brand/10 text-brand">
