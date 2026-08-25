@@ -115,6 +115,7 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
   const initialCode = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[0] : "+91";
   const initialNumber = globalPhone && globalPhone.includes(" ") ? globalPhone.split(" ")[1] : (globalPhone || "");
 
+  const [otpToken, setOtpToken] = useState("");
   const [step, setStep] = useState<"phone" | "otp" | "verified">(globalPhone ? "verified" : "phone");
   const [countryCode, setCountryCode] = useState(initialCode);
   const [phone, setPhone] = useState(initialNumber);
@@ -201,6 +202,9 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
         setError(data.error || "Failed to resend OTP");
         return;
       }
+      if (data.otp_token || data.otp_id) {
+        setOtpToken(data.otp_token || data.otp_id);
+      }
       setResendTimer(30);
       setResendCount(c => c + 1);
     } catch (err) {
@@ -239,6 +243,9 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
         setError(data.error || "Failed to send OTP");
         return;
       }
+      if (data.otp_token || data.otp_id) {
+        setOtpToken(data.otp_token || data.otp_id);
+      }
       setStep("otp");
       setResendTimer(30);
     } catch (err) {
@@ -262,7 +269,14 @@ export function OtpGate({ children, className, autoFocus = false, formSource = "
       const res = await fetch("/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone_number: formattedPhone, otp_code: otp, form_source: formSource, ...getStoredUtmParams() }),
+        body: JSON.stringify({
+          phone_number: formattedPhone,
+          otp_code: otp,
+          otp_token: otpToken,
+          otp_id: otpToken,
+          form_source: formSource,
+          ...getStoredUtmParams()
+        }),
       });
       const data = await res.json();
 

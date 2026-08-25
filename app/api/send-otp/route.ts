@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { createOtpToken } from "@/lib/otpToken";
 
 export async function POST(req: Request) {
   try {
@@ -9,40 +10,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Invalid phone number" }, { status: 400 });
     }
 
-    // Generate a fresh 4-digit numeric OTP
+    // 1. Generate a fresh 4-digit numeric OTP and a stateless HMAC-signed token
     const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
+    const otpToken = createOtpToken(phone_number, otpCode, form_source || "");
 
-    const supabaseAdmin = getSupabaseAdmin();
-    // 1. Invalidate any previous unverified OTP rows for that phone_number
-    await supabaseAdmin
-      .from("otp_verifications")
-      .update({ expires_at: new Date().toISOString() })
-      .eq("phone_number", phone_number)
-      .eq("is_verified", false);
+    // 2. Optional Supabase logging (non-blocking if Supabase project is paused or unavailable)
+    try {
+      const supabaseAdmin = getSupabaseAdmin();
+      const expiresAt = new Date(Date.now() + 5 * 60000).toISOString();
 
-    // 2. Insert a new row into otp_verifications
-    // expires_at = now + 5 minutes
-    const expiresAt = new Date(Date.now() + 5 * 60000).toISOString();
-    
-    console.log("Checking env vars:", process.env.SUPABASE_URL ? "Exists" : "Missing");
+      await supabaseAdmin
+        .from("otp_verifications")
+        .update({ expires_at: new Date().toISOString() })
+        .eq("phone_number", phone_number)
+        .eq("is_verified", false);
 
-    const { data: otpRow, error: insertError } = await supabaseAdmin
-      .from("otp_verifications")
-      .insert({
-        phone_number,
-        otp_code: otpCode,
-        form_source: form_source || null,
-        expires_at: expiresAt,
-      })
-      .select("id")
-      .single();
-
-    if (insertError || !otpRow) {
-      console.error("Supabase insert error:", insertError, "URL used:", process.env.SUPABASE_URL);
-      return NextResponse.json({ success: false, error: `Database Error: ${insertError?.message || 'Failed to create OTP record'}` }, { status: 500 });
+      await supabaseAdmin
+        .from("otp_verifications")
+        .insert({
+          phone_number,
+          otp_code: otpCode,
+          form_source: form_source || null,
+          expires_at: expiresAt,
+        });
+    } catch (dbErr) {
+      console.warn("Supabase OTP log skipped (project may be paused or offline):", dbErr);
     }
 
-    // 3. Send the OTP to the person via WhatsApp
+    // 3. Send the OTP to the user via WhatsApp API
     const whatsappUrl = process.env.WHATSAPP_API_URL;
     const whatsappKey = process.env.WHATSAPP_API_KEY;
 
@@ -88,17 +83,14 @@ export async function POST(req: Request) {
       if (!waRes.ok) {
         const errText = await waRes.text();
         console.error("WhatsApp API failed:", waRes.status, errText);
-        // Delete the OTP row since we couldn't send it
-        await supabaseAdmin.from("otp_verifications").delete().eq("id", otpRow.id);
         return NextResponse.json({ success: false, error: `WhatsApp API failed with status ${waRes.status}: ${errText || "Forbidden/Unauthorized"}` }, { status: 500 });
       }
     } catch (waErr: any) {
       console.error("WhatsApp fetch error:", waErr);
-      await supabaseAdmin.from("otp_verifications").delete().eq("id", otpRow.id);
       return NextResponse.json({ success: false, error: `WhatsApp fetch error: ${waErr.message}` }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, otp_id: otpRow.id });
+    return NextResponse.json({ success: true, otp_id: otpToken, otp_token: otpToken });
   } catch (error) {
     console.error("send-otp route error:", error);
     return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });

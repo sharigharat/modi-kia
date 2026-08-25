@@ -152,12 +152,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Invalid form type" }, { status: 400 });
     }
 
-    const supabaseAdmin = getSupabaseAdmin();
-    const { error } = await supabaseAdmin.from(tableName).insert(dataToInsert);
-
-    if (error) {
-      console.error(`Error inserting into ${tableName}:`, error);
-      return NextResponse.json({ success: false, error: "Database error" }, { status: 500 });
+    try {
+      const supabaseAdmin = getSupabaseAdmin();
+      const { error } = await supabaseAdmin.from(tableName).insert(dataToInsert);
+      if (error) {
+        console.warn(`Supabase insert into ${tableName} skipped (project may be paused or offline):`, error);
+      }
+    } catch (dbErr) {
+      console.warn(`Supabase insert into ${tableName} error:`, dbErr);
     }
 
     if (sheetPayload) {

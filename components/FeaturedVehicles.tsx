@@ -298,11 +298,13 @@ export default function FeaturedVehicles({ initialCars }: { initialCars: Feature
 
           <div className="mt-2 grid grid-cols-1 gap-2 border-t border-border pt-2 sm:grid-cols-3">
             <div>
-              <p className="text-xs font-medium text-muted">Starting at</p>
+              <p className="text-xs font-medium text-muted">
+                {active.priceINR > 0 ? "Starting at" : "Status"}
+              </p>
               <p className="mt-0.5 text-base font-semibold text-text">
                 {formatINR(active.priceINR)}
               </p>
-              <p className="text-xs text-faint">*Ex Showroom Price</p>
+              {active.priceINR > 0 && <p className="text-xs text-faint">*Ex Showroom Price</p>}
             </div>
             <div>
               <p className="text-xs font-medium text-muted">Engine</p>

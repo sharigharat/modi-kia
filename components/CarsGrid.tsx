@@ -115,10 +115,18 @@ function CarsGridInner() {
                       {displayName}
                     </h3>
                     <p className="mt-1 text-sm text-muted">
-                      Starts from{" "}
-                      <span className="font-semibold text-text">
-                        {formatINR(car.priceINR)}
-                      </span>
+                      {car.priceINR > 0 ? (
+                        <>
+                          Starts from{" "}
+                          <span className="font-semibold text-text">
+                            {formatINR(car.priceINR)}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="font-semibold text-text">
+                          Coming Soon
+                        </span>
+                      )}
                     </p>
                     <p className="mt-1 text-xs text-faint">{car.fuel}</p>
                     <Link
