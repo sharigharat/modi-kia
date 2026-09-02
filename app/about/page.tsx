@@ -121,7 +121,7 @@ export default function AboutPage() {
 
         {/* Our story */}
         <section className="bg-white pt-14 pb-6 lg:pt-20 lg:pb-8">
-          <div className="container-px mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="container-px mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
             <Reveal variant="slide-right">
               <p className="text-xs font-semibold uppercase tracking-wider text-brand">
                 Our Story
@@ -139,17 +139,16 @@ export default function AboutPage() {
                   multi-brand portfolio.
                 </p>
                 <p>
-                  The {groupInfo.name} represents {joinWithAnd(groupInfo.brands)}{" "}
-                  across multiple automotive businesses, alongside{" "}
-                  {joinWithAnd(groupInfo.ventures.map((v) => v.name))}.{" "}
-                  {groupInfo.founded} {groupInfo.growth}
+                  Built on a long-standing commitment to responsible growth, the
+                  Group continues to earn customer trust through experienced
+                  teams, dependable service and strong partner relationships.
                 </p>
               </div>
             </Reveal>
             <Reveal
               variant="slide-left"
               delay={150}
-              className="relative min-h-[260px] overflow-hidden rounded-lg lg:min-h-full"
+              className="relative min-h-[260px] sm:min-h-[320px] lg:min-h-[360px] overflow-hidden rounded-lg"
             >
               <Image
                 src={aboutCultureImage}
