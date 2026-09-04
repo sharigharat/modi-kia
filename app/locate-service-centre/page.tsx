@@ -12,7 +12,7 @@ import { DEALER_ID } from "@/lib/schema";
 
 const title = "Kia Service Appointment Booking";
 const description =
-  "Book authorised Kia service online in Bhiwandi, Dombivli & Ambernath. Choose a convenient slot for maintenance, repairs, genuine parts and pickup/drop support.";
+  "Book authorised Kia service online in Kalyan, Dombivli & Ambernath. Choose a convenient slot for maintenance, repairs, genuine parts and pickup/drop support.";
 
 export const metadata: Metadata = {
   title,

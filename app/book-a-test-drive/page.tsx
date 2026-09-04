@@ -8,9 +8,9 @@ import { Suspense } from "react";
 import { SITE_URL } from "@/lib/data";
 import { DEALER_ID } from "@/lib/schema";
 
-const title = "Book a Kia Test Drive in Bhiwandi & Dombivli";
+const title = "Book a Kia Test Drive in Kalyan & Dombivli";
 const description =
-  "Book a no-obligation Kia test drive in Bhiwandi or Dombivli. Choose your model, preferred time and showroom or doorstep location online.";
+  "Book a no-obligation Kia test drive in Kalyan or Dombivli. Choose your model, preferred time and showroom or doorstep location online.";
 
 export const metadata: Metadata = {
   title,

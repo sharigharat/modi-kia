@@ -19,9 +19,9 @@ const sora = Sora({
   display: "swap",
 });
 
-const title = "New Kia Cars & Test Drives in Bhiwandi & Dombivli | Modi Kia";
+const title = "New Kia Cars & Test Drives in Kalyan & Dombivli | Modi Kia";
 const description =
-  "Compare new Kia cars, prices and variants at Modi Kia, an authorised dealer. Book a test drive or Kia service in Bhiwandi & Dombivli today.";
+  "Compare new Kia cars, prices and variants at Modi Kia, an authorised dealer. Book a test drive or Kia service in Kalyan & Dombivli today.";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -39,15 +39,15 @@ export const metadata: Metadata = {
   applicationName: "Modi Kia",
   keywords: [
     "Modi Kia",
-    "Kia dealer Bhiwandi",
-    "Kia showroom Bhiwandi",
+    "Kia dealer Kalyan",
+    "Kia showroom Kalyan",
     "Kia test drive",
-    "Kia service Bhiwandi",
+    "Kia service Kalyan",
     "Kia Seltos price",
     "Kia Sonet",
     "Kia Syros",
     "Kia Carens",
-    "authorised Kia dealer Bhiwandi",
+    "authorised Kia dealer Kalyan",
   ],
   alternates: { canonical: "/" },
   robots: {

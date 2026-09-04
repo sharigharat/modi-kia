@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Modi Kia, authorised Kia dealer in Bhiwandi and Dombivli";
+  "Modi Kia, authorised Kia dealer in Kalyan and Dombivli";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -61,7 +61,7 @@ export default function OpengraphImage() {
             New Kia Cars, Test Drives &amp; Service
           </span>
           <span style={{ fontSize: 34, color: "#e8c6c6", marginTop: 12 }}>
-            Authorised Kia dealer in Bhiwandi &amp; Dombivli
+            Authorised Kia dealer in Kalyan &amp; Dombivli
           </span>
         </div>
 

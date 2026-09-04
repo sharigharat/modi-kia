@@ -14,7 +14,7 @@ export default function ServiceCentres() {
             Locate a Service Centre
           </h2>
           <p className="mt-2 text-sm text-white/70">
-            Our authorised Modi Kia service department in Bhiwandi &amp; Dombivli.
+            Our authorised Modi Kia service department in Kalyan &amp; Dombivli.
           </p>
         </Reveal>
 

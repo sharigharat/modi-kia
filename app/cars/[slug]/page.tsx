@@ -113,7 +113,7 @@ export default async function CarDetailPage({
         "@type": "FAQPage",
         "@id": `${SITE_URL}/cars/${car.slug}#faq`,
         mainEntity: [
-          `What is the price of the ${displayName} in Bhiwandi and Dombivli?`,
+          `What is the price of the ${displayName} in Kalyan and Dombivli?`,
           `How many variants does the ${displayName} offer?`,
           `What engine and mileage does the ${displayName} deliver?`,
           `What are the key features of the ${displayName}?`,

@@ -28,11 +28,11 @@ export default function Locations() {
         <Reveal className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-              Find Modi Kia {tab === "Showroom" ? "Showrooms" : "Service Centre"} in {tab === "Showroom" ? "Bhiwandi, Dombivli & Ambernath" : "Bhiwandi"}
+              Find Modi Kia {tab === "Showroom" ? "Showrooms" : "Service Centre"} in {tab === "Showroom" ? "Kalyan, Dombivli & Ambernath" : "Kalyan"}
             </h2>
             <p className="mt-2 text-sm text-white/70">
               {tab === "Showroom"
-                ? "Our showrooms across Bhiwandi, Dombivli and Ambernath."
+                ? "Our showrooms across Kalyan, Dombivli and Ambernath."
                 : "Our authorised service department on Kalyan-Bhiwandi Road."}
             </p>
           </div>
@@ -89,7 +89,7 @@ export default function Locations() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
                 <div className="relative p-4">
-                  <span className="mb-1.5 inline-block rounded bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur">
+                  <span className="mb-1.5 inline-block rounded bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur whitespace-nowrap">
                     {loc.type}
                   </span>
                   <h3 className="font-display text-sm font-bold leading-snug text-white">

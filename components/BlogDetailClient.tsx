@@ -207,7 +207,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
               Found a Kia you like?
             </h2>
             <p className="mt-2 max-w-lg text-sm text-white/70">
-              Book a no-obligation test drive at our Bhiwandi or Dombivli
+              Book a no-obligation test drive at our Kalyan or Dombivli
               showroom, or ask our team to build a shortlist around your budget.
             </p>
           </div>

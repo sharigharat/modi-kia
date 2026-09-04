@@ -7,7 +7,7 @@ import Reveal from "./Reveal";
 
    These sections give the homepage meaningful, crawlable copy so
    it ranks for dealer-level and model-level queries (e.g. "Kia
-   dealer in Bhiwandi", "Kia Seltos price Kalyan"). Content is
+   dealer in Kalyan", "Kia Seltos price Kalyan"). Content is
    written to be useful to human buyers and extractable by answer
    engines — short definitional sentences, clear lists and an FAQ
    close. Layout stays clean and on-brand: light surfaces, the
@@ -124,11 +124,11 @@ export default function HomeSeoContent() {
           <Reveal variant="fade-up">
             <span className="eyebrow mb-2 block">Why Modi Kia</span>
             <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl">
-              Your authorised Kia dealer in Bhiwandi, Dombivli &amp; Ambernath
+              Your authorised Kia dealer in Kalyan, Dombivli &amp; Ambernath
             </h2>
             <div className="mt-3.5 space-y-2.5 text-sm leading-relaxed text-muted sm:text-base">
               <p>
-                Modi Kia is an authorised Kia India dealership with showrooms across Bhiwandi, Dombivli and Ambernath. Every new Kia car, genuine part and accessory we supply is sourced directly from Kia India, backed by full manufacturer warranty and nationwide service support.
+                Modi Kia is an authorised Kia India dealership with showrooms across Kalyan, Dombivli and Ambernath. Every new Kia car, genuine part and accessory we supply is sourced directly from Kia India, backed by full manufacturer warranty and nationwide service support.
               </p>
               <p>
                 As part of the Gautam Modi Group, our team provides transparent, customer-first service across test drives, flexible finance options, vehicle trade-in exchange, and certified maintenance.

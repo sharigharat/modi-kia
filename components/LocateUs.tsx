@@ -130,8 +130,8 @@ export default function LocateUs() {
                         </h4>
                       </div>
                       <span
-                        className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
-                          active ? "bg-white/12 text-white/85" : "bg-bg-2 text-muted"
+                        className={`whitespace-nowrap shrink-0 rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                          active ? "bg-white/15 text-white" : "bg-bg-2 text-muted"
                         }`}
                       >
                         {location.type}

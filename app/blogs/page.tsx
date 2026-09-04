@@ -11,7 +11,7 @@ import { DEALER_ID } from "@/lib/schema";
 
 const title = "The Modi Kia Journal — Kia Guides & Model Insights";
 const description =
-  "Kia car guides, ownership tips, model comparisons and service advice from Modi Kia, your authorised dealer in Bhiwandi and Dombivli.";
+  "Kia car guides, ownership tips, model comparisons and service advice from Modi Kia, your authorised dealer in Kalyan and Dombivli.";
 
 export const metadata: Metadata = {
   robots: {
@@ -97,7 +97,7 @@ export default function BlogsPage() {
               </h1>
               <p className="mt-3 max-w-2xl text-sm text-white/80 sm:text-base">
                 Expert car guides, ownership tips and Kia model insights ,  from
-                your authorised Kia dealer in Bhiwandi, Dombivli &amp; the
+                your authorised Kia dealer in Kalyan, Dombivli &amp; the
                 surrounding region.
               </p>
             </Reveal>

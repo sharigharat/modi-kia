@@ -16,7 +16,7 @@ function fallbackContent(blog: Blog): BlogContent {
     sections: [
       {
         heading: blog.title,
-        body: `This article is being updated with the latest information. For now, our team at Modi Kia is happy to answer any questions you have about this topic; just call us on ${"88790 20761"} or visit our Bhiwandi or Dombivli showroom.`,
+        body: `This article is being updated with the latest information. For now, our team at Modi Kia is happy to answer any questions you have about this topic; just call us on ${"88790 20761"} or visit our Kalyan or Dombivli showroom.`,
       },
     ],
     conclusion:
@@ -28,11 +28,11 @@ const blogDetails: Record<string, BlogContent> = {
   /* ---- 1. Seltos vs Syros ---- */
   "seltos-vs-syros-which-kia-suv-suits-your-budget": {
     introduction:
-      "If you are walking into the Modi Kia showroom in Bhiwandi or Dombivli with a budget of roughly Rs. 8 to 15 lakh, there is a good chance you are asking this exact question: Seltos or Syros? Both wear the Kia badge, both score a 5-star BNCAP safety rating, and both pack modern tech that punches above their price tag. But they are not the same SUV, and picking the wrong one can leave you with a car that feels either too basic or too expensive for your daily life. This guide breaks down the real differences, not the brochure headlines, so you can choose with confidence.",
+      "If you are walking into the Modi Kia showroom in Kalyan or Dombivli with a budget of roughly Rs. 8 to 15 lakh, there is a good chance you are asking this exact question: Seltos or Syros? Both wear the Kia badge, both score a 5-star BNCAP safety rating, and both pack modern tech that punches above their price tag. But they are not the same SUV, and picking the wrong one can leave you with a car that feels either too basic or too expensive for your daily life. This guide breaks down the real differences, not the brochure headlines, so you can choose with confidence.",
     sections: [
       {
         heading: "Size and road presence: how different are they?",
-        body: "The Seltos is physically the larger car. At just over 4.3 metres long and nearly 1.8 metres wide, it has a footprint that fills a parking bay and commands attention on the road. The Syros, at roughly 3.9 metres, is more compact and easier to thread through Bhiwandi's narrow lanes and crowded Dombivli streets. If your daily route includes tight apartment parking or congested market roads, the Syros will feel more at home. If you frequently drive on the highway and want the road presence of a bigger SUV, the Seltos is the natural choice.",
+        body: "The Seltos is physically the larger car. At just over 4.3 metres long and nearly 1.8 metres wide, it has a footprint that fills a parking bay and commands attention on the road. The Syros, at roughly 3.9 metres, is more compact and easier to thread through Kalyan's narrow lanes and crowded Dombivli streets. If your daily route includes tight apartment parking or congested market roads, the Syros will feel more at home. If you frequently drive on the highway and want the road presence of a bigger SUV, the Seltos is the natural choice.",
       },
       {
         heading: "Price and variants: what your money gets you",
@@ -40,25 +40,25 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "Engines, fuel type and real-world mileage",
-        body: "Both SUVs offer petrol and diesel options, but the engine line-ups are tuned differently. The Seltos gets three engines, 1.5L Smartstream petrol (115 PS), 1.5L Turbo GDi petrol (160 PS), and 1.5L CRDi diesel (116 PS), paired with manual, IVT, iMT, DCT and automatic transmissions depending on the variant. The Syros uses a 1.0L turbo petrol (120 PS) and a 1.5L diesel (116 PS). In the real world, diesel variants of both SUVs return excellent highway mileage (18–21 kmpl), while the turbo petrols are spirited but thirstier around town. If fuel efficiency is your top concern, a diesel variant in either model is the way to go. Our Bhiwandi service team regularly sees both models in for periodic maintenance, and owners consistently report that the diesel engines deliver the best balance of power and economy for mixed driving in the Bhiwandi belt.",
+        body: "Both SUVs offer petrol and diesel options, but the engine line-ups are tuned differently. The Seltos gets three engines, 1.5L Smartstream petrol (115 PS), 1.5L Turbo GDi petrol (160 PS), and 1.5L CRDi diesel (116 PS), paired with manual, IVT, iMT, DCT and automatic transmissions depending on the variant. The Syros uses a 1.0L turbo petrol (120 PS) and a 1.5L diesel (116 PS). In the real world, diesel variants of both SUVs return excellent highway mileage (18–21 kmpl), while the turbo petrols are spirited but thirstier around town. If fuel efficiency is your top concern, a diesel variant in either model is the way to go. Our Kalyan service team regularly sees both models in for periodic maintenance, and owners consistently report that the diesel engines deliver the best balance of power and economy for mixed driving in the Kalyan belt.",
       },
       {
         heading: "Interior, features and the family test",
-        body: "Both cabins are modern and well-built, but the feeling behind the wheel is different. The Seltos feels like a premium SUV, wider seats, more shoulder room, and the option of a dual-pane panoramic sunroof and Bose 8-speaker audio. The Syros feels clever and space-efficient; the rear seat legroom is genuinely impressive for a sub-4-metre SUV, and the boot (at 465 litres) is larger than many cars in the segment above. For a family of four in Bhiwandi or Dombivli, the Syros does the job with ease. For a family that frequently carries five adults and luggage, the Seltos's extra width and larger boot (447 litres, but a more usable shape) make a real difference.",
+        body: "Both cabins are modern and well-built, but the feeling behind the wheel is different. The Seltos feels like a premium SUV, wider seats, more shoulder room, and the option of a dual-pane panoramic sunroof and Bose 8-speaker audio. The Syros feels clever and space-efficient; the rear seat legroom is genuinely impressive for a sub-4-metre SUV, and the boot (at 465 litres) is larger than many cars in the segment above. For a family of four in Kalyan or Dombivli, the Syros does the job with ease. For a family that frequently carries five adults and luggage, the Seltos's extra width and larger boot (447 litres, but a more usable shape) make a real difference.",
       },
       {
         heading: "The verdict: which one should you pick?",
-        body: "Choose the Syros if your priority is value, easy city manoeuvrability, and a feature-loaded cabin at a lower price point. Choose the Seltos if you want the larger footprint, more engine choices (especially the turbo petrol), and the full ADAS safety suite. Both are outstanding SUVs, and both are available for a test drive at Modi Kia's Bhiwandi and Dombivli showrooms. The best way to decide is to drive them back-to-back on the same day; we are happy to arrange that.",
+        body: "Choose the Syros if your priority is value, easy city manoeuvrability, and a feature-loaded cabin at a lower price point. Choose the Seltos if you want the larger footprint, more engine choices (especially the turbo petrol), and the full ADAS safety suite. Both are outstanding SUVs, and both are available for a test drive at Modi Kia's Kalyan and Dombivli showrooms. The best way to decide is to drive them back-to-back on the same day; we are happy to arrange that.",
       },
     ],
     conclusion:
-      "Still undecided? Visit Modi Kia on the Kalyan–Bhiwandi Road or at our Dombivli showroom, and our team will help you compare the exact variant and on-road price that fits your budget. Call 88790 20761 to book a back-to-back test drive of the Seltos and Syros.",
+      "Still undecided? Visit Modi Kia on the Kalyan-Bhiwandi Road or at our Dombivli showroom, and our team will help you compare the exact variant and on-road price that fits your budget. Call 88790 20761 to book a back-to-back test drive of the Seltos and Syros.",
   },
 
   /* ---- 2. Carens Clavis road-trip MPV ---- */
   "why-the-carens-clavis-is-the-family-road-trip-mpv-to-beat": {
     introduction:
-      "Planning a family road trip from Bhiwandi to Lonavala, or a long-weekend escape to Mahabaleshwar? The car you pick makes the difference between a journey everyone remembers fondly and one where the kids are cranky before you cross the first toll plaza. The Kia Carens Clavis has quietly become the MPV that family buyers in the Bhiwandi–Dombivli region gravitate towards, and for good reason. Here is why it might be the perfect road-trip companion for your family.",
+      "Planning a family road trip from Kalyan to Lonavala, or a long-weekend escape to Mahabaleshwar? The car you pick makes the difference between a journey everyone remembers fondly and one where the kids are cranky before you cross the first toll plaza. The Kia Carens Clavis has quietly become the MPV that family buyers in the Kalyan–Dombivli region gravitate towards, and for good reason. Here is why it might be the perfect road-trip companion for your family.",
     sections: [
       {
         heading: "Seven real seats, zero compromises",
@@ -78,21 +78,21 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "Real-world ownership: what Modi Kia customers say",
-        body: "We speak to Carens Clavis owners every day at our Bhiwandi service centre, and the feedback is consistent: this MPV delivers on its promise of comfort and space. Owners report highway fuel economy of around 17–19 kmpl from the diesel and 13–15 kmpl from the turbo petrol, depending on driving style. Service intervals are reasonable, and the availability of genuine Kia parts through our service department means maintenance is predictable. For families who do two or three long road trips a year plus daily city runs, the Clavis has proven to be a dependable and enjoyable ownership proposition.",
+        body: "We speak to Carens Clavis owners every day at our Kalyan service centre, and the feedback is consistent: this MPV delivers on its promise of comfort and space. Owners report highway fuel economy of around 17–19 kmpl from the diesel and 13–15 kmpl from the turbo petrol, depending on driving style. Service intervals are reasonable, and the availability of genuine Kia parts through our service department means maintenance is predictable. For families who do two or three long road trips a year plus daily city runs, the Clavis has proven to be a dependable and enjoyable ownership proposition.",
       },
     ],
     conclusion:
-      "The Kia Carens Clavis is not just another MPV; it is a thoughtfully engineered family vehicle that prioritises safety, space and comfort in equal measure. See it in person at Modi Kia Bhiwandi or Dombivli, and take your family along for the test drive, because the second and third rows are where this car truly shines. Call 88790 20761 to book your test drive.",
+      "The Kia Carens Clavis is not just another MPV; it is a thoughtfully engineered family vehicle that prioritises safety, space and comfort in equal measure. See it in person at Modi Kia Kalyan or Dombivli, and take your family along for the test drive, because the second and third rows are where this car truly shines. Call 88790 20761 to book your test drive.",
   },
 
   /* ---- 3. Monsoon car-care tips ---- */
   "5-monsoon-car-care-tips-every-kia-owner-should-know": {
     introduction:
-      "Monsoon in the Bhiwandi–Dombivli belt is not just heavy rain; it is waterlogged roads, reduced visibility, and the kind of relentless dampness that can take a toll on any car. Whether you drive a Kia Seltos, Sonet, Carens or an EV, a few preventive checks before and during the rainy season can save you from breakdowns, expensive repairs and unnecessary stress. Here are five practical tips every Kia owner should follow.",
+      "Monsoon in the Kalyan–Dombivli belt is not just heavy rain; it is waterlogged roads, reduced visibility, and the kind of relentless dampness that can take a toll on any car. Whether you drive a Kia Seltos, Sonet, Carens or an EV, a few preventive checks before and during the rainy season can save you from breakdowns, expensive repairs and unnecessary stress. Here are five practical tips every Kia owner should follow.",
     sections: [
       {
         heading: "1. Tyre tread and pressure: your only contact with the road",
-        body: "Worn tyres and wet roads are a dangerous combination. The legal minimum tread depth in India is 1.6 mm, but for monsoon safety we recommend at least 3 mm. Check all five tyres (including the spare) for uneven wear, cracks or bulges. Tyre pressure also drops slightly in cooler, wet conditions; keep them inflated to the recommended PSI (you will find the sticker on the driver's door sill of your Kia). Our Modi Kia service centre in Bhiwandi can check your tyres and rotate them if needed during a routine visit.",
+        body: "Worn tyres and wet roads are a dangerous combination. The legal minimum tread depth in India is 1.6 mm, but for monsoon safety we recommend at least 3 mm. Check all five tyres (including the spare) for uneven wear, cracks or bulges. Tyre pressure also drops slightly in cooler, wet conditions; keep them inflated to the recommended PSI (you will find the sticker on the driver's door sill of your Kia). Our Modi Kia service centre in Kalyan can check your tyres and rotate them if needed during a routine visit.",
       },
       {
         heading: "2. Wiper blades: replace them before they fail",
@@ -100,7 +100,7 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "3. Brakes and underbody: the hidden risks",
-        body: "Water and mud can accelerate corrosion on brake discs, callipers and the underbody. If you hear a grinding noise when braking after driving through standing water, it is usually surface rust on the discs; a few normal braking applications should clear it. However, if the noise persists, have your brakes inspected. The underbody is also vulnerable: mud and debris can trap moisture against metal components. A monsoon underbody check and anti-rust treatment at the Modi Kia service centre is a wise investment, especially if you regularly drive on waterlogged roads near the Bhiwandi creek or the Kalyan-Shilphata stretch.",
+        body: "Water and mud can accelerate corrosion on brake discs, callipers and the underbody. If you hear a grinding noise when braking after driving through standing water, it is usually surface rust on the discs; a few normal braking applications should clear it. However, if the noise persists, have your brakes inspected. The underbody is also vulnerable: mud and debris can trap moisture against metal components. A monsoon underbody check and anti-rust treatment at the Modi Kia service centre is a wise investment, especially if you regularly drive on waterlogged roads near the Kalyan creek or the Kalyan-Shilphata stretch.",
       },
       {
         heading: "4. Electricals and battery: dampness is the enemy",
@@ -112,13 +112,13 @@ const blogDetails: Record<string, BlogContent> = {
       },
     ],
     conclusion:
-      "A little monsoon prep goes a long way. Book a pre-monsoon check-up at the Modi Kia service centre in Bhiwandi; our technicians will inspect your tyres, brakes, wipers, battery, lights and underbody so you can drive through the rains with confidence. Call 88790 20761 or use the Book a Service form on our website.",
+      "A little monsoon prep goes a long way. Book a pre-monsoon check-up at the Modi Kia service centre in Kalyan; our technicians will inspect your tyres, brakes, wipers, battery, lights and underbody so you can drive through the rains with confidence. Call 88790 20761 or use the Book a Service form on our website.",
   },
 
   /* ---- 4. EV6 vs EV9 ---- */
   "ev6-or-ev9-choosing-your-first-kia-electric-suv": {
     introduction:
-      "Kia's electric SUV line-up in India starts with two very different cars: the EV6, a sporty, five-seat crossover, and the EV9, a three-row flagship that redefines what an electric family vehicle can be. With on-road prices in Bhiwandi stretching from roughly Rs. 70 lakh to Rs. 1.4 crore, neither is a casual purchase. This guide breaks down the real differences so you can decide which one suits your life, and your garage.",
+      "Kia's electric SUV line-up in India starts with two very different cars: the EV6, a sporty, five-seat crossover, and the EV9, a three-row flagship that redefines what an electric family vehicle can be. With on-road prices in Kalyan stretching from roughly Rs. 70 lakh to Rs. 1.4 crore, neither is a casual purchase. This guide breaks down the real differences so you can decide which one suits your life, and your garage.",
     sections: [
       {
         heading: "The fundamental difference: five seats vs six seats",
@@ -126,7 +126,7 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "Range and charging: close, but not identical",
-        body: "The EV6 (84 kWh battery, AWD) claims up to 650+ km of range on a full charge, while the EV9 claims up to 561 km (ARAI MIDC). In real-world driving around Bhiwandi and on highway runs to Pune or Mumbai, both deliver around 450–500 km with sensible driving. Both use Kia's 800V ultra-fast charging architecture: the EV6 can charge from 10–80% in about 18 minutes on a 350 kW DC charger, while the EV9 takes about 24 minutes. At home, a 7.2 kW wall-box charger will replenish either car overnight. Our team at Modi Kia can connect you with certified installers for a home charging setup before your car arrives.",
+        body: "The EV6 (84 kWh battery, AWD) claims up to 650+ km of range on a full charge, while the EV9 claims up to 561 km (ARAI MIDC). In real-world driving around Kalyan and on highway runs to Pune or Mumbai, both deliver around 450–500 km with sensible driving. Both use Kia's 800V ultra-fast charging architecture: the EV6 can charge from 10–80% in about 18 minutes on a 350 kW DC charger, while the EV9 takes about 24 minutes. At home, a 7.2 kW wall-box charger will replenish either car overnight. Our team at Modi Kia can connect you with certified installers for a home charging setup before your car arrives.",
       },
       {
         heading: "Performance: sprinter vs cruiser",
@@ -142,17 +142,17 @@ const blogDetails: Record<string, BlogContent> = {
       },
     ],
     conclusion:
-      "The EV6 is the choice for driving enthusiasts and small families who want a premium electric experience without the bulk of a three-row SUV. The EV9 is for those who need maximum space, the latest tech, and the prestige of a flagship. Both are available for viewing at Modi Kia Bhiwandi; we recommend a test drive of both to feel the difference firsthand. Call 88790 20761 to schedule yours.",
+      "The EV6 is the choice for driving enthusiasts and small families who want a premium electric experience without the bulk of a three-row SUV. The EV9 is for those who need maximum space, the latest tech, and the prestige of a flagship. Both are available for viewing at Modi Kia Kalyan; we recommend a test drive of both to feel the difference firsthand. Call 88790 20761 to schedule yours.",
   },
 
   /* ---- 5. Seltos engine guide ---- */
   "petrol-diesel-or-turbo-which-seltos-engine-is-right-for-you": {
     introduction:
-      "The Kia Seltos offers one of the widest powertrain ranges in its segment: a naturally-aspirated 1.5L petrol, a turbocharged 1.5L GDi petrol, and a 1.5L CRDi diesel, each available with different transmissions. Choosing the right one is about matching the engine to your driving patterns, not just your budget. Here is a practical guide from the team at Modi Kia, based on what we see customers in Bhiwandi and Dombivli actually need.",
+      "The Kia Seltos offers one of the widest powertrain ranges in its segment: a naturally-aspirated 1.5L petrol, a turbocharged 1.5L GDi petrol, and a 1.5L CRDi diesel, each available with different transmissions. Choosing the right one is about matching the engine to your driving patterns, not just your budget. Here is a practical guide from the team at Modi Kia, based on what we see customers in Kalyan and Dombivli actually need.",
     sections: [
       {
         heading: "1.5L Smartstream petrol (115 PS): the sensible daily driver",
-        body: "This is the engine for buyers who prioritise smoothness, refinement and low running costs. Paired with either a 6-speed manual or an IVT (Intelligent Variable Transmission), it delivers a relaxed driving experience that is perfect for city commutes and occasional highway runs. The IVT is particularly impressive in stop-and-go traffic; there are no gear shifts to feel, just seamless acceleration. Fuel economy is around 12–14 kmpl in the city and 16–18 kmpl on the highway. If your daily drive is within Bhiwandi with short highway stints, this engine does everything you need without any drama.",
+        body: "This is the engine for buyers who prioritise smoothness, refinement and low running costs. Paired with either a 6-speed manual or an IVT (Intelligent Variable Transmission), it delivers a relaxed driving experience that is perfect for city commutes and occasional highway runs. The IVT is particularly impressive in stop-and-go traffic; there are no gear shifts to feel, just seamless acceleration. Fuel economy is around 12–14 kmpl in the city and 16–18 kmpl on the highway. If your daily drive is within Kalyan with short highway stints, this engine does everything you need without any drama.",
       },
       {
         heading: "1.5L Turbo GDi petrol (160 PS): the enthusiast's choice",
@@ -160,7 +160,7 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "1.5L CRDi diesel (116 PS): the long-distance champion",
-        body: "The diesel Seltos is the range king. With 250 Nm of torque available from low revs, it pulls strongly without needing to be revved hard, making it effortless on highways and efficient in the city. Available with a 6-speed manual or a 6-speed automatic, the diesel returns 16–19 kmpl in the city and 20–23 kmpl on the highway in real-world conditions, numbers that petrol variants can only dream of. If you drive more than 15,000 km a year, or regularly do Mumbai–Pune or Kalyan–Nashik runs, the diesel will save you significant money over time, even accounting for the slightly higher purchase price and service costs. Our service team in Bhiwandi sees diesel Seltos models regularly hitting major service intervals with no issues; they are built for the long haul.",
+        body: "The diesel Seltos is the range king. With 250 Nm of torque available from low revs, it pulls strongly without needing to be revved hard, making it effortless on highways and efficient in the city. Available with a 6-speed manual or a 6-speed automatic, the diesel returns 16–19 kmpl in the city and 20–23 kmpl on the highway in real-world conditions, numbers that petrol variants can only dream of. If you drive more than 15,000 km a year, or regularly do Mumbai–Pune or Kalyan–Nashik runs, the diesel will save you significant money over time, even accounting for the slightly higher purchase price and service costs. Our service team in Kalyan sees diesel Seltos models regularly hitting major service intervals with no issues; they are built for the long haul.",
       },
       {
         heading: "Transmission choices: manual, iMT, IVT, DCT or automatic?",
@@ -172,21 +172,21 @@ const blogDetails: Record<string, BlogContent> = {
       },
     ],
     conclusion:
-      "There is no wrong Seltos engine, only the wrong match for your driving life. Visit Modi Kia on the Kalyan–Bhiwandi Road or our Dombivli showroom, and let our team help you pick the powertrain that fits your routine and your budget. Call 88790 20761 to book a test drive.",
+      "There is no wrong Seltos engine, only the wrong match for your driving life. Visit Modi Kia on the Kalyan-Bhiwandi Road or our Dombivli showroom, and let our team help you pick the powertrain that fits your routine and your budget. Call 88790 20761 to book a test drive.",
   },
 
   /* ---- 6. Kia service intervals ---- */
   "how-often-should-you-really-service-your-kia": {
     introduction:
-      "One of the most common questions we hear at the Modi Kia service centre in Bhiwandi is: how often do I really need to bring my car in? The answer is not as simple as a single number; it depends on what you drive, how you drive it, and what Kia's own schedule recommends. Here is a clear, jargon-free breakdown of Kia's service intervals and what happens at each one.",
+      "One of the most common questions we hear at the Modi Kia service centre in Kalyan is: how often do I really need to bring my car in? The answer is not as simple as a single number; it depends on what you drive, how you drive it, and what Kia's own schedule recommends. Here is a clear, jargon-free breakdown of Kia's service intervals and what happens at each one.",
     sections: [
       {
         heading: "Kia's official service interval: 10,000 km or 12 months",
-        body: "For most Kia petrol and diesel models sold in India, Seltos, Sonet, Syros, Carens and Carnival, the manufacturer-recommended service interval is every 10,000 kilometres or 12 months, whichever comes first. This is a standard practice across the industry, designed to catch wear items before they become real problems. If you drive less than 10,000 km in a year (common for city-only cars in Bhiwandi and Dombivli), you should still service your Kia annually. Engine oil degrades over time, not just distance, and brake fluid absorbs moisture even when the car is parked.",
+        body: "For most Kia petrol and diesel models sold in India, Seltos, Sonet, Syros, Carens and Carnival, the manufacturer-recommended service interval is every 10,000 kilometres or 12 months, whichever comes first. This is a standard practice across the industry, designed to catch wear items before they become real problems. If you drive less than 10,000 km in a year (common for city-only cars in Kalyan and Dombivli), you should still service your Kia annually. Engine oil degrades over time, not just distance, and brake fluid absorbs moisture even when the car is parked.",
       },
       {
         heading: "What happens at each service interval?",
-        body: "The first service (1,000 km or 1 month) is a complimentary inspection, no parts are usually replaced, but our technicians check fluid levels, tighten fasteners and address any initial settling-in concerns. The first paid service (10,000 km or 12 months) includes an engine oil and filter change, a comprehensive inspection, and any software updates. Subsequent services follow a pattern: every 10,000 km or 12 months, with progressively more involved checks and replacements. Major services, typically at 30,000 km, 60,000 km and 90,000 km, include transmission fluid changes, brake fluid replacement, coolant flushing, and detailed underbody and suspension inspections. Our service advisors at Modi Kia Bhiwandi provide a transparent estimate before any work begins, so there are no surprises.",
+        body: "The first service (1,000 km or 1 month) is a complimentary inspection, no parts are usually replaced, but our technicians check fluid levels, tighten fasteners and address any initial settling-in concerns. The first paid service (10,000 km or 12 months) includes an engine oil and filter change, a comprehensive inspection, and any software updates. Subsequent services follow a pattern: every 10,000 km or 12 months, with progressively more involved checks and replacements. Major services, typically at 30,000 km, 60,000 km and 90,000 km, include transmission fluid changes, brake fluid replacement, coolant flushing, and detailed underbody and suspension inspections. Our service advisors at Modi Kia Kalyan provide a transparent estimate before any work begins, so there are no surprises.",
       },
       {
         heading: "Kia EV service: simpler, but not zero-maintenance",
@@ -198,11 +198,11 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "Why authorised service matters",
-        body: "It can be tempting to save money at an independent garage, but there are real risks. Unauthorised mechanics may use non-genuine parts that do not meet Kia's specifications, potentially affecting safety, performance and fuel economy. They may also lack access to Kia's latest software updates and technical service bulletins, meaning known issues on your model might go unaddressed. More importantly, using non-genuine parts or unauthorised repairs can void your warranty. At the Modi Kia service centre in Bhiwandi, we use only genuine Kia parts, our technicians are factory-trained, and every service is documented, protecting your warranty and your car's resale value.",
+        body: "It can be tempting to save money at an independent garage, but there are real risks. Unauthorised mechanics may use non-genuine parts that do not meet Kia's specifications, potentially affecting safety, performance and fuel economy. They may also lack access to Kia's latest software updates and technical service bulletins, meaning known issues on your model might go unaddressed. More importantly, using non-genuine parts or unauthorised repairs can void your warranty. At the Modi Kia service centre in Kalyan, we use only genuine Kia parts, our technicians are factory-trained, and every service is documented, protecting your warranty and your car's resale value.",
       },
     ],
     conclusion:
-      "A well-maintained Kia is a safe, efficient and reliable Kia. Stick to the 10,000 km / 12-month schedule, pay attention to what your car is telling you between services, and always use an authorised service centre. Book your next Kia service at Modi Kia Bhiwandi by calling 88790 20761 or using our online booking form; we also offer free pickup and drop for your convenience.",
+      "A well-maintained Kia is a safe, efficient and reliable Kia. Stick to the 10,000 km / 12-month schedule, pay attention to what your car is telling you between services, and always use an authorised service centre. Book your next Kia service at Modi Kia Kalyan by calling 88790 20761 or using our online booking form; we also offer free pickup and drop for your convenience.",
   },
 
   /* ---- 7. Home charging Kia EV ---- */
@@ -216,7 +216,7 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "Installation: what you need at home",
-        body: "To install a 7.2 kW wall-box charger, you need a dedicated 32A MCB, proper earthing, and a suitable location, ideally inside a garage or under a covered carport. The charger itself should be IP65-rated for outdoor installation if it will be exposed to rain. Modi Kia works with certified installation partners who will survey your home in Bhiwandi or Dombivli, recommend the right setup, and complete the installation before your car is delivered. The cost of a good wall-box charger plus installation typically ranges from Rs. 40,000 to Rs. 70,000, depending on cable runs, existing electrical infrastructure, and the charger brand.",
+        body: "To install a 7.2 kW wall-box charger, you need a dedicated 32A MCB, proper earthing, and a suitable location, ideally inside a garage or under a covered carport. The charger itself should be IP65-rated for outdoor installation if it will be exposed to rain. Modi Kia works with certified installation partners who will survey your home in Kalyan or Dombivli, recommend the right setup, and complete the installation before your car is delivered. The cost of a good wall-box charger plus installation typically ranges from Rs. 40,000 to Rs. 70,000, depending on cable runs, existing electrical infrastructure, and the charger brand.",
       },
       {
         heading: "Running costs: how much does home charging actually cost?",
@@ -224,7 +224,7 @@ const blogDetails: Record<string, BlogContent> = {
       },
       {
         heading: "Charging in an apartment: it is possible, with planning",
-        body: "Apartment dwellers in Bhiwandi and Dombivli face an additional step: society approval. You will need permission from your housing society's managing committee to install a charger, and in some cases, to draw a dedicated line from your meter to your parking spot. Kia India provides a template letter and support documentation to help with this process. Some societies prefer a shared charging setup rather than individual installations; we have helped several apartment complexes in the region set up communal EV charging. Speak to our team at Modi Kia and we can guide you through the entire process.",
+        body: "Apartment dwellers in Kalyan and Dombivli face an additional step: society approval. You will need permission from your housing society's managing committee to install a charger, and in some cases, to draw a dedicated line from your meter to your parking spot. Kia India provides a template letter and support documentation to help with this process. Some societies prefer a shared charging setup rather than individual installations; we have helped several apartment complexes in the region set up communal EV charging. Speak to our team at Modi Kia and we can guide you through the entire process.",
       },
       {
         heading: "Public charging as a backup, not a primary plan",
@@ -232,7 +232,7 @@ const blogDetails: Record<string, BlogContent> = {
       },
     ],
     conclusion:
-      "Home charging is the foundation of a happy EV ownership experience. Plan it early, invest in a proper Level 2 charger, and you will enjoy lower running costs, the convenience of a full charge every morning, and the peace of mind that your Kia EV is always ready to go. To discuss home charging or book a test drive of the EV6, EV9 or Carens Clavis EV, call Modi Kia on 88790 20761 or visit our Bhiwandi showroom.",
+      "Home charging is the foundation of a happy EV ownership experience. Plan it early, invest in a proper Level 2 charger, and you will enjoy lower running costs, the convenience of a full charge every morning, and the peace of mind that your Kia EV is always ready to go. To discuss home charging or book a test drive of the EV6, EV9 or Carens Clavis EV, call Modi Kia on 88790 20761 or visit our Kalyan showroom.",
   },
 
   /* ---- 8. Carnival Limousine ---- */
@@ -262,6 +262,6 @@ const blogDetails: Record<string, BlogContent> = {
       },
     ],
     conclusion:
-      "The Kia Carnival Limousine is not for everyone; and that is exactly why it exists. For the family that needs (and appreciates) this level of space, luxury and safety, there is genuinely nothing else on the market that delivers the same package at the same price. Visit Modi Kia Bhiwandi to experience the Carnival in person; the pictures do not do the cabin justice. Call 88790 20761 to book a private viewing and test drive.",
+      "The Kia Carnival Limousine is not for everyone; and that is exactly why it exists. For the family that needs (and appreciates) this level of space, luxury and safety, there is genuinely nothing else on the market that delivers the same package at the same price. Visit Modi Kia Kalyan to experience the Carnival in person; the pictures do not do the cabin justice. Call 88790 20761 to book a private viewing and test drive.",
   },
 };

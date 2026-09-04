@@ -133,7 +133,7 @@ export const company = {
   email: "marketing@modikia.com",
   primaryAddress: {
     street: "Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar",
-    locality: "Bhiwandi",
+    locality: "Kalyan",
     region: "Maharashtra",
     postalCode: "421302",
     country: "IN",
@@ -142,9 +142,9 @@ export const company = {
   hours: "Mon to Sun, 9:30 AM to 7:30 PM",
   hoursSpec: { days: "Mo-Su", opens: "09:30", closes: "19:30" },
   // Locations and service area sourced from gautammodigroup.com — the
-  // group's official business directory. Pimpalghar (Bhiwandi) houses both
+  // group's official business directory. Pimpalghar (Kalyan) houses both
   // the showroom and the service department; Dombivli is a sales showroom.
-  areasServed: ["Bhiwandi", "Dombivli", "Ambernath"],
+  areasServed: ["Kalyan", "Dombivli", "Ambernath"],
   // NOTE: Modi Kia does not publish sales/service volume figures the way
   // modihyundai.co.in did. These are placeholder figures only — replace
   // with real numbers (or remove the stat block) before launch.
@@ -164,7 +164,7 @@ export const company = {
 
 export const nav = {
   phone: company.phone,
-  location: "Bhiwandi",
+  location: "Kalyan",
   links: [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about" },
@@ -249,17 +249,17 @@ export const aboutFaqData = [
   {
     question: "Is Modi Kia an authorised Kia dealership?",
     answer:
-      "Yes. Modi Kia is an authorised Kia India dealership, with sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath, and a dedicated service department on the Kalyan–Bhiwandi Road in Bhiwandi, Maharashtra.",
+      "Yes. Modi Kia is an authorised Kia India dealership, with sales showrooms in Kalyan (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath, and a dedicated service department on the Kalyan–Bhiwandi Road in Kalyan, Maharashtra.",
   },
   {
     question: "What are the services available at Modi Kia?",
     answer:
-      "Modi Kia handles new Kia car sales, test drives, exchange/trade-in for pre-owned vehicles, financing and a dedicated service department, from its Bhiwandi, Dombivli and Ambernath showrooms and Bhiwandi service department.",
+      "Modi Kia handles new Kia car sales, test drives, exchange/trade-in for pre-owned vehicles, financing and a dedicated service department, from its Kalyan, Dombivli and Ambernath showrooms and Kalyan service department.",
   },
   {
     question: "Which areas does Modi Kia serve?",
     answer:
-      "Modi Kia serves Bhiwandi, Dombivli, Ambernath and the surrounding region from its showrooms in Bhiwandi, Dombivli and Ambernath, and its service department on the Kalyan–Bhiwandi Road.",
+      "Modi Kia serves Kalyan, Dombivli, Ambernath and the surrounding region from its showrooms in Kalyan, Dombivli and Ambernath, and its service department on the Kalyan–Bhiwandi Road.",
   },
   {
     question: "When did Kia enter the Indian market?",
@@ -860,7 +860,7 @@ export const trust = [
   {
     icon: "network",
     title: "Showrooms & Service, Close to You",
-    text: "Sales showrooms in Bhiwandi and Dombivli, plus a dedicated service department on the Kalyan–Bhiwandi Road.",
+    text: "Sales showrooms in Kalyan and Dombivli, plus a dedicated service department on the Kalyan–Bhiwandi Road.",
   },
   {
     icon: "rupee",
@@ -967,7 +967,7 @@ export const testimonials: Testimonial[] = [
     name: "Abhijit Sawant",
     role: "Carens owner, Service Centre",
     rating: 5,
-    text: "Gave my car for periodic service at Modi Kia Bhiwandi service centre. The free pickup and drop service was seamless and the job work estimate was 100% accurate.",
+    text: "Gave my car for periodic service at Modi Kia Kalyan service centre. The free pickup and drop service was seamless and the job work estimate was 100% accurate.",
     avatar: "/testimonials/avatar-4.jpg",
   },
   {
@@ -993,9 +993,9 @@ export const testimonials: Testimonial[] = [
   },
   {
     name: "Sameer Khan",
-    role: "Seltos owner, Bhiwandi Service",
+    role: "Seltos owner, Kalyan Service",
     rating: 5,
-    text: "Prompt and reliable servicing at the Modi Kia Bhiwandi facility. Professional advisors, authentic Kia parts, and timely delivery.",
+    text: "Prompt and reliable servicing at the Modi Kia Kalyan facility. Professional advisors, authentic Kia parts, and timely delivery.",
     avatar: "/testimonials/avatar-8.jpg",
   },
 ];
@@ -1024,7 +1024,7 @@ export const faqData = [
   {
     question: "Which areas does Modi Kia serve?",
     answer:
-      "We have sales showrooms in Bhiwandi (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath (Kansai Industrial Area), and a service department on the Kalyan–Bhiwandi Road, serving Bhiwandi, Dombivli, Ambernath and the surrounding region.",
+      "We have sales showrooms in Kalyan (Kalyan–Bhiwandi Road), Dombivli (Kalyan-Shilphata Road) and Ambernath (Kansai Industrial Area), and a service department on the Kalyan–Bhiwandi Road, serving Kalyan, Dombivli, Ambernath and the surrounding region.",
   },
 ];
 
@@ -1232,21 +1232,21 @@ export type Location = {
 
 /* Real Modi Kia outlets (source: gautammodigroup.com/business — the
    group's official business directory; names below are copied verbatim
-   from that listing). The Pimpalghar (Bhiwandi) location houses both the
+   from that listing). The Pimpalghar (Kalyan) location houses both the
    showroom and the service department, so it is listed once as a
    Showroom and once as a Service Centre (same address).
    Photos are the real branch photography published for each individual
    listing on gautammodigroup.com/business. */
 export const locations: Location[] = [
   {
-    name: "Modi Kia Car Showroom Pimpalghar, Kalyan",
+    name: "Modi Kia Car Showroom & Pre-Owned Cars Pimpalghar, Kalyan",
     type: "Showroom",
-    city: "Bhiwandi",
-    address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
+    city: "Kalyan",
+    address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Kalyan, Maharashtra 421302",
     phone: "82380 89600",
     image: "/locations/kia-pimpalghar-showroom-v2.webp",
     mapsUrl: "https://share.google/w1r74oRGCHAQbB0Ca",
-    embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
+    embedQuery: "Modi Kia, Pimpalghar, Kalyan",
   },
   {
     name: "Modi Kia Car Showroom Dombivli",
@@ -1261,13 +1261,13 @@ export const locations: Location[] = [
   {
     name: "Modi Kia Service Centre Pimpalghar, Kalyan",
     type: "Service Centre",
-    city: "Bhiwandi",
-    address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Bhiwandi, Maharashtra 421302",
+    city: "Kalyan",
+    address: "Ground Floor, Kalyan - Bhiwandi Rd, Near Mahanagar CNG Station, Sapna Industrial Estate, Pimpalghar, Kalyan, Maharashtra 421302",
     phone: "82380 89600",
     image: "/locations/modi-kia-service-center.jpeg",
     imagePosition: "object-[35%_20%]",
     mapsUrl: "https://share.google/w1r74oRGCHAQbB0Ca",
-    embedQuery: "Modi Kia, Pimpalghar, Bhiwandi",
+    embedQuery: "Modi Kia, Pimpalghar, Kalyan",
   },
   {
     name: "Modi Kia Car Showroom Ambernath",
@@ -1301,12 +1301,12 @@ export const carModels = [
   "EV6",
   "EV9",
 ];
-export const cityOptions = ["Bhiwandi", "Dombivli", "Ambernath"];
+export const cityOptions = ["Kalyan", "Dombivli", "Ambernath"];
 /* Friendlier display labels for cityOptions in location dropdowns, while
    the underlying value stays the plain city name used for matching
    against `locations[].city` and for schema addressLocality. */
 export const cityLabels: Record<string, string> = {
-  Bhiwandi: "Kalyan-Bhiwandi Road",
+  Kalyan: "Kalyan-Bhiwandi Road",
   Dombivli: "Dombivli",
   Ambernath: "Ambernath",
 };

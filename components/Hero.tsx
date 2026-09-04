@@ -183,7 +183,7 @@ export default function Hero() {
             homepage carries a clear SEO heading without overlaying text on
             the manufacturer's campaign photography. */}
         <h1 className="sr-only">
-          New Kia Cars, Test Drives &amp; Authorised Service in Bhiwandi &amp; Dombivli | Modi Kia
+          New Kia Cars, Test Drives &amp; Authorised Service in Kalyan &amp; Dombivli | Modi Kia
         </h1>
 
         {/* Overlaid headline / sub-headline, keyed so it fades between slides

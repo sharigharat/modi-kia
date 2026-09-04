@@ -20,7 +20,7 @@ import { DEALER_ID } from "@/lib/schema";
 
 const title = "About Modi Kia: Our Story, Values and Group";
 const description =
-  "Modi Kia is an authorised Kia dealership owned by the Gautam Modi Group, serving Bhiwandi, Dombivli & Ambernath with genuine parts and dedicated service.";
+  "Modi Kia is an authorised Kia dealership owned by the Gautam Modi Group, serving Kalyan, Dombivli & Ambernath with genuine parts and dedicated service.";
 
 export const metadata: Metadata = {
   title,
@@ -112,7 +112,7 @@ export default function AboutPage() {
               </h1>
               <p className="mt-3 max-w-xl text-sm text-white/80 sm:text-base">
                 An authorised Kia dealership from the Gautam Modi Group,
-                serving Bhiwandi, Dombivli & Ambernath with genuine cars, honest service
+                serving Kalyan, Dombivli & Ambernath with genuine cars, honest service
                 and a customer-first promise.
               </p>
             </Reveal>
@@ -133,8 +133,8 @@ export default function AboutPage() {
                 <p>
                   Modi Kia is an authorised Kia dealership, owned and
                   operated by the {groupInfo.name}. We operate sales showrooms in
-                  Bhiwandi, Dombivli and Ambernath, alongside a dedicated
-                  service centre on the Kalyan–Bhiwandi Road in Bhiwandi. Kia is the
+                  Kalyan, Dombivli and Ambernath, alongside a dedicated
+                  service centre on the Kalyan–Bhiwandi Road in Kalyan. Kia is the
                   featured brand in our corner of the group&apos;s wider
                   multi-brand portfolio.
                 </p>
@@ -178,10 +178,10 @@ export default function AboutPage() {
                   </div>
                   <div className="lg:col-span-7 flex flex-col justify-between gap-6">
                     <p className="text-sm leading-relaxed text-white/80 sm:text-base">
-                      Whether you are buying your first car, upgrading your family SUV or arranging routine service, our showroom and service teams provide practical help close to home. Visit Modi Kia across Bhiwandi, Dombivli and Ambernath for new Kia cars, test drives, genuine parts and expert service support.
+                      Whether you are buying your first car, upgrading your family SUV or arranging routine service, our showroom and service teams provide practical help close to home. Visit Modi Kia across Kalyan, Dombivli and Ambernath for new Kia cars, test drives, genuine parts and expert service support.
                     </p>
                     <div className="flex flex-wrap gap-2.5 pt-2">
-                      {["Bhiwandi", "Dombivli", "Ambernath"].map((loc) => (
+                      {["Kalyan", "Dombivli", "Ambernath"].map((loc) => (
                         <span
                           key={loc}
                           className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white shadow-sm backdrop-blur"
