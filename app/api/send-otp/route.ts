@@ -71,6 +71,9 @@ export async function POST(req: Request) {
         biz_opaque_callback_data: "{{BizOpaqueCallbackData}}"
       };
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
       const waRes = await fetch(whatsappUrl, {
         method: "POST",
         headers: {
@@ -78,16 +81,33 @@ export async function POST(req: Request) {
           "X-API-KEY": whatsappKey,
         },
         body: JSON.stringify(whatsappPayload),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       if (!waRes.ok) {
-        const errText = await waRes.text();
-        console.error("WhatsApp API failed:", waRes.status, errText);
-        return NextResponse.json({ success: false, error: `WhatsApp API failed with status ${waRes.status}: ${errText || "Forbidden/Unauthorized"}` }, { status: 500 });
+        const rawText = await waRes.text();
+        console.error("WhatsApp API failed:", waRes.status, rawText);
+        
+        let friendlyError = "Unable to send WhatsApp OTP right now. Please try again in a few moments.";
+        if (waRes.status === 504 || waRes.status === 502 || rawText.includes("504 Gateway") || rawText.includes("<html")) {
+          friendlyError = "WhatsApp server timed out (Gateway 504). The WhatsApp service is currently overloaded or experiencing delay. Please try again shortly.";
+        }
+        
+        return NextResponse.json(
+          { success: false, error: friendlyError },
+          { status: 500 }
+        );
       }
     } catch (waErr: any) {
       console.error("WhatsApp fetch error:", waErr);
-      return NextResponse.json({ success: false, error: `WhatsApp fetch error: ${waErr.message}` }, { status: 500 });
+      const isTimeout = waErr.name === "AbortError";
+      return NextResponse.json({
+        success: false,
+        error: isTimeout
+          ? "WhatsApp gateway timed out after 8 seconds. The service is currently slow, please try again."
+          : "Unable to connect to WhatsApp OTP service. Please try again."
+      }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, otp_id: otpToken, otp_token: otpToken });
